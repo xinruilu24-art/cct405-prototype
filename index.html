@@ -20,7 +20,7 @@
   --xhs-red:#d9264a; --xhs-tag:#2a5ba8; --mhs:#6a4bbf; --mhs-soft:#f1ecfc; --wx-bg:#ededed; --wx-green:#95ec69; --wx-ok:#05753f;
   --wx-pay:#a9560a; --eat:#ffcf3d; --eat-soft:#fff6d6; --ios-blue:#0a6cff;
   --px-k:#3a2347; --px-w:#fff8fb; --px-p:#ff9cc4; --px-r:#ff5a7a; --px-y:#ffd36b; --px-o:#ffb067; --px-g:#7fd6a0; --px-b:#8ccdf0; --px-v:#b79cf0; --px-n:#c98b5e;
-  --tile-xhs:#ffd0e2; --tile-mhs:#e3d6ff; --tile-eat:#fff0bf; --tile-album:#d6efff; --tile-chat:#d2f5df; --tile-set:#ece6ef;
+  --stage-bg:#d6f2ec; --stage-stripe:#c3eae2; --tile-xhs:#ffd0e2; --tile-mhs:#e3d6ff; --tile-eat:#fff0bf; --tile-album:#d6efff; --tile-chat:#d2f5df; --tile-set:#ece6ef;
   --font-ui:"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; --font-head:"ZCOOL QingKe HuangYou", "Noto Sans SC", sans-serif;
 }
 *{box-sizing:border-box}
@@ -52,10 +52,21 @@ p{margin:0 0 12px}
 .c-g{fill:var(--px-g)} .c-b{fill:var(--px-b)} .c-v{fill:var(--px-v)} .c-n{fill:var(--px-n)}
 
 /* stage */
-.main{display:grid;grid-template-columns:minmax(0,1fr) 380px;max-width:900px;margin:0 auto;gap:24px;align-items:start}
-.stage{position:relative;display:flex;flex-direction:column;gap:16px;padding:16px;border:2px solid var(--line);box-shadow:4px 4px 0 var(--line);background:var(--paper);overflow:hidden}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 400px;max-width:1000px;margin:0 auto;gap:24px;align-items:stretch}
+.stage{position:relative;display:flex;flex-direction:column;min-height:740px;background-color:var(--stage-bg);background-image:repeating-linear-gradient(90deg, var(--stage-stripe) 0 8px, transparent 8px 24px);border:2px solid var(--line);box-shadow:4px 4px 0 var(--line);overflow:hidden}
 .stage.live{border-color:var(--accent)}
-.meters{background:var(--win);border:2px solid var(--line);padding:8px 12px}
+.meters{background:var(--win);border:2px solid var(--line);padding:8px 12px;box-shadow:2px 2px 0 var(--line)}
+.hud{display:flex;gap:16px;padding:16px;align-items:stretch}
+.day-col{flex:none;width:88px;display:flex;flex-direction:column;box-shadow:2px 2px 0 var(--line)}
+.sticker{flex:none;height:48px;margin-top:-2px;overflow:hidden;background:var(--px-p);border:2px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 4px}
+.sticker .hr{display:flex;gap:8px}
+.sticker .hr.off{margin-left:-12px}
+.day{flex:1;min-height:0;border:2px solid var(--line);background:var(--win);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.day b{font-family:var(--font-head);font-weight:400;font-size:52px;line-height:1}
+.day span{font-size:13px;color:var(--muted)}
+.hud-right{flex:1;min-width:0;max-width:300px;display:flex;flex-direction:column}
+.money{font-family:var(--font-head);font-size:22px;margin-bottom:4px}
+.spot{flex:1}
 .meter{margin-bottom:8px} .meter:last-child{margin-bottom:0}
 .meter-top{display:flex;justify-content:space-between;font-size:14px}
 .track{height:14px;border:2px solid var(--line);background:var(--win);overflow:hidden}
@@ -63,9 +74,9 @@ p{margin:0 0 12px}
 .fill.po{background:var(--po)} .fill.stress{background:var(--stress)}
 .clock{align-self:flex-start;background:var(--win);border:2px solid var(--line);padding:8px 12px;text-align:right;font-family:var(--font-head);font-size:20px;line-height:1.2}
 .clock span{display:block;font-family:var(--font-ui);font-size:14px;color:var(--muted)}
-.bubble{background:var(--win);border:2px solid var(--line);padding:8px 12px;font-size:15px}
-.actions{display:flex;justify-content:space-between;gap:12px}
-.live-tag{align-self:flex-start;background:var(--accent);color:var(--accent-ink);border:2px solid var(--line);padding:4px 12px;font-family:var(--font-head)}
+.bubble{margin:0 16px 16px;background:var(--win);border:2px solid var(--line);padding:8px 12px;font-size:15px}
+.actions{display:flex;justify-content:center;gap:32px;padding:16px;border-top:2px solid var(--line);background:var(--soft)}
+.live-tag{margin:0 16px;align-self:flex-start;background:var(--accent);color:var(--accent-ink);border:2px solid var(--line);padding:4px 12px;font-family:var(--font-head)}
 
 /* phone */
 .phone{background:var(--phone);border-radius:40px;padding:16px 12px 12px;box-shadow:4px 4px 0 var(--line)}
@@ -75,9 +86,9 @@ p{margin:0 0 12px}
 .home{display:block;margin:12px auto 0;width:44px;height:44px;border-radius:50%;border:2px solid var(--paper);background:transparent;cursor:pointer}
 .home:hover{background:var(--muted)}
 .springboard{background:var(--soft);height:100%;padding:24px 20px}
-.icons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 8px}
-.icon{position:relative;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;padding:2px}
-.icon .tile{width:68px;height:68px;border-radius:18px;border:2px solid var(--line);box-shadow:2px 2px 0 var(--line);display:flex;align-items:center;justify-content:center;transition:transform .08s}
+.icons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 8px;padding-top:12px}
+.icon{position:relative;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px;padding:2px}
+.icon .tile{width:96px;height:96px;border-radius:24px;border:2px solid var(--line);box-shadow:2px 2px 0 var(--line);display:flex;align-items:center;justify-content:center;transition:transform .08s}
 .icon:hover .tile{transform:translateY(-2px)}
 .icon .badge{position:absolute;top:-4px;right:8px;min-width:22px;height:22px;border-radius:11px;background:var(--xhs-red);color:var(--paper);font-size:12px;display:flex;align-items:center;justify-content:center;padding:0 8px}
 .t-xhs{background:var(--tile-xhs)} .t-mhs{background:var(--tile-mhs)} .t-eat{background:var(--tile-eat)} .t-album{background:var(--tile-album)} .t-chat{background:var(--tile-chat)} .t-set{background:var(--tile-set)}
@@ -148,8 +159,6 @@ p{margin:0 0 12px}
 .works img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:4px}
 .price{margin:12px 16px;border:1px solid var(--hair);border-radius:10px;padding:8px 12px;font-size:14px}
 .price div{display:flex;justify-content:space-between;padding:4px 0}
-.fee{margin:16px;background:var(--mhs-soft);border-radius:12px;padding:16px}
-.fee .big{font-size:28px;font-weight:700;color:var(--mhs)}
 
 /* michat */
 .wx{background:var(--wx-bg);min-height:100%}
@@ -208,7 +217,7 @@ p{margin:0 0 12px}
 .pie{width:220px;height:220px;border:2px solid var(--line);border-radius:50%;margin:8px auto 12px}
 .legend{display:flex;gap:16px;justify-content:center;font-size:14px}
 .sw{display:inline-block;width:12px;height:12px;border:2px solid var(--line);margin-right:8px;vertical-align:-1px}
-@media (max-width:980px){.main,.split{grid-template-columns:minmax(0,1fr)}.phone{max-width:400px;margin:0 auto}}
+@media (max-width:980px){.stage{min-height:520px}.main,.split{grid-template-columns:minmax(0,1fr)}.phone{max-width:400px;margin:0 auto}}
 @media (prefers-reduced-motion:reduce){.btn,.fill,.icon .tile{transition:none}}
 </style>
 </head>
@@ -220,7 +229,7 @@ p{margin:0 0 12px}
 const SMALL = 5, MEDIUM = 10, LARGE = 15;   // "+" "++" "+++"
 const HATES_LIVESTREAM_EXTRA = 10;          // 角色 2 宣布直播时额外增加的压力
 const LIVESTREAM_COMMENTS = 3;
-const FEE_UPFRONT = 200;                    // 咪画师：接案预付的代理费
+const COMMISSION = 100;                     // 开局画师通过 MiChat 转给玩家的委托费
 const FORWARD_EFFECT = SMALL;               // 把帖子转发给画师时压力的变化
 
 const FACES = {};
@@ -310,7 +319,7 @@ function newState(c){
   return {screen: "main", app: "home", view: "", arg: "", char: c, po: ch.po, stress: ch.stress, day: 1, slot: 1,
     evidence: [], scheduleLivestream: false, face: "neutral", last: "第 1 天从下午开始。手机里的 App 可以随便看，做事才会用掉时段。",
     usedComments: [], replies: {}, votes: {}, noteLikes: {}, forwarded: [], myNotes: [],
-    money: 0, feeClaimed: false, bills: [], chat: {artist: [], friend: []}, unreadChat: {artist: 0, friend: 0},
+    money: COMMISSION, bills: [{text: "画师转账（委托费）", amount: COMMISSION}], chat: {artist: [{who: "her", type: "pay", amount: COMMISSION, text: "委托费"}], friend: []}, unreadChat: {artist: 1, friend: 0},
     mhsRead: [], liveIndex: 0, sheet: null};
 }
 const $app = document.getElementById("app");
@@ -327,6 +336,10 @@ function pic(key, cls){
 function avatar(i, cls){
   if (i === -1) return `<span class="av ${cls || ""}" style="background:var(--px-p)">画</span>`;
   return `<span class="av ${cls || ""}" style="background:${AVC[i % AVC.length]}">${"甲乙丙丁戊己"[i % 6]}</span>`;
+}
+function sticker(){
+  const row = off => `<div class="hr ${off ? "off" : ""}">${px("heartO", 12).repeat(6)}</div>`;
+  return `<div class="sticker" aria-hidden="true">${row(0)}${row(1)}${row(0)}</div>`;
 }
 function meters(){
   return `<div class="meter"><div class="meter-top"><span>舆论</span><span>${S.po}</span></div><div class="track"><div class="fill po" style="transform:scaleX(${S.po/100})"></div></div></div>
@@ -357,8 +370,9 @@ function desk(){
   S.screen = "main";
   $app.innerHTML = `<div class="main">
     <section class="stage" aria-label="画师">
-      <div class="clock">第 ${S.day} 天<span>${SLOTS[S.slot]}，还剩 ${3 - S.slot} 个时段</span></div>
-      <div class="meters">${meters()}</div>
+      <div class="hud"><div class="day-col"><div class="day"><b>${S.day}</b><span>${SLOTS[S.slot]}</span></div>${sticker()}</div>
+        <div class="hud-right"><div class="money">¥${S.money}</div><div class="meters">${meters()}</div></div></div>
+      <div class="spot" aria-hidden="true"></div>
       ${S.last ? `<div class="bubble">${esc(S.last)}</div>` : ""}
       <div class="actions"><button class="btn" data-a="chat">和她聊聊</button><button class="btn" data-a="rest">下一个时段</button></div>
     </section>
@@ -383,7 +397,7 @@ function screen(){
   return "";
 }
 function icon(k, label, badge){
-  return `<button class="icon" data-app="${k}"><span class="tile t-${k}">${px(k, 44)}</span>${label}${badge ? `<span class="badge">${badge}</span>` : ""}</button>`;
+  return `<button class="icon" data-app="${k}"><span class="tile t-${k}">${px(k, 64)}</span>${label}${badge ? `<span class="badge">${badge}</span>` : ""}</button>`;
 }
 
 /* ---- 小粉书 ---- */
@@ -457,18 +471,14 @@ function mhs(){
       <div class="stats"><span>成交 128</span><span>好评 96%</span><span>粉丝 3.2k</span></div></div>
     <div class="works">${["sketchbook", "window", "palette", "pouch", "tablet"].map(k => `<img src="${IMG[k]}" alt="作品">`).join("")}</div>
     <div class="price"><div><span>头像</span><span>¥200 起</span></div><div><span>半身</span><span>¥450 起</span></div><div><span>被质疑的订单</span><span>已全额退款</span></div></div>`;
-  if (tab === "fee") body = `<div class="fee"><div class="muted">案件代理费</div><div class="big">¥300</div>
-      <p class="muted">接案预付 ¥${FEE_UPFRONT}，结案后再付 ¥${300 - FEE_UPFRONT}。领取后转入 MiChat 钱包。</p>
-      <button class="btn primary" data-fee ${S.feeClaimed ? "disabled" : ""}>${S.feeClaimed ? "已领取" : `领取 ¥${FEE_UPFRONT}`}</button></div>`;
   return `<div class="mhs-top"><div class="brand">咪画师</div><div class="seg">
       <button class="${tab === "msg" ? "on" : ""}" data-mhs="msg">消息${unreadMhs() ? `（${unreadMhs()}）` : ""}</button>
-      <button class="${tab === "artist" ? "on" : ""}" data-mhs="artist">画师主页</button>
-      <button class="${tab === "fee" ? "on" : ""}" data-mhs="fee">酬劳</button></div></div>${body}`;
+      <button class="${tab === "artist" ? "on" : ""}" data-mhs="artist">画师主页</button></div></div>${body}`;
 }
 
 /* ---- MiMieat ---- */
 function eat(){
-  return `<div class="eat-top">MiMieat</div><div class="bal">送给画师，帮她缓一缓。余额 ¥${S.money}${S.feeClaimed ? "" : "，可以先去咪画师领酬劳"}</div>
+  return `<div class="eat-top">MiMieat</div><div class="bal">送给画师，帮她缓一缓。余额 ¥${S.money}</div>
     ${FOODS.map(f => `<div class="food">${px(f.icon, 44)}<div class="grow"><b>${f.name}</b><div class="muted">画师压力 -${f.relief}</div><span class="pr">¥${f.price}</span></div>
       <button data-food="${f.id}" ${S.money < f.price ? "disabled" : ""}>下单</button></div>`).join("")}`;
 }
@@ -505,7 +515,7 @@ function wxThread(k){
     let inner = `<div class="bub">${esc(m.text)}</div>`;
     if (m.type === "card"){ const n = findNote(m.note); inner = `<div class="share-card">${pic(n.img)}<div>${esc(n.title)}<small>小粉书笔记</small></div></div>`; }
     if (m.type === "pic") inner = `<div class="pic-msg">${EVIDENCE[m.ev].video ? `<span class="play">${pic(EVIDENCE[m.ev].img)}</span>` : pic(EVIDENCE[m.ev].img)}</div>`;
-    if (m.type === "pay") inner = `<div class="pay-card">¥${m.amount}<br><small>${esc(m.text)}</small></div>`;
+    if (m.type === "pay") inner = `<div class="pay-card">¥${m.amount}<br><small>${esc(m.text)}，已收款</small></div>`;
     return `<div class="bub-row ${me ? "me" : ""}">${me ? `<span class="av sq" style="background:var(--mhs)">我</span>` : her}${inner}</div>`;
   }).join("");
   const act = k === "artist"
@@ -546,7 +556,6 @@ function wire(){
   q("[data-fwd]", b => forward(b.dataset.fwd));
   q("[data-mhs]", b => go("mhs", b.dataset.mhs));
   q("[data-mthread]", b => { const id = b.dataset.mthread; if (!S.mhsRead.includes(id)) S.mhsRead.push(id); go("mhs", "msg", id); });
-  q("[data-fee]", () => claimFee());
   q("[data-food]", b => order(FOODS.find(f => f.id === b.dataset.food)));
   q("[data-photo]", b => go("album", "photo", b.dataset.photo));
   q("[data-album]", () => go("album"));
@@ -578,10 +587,6 @@ function forward(id){
   S.unreadChat.artist = 0;
   if (S.stress >= 100) return ending(6);
   go("chat", "thread", "artist");
-}
-function claimFee(){
-  S.feeClaimed = true; S.money += FEE_UPFRONT; S.bills.unshift({text: "咪画师代理费", amount: FEE_UPFRONT});
-  face("smile"); note(`代理费 ¥${FEE_UPFRONT} 已转入 MiChat 钱包。`); desk();
 }
 function order(f){
   if (S.money < f.price) return;
@@ -650,7 +655,7 @@ function livestream(){
   S.screen = "live";
   const c = LIVE_COMMENTS[S.liveIndex];
   $app.innerHTML = `<div class="main">
-    <section class="stage live" aria-label="直播"><div class="clock">第 5 天<span>直播中</span></div><div class="meters">${meters()}</div><div class="live-tag">直播中</div>${S.last ? `<div class="bubble">${esc(S.last)}</div>` : ""}</section>
+    <section class="stage live" aria-label="直播"><div class="hud"><div class="day-col"><div class="day"><b>5</b><span>直播中</span></div>${sticker()}</div><div class="hud-right"><div class="money">¥${S.money}</div><div class="meters">${meters()}</div></div></div><div class="live-tag">直播中</div><div class="spot" aria-hidden="true"></div>${S.last ? `<div class="bubble">${esc(S.last)}</div>` : ""}</section>
     <div class="phone"><div class="screen"><div class="status"><span>${CLOCK[1]}</span><span>第 5 天</span></div>
       <div class="view"><div class="topbar"><span class="grow">小粉书直播 弹幕 ${S.liveIndex + 1} / ${LIVESTREAM_COMMENTS}</span></div>
       ${LIVE_COMMENTS.slice(0, S.liveIndex).map(x => `<div class="cmt">${avatar(1)}<div class="cb"><div class="cn">${esc(x.who)}</div><div class="ctext">${esc(x.text)}</div></div></div>`).join("")}
