@@ -214,11 +214,19 @@ p{margin:0 0 12px}
 
 .modal{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;padding:16px;z-index:9}
 .modal .win{max-width:420px;width:100%}
+/* Time passing: a brief fade for slots, a darker pause for a new day. */
+.time-transition{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:rgba(58,35,71,.72);color:var(--paper);text-align:center;animation:time-fade 650ms ease-out both}
+.time-transition-label{font-family:var(--font-head);font-size:32px;line-height:1.4;animation:time-label 650ms cubic-bezier(.16,1,.3,1) both}
+.time-transition.is-new-day{background:var(--phone);animation-duration:900ms}
+.time-transition.is-new-day .time-transition-label{font-size:44px;animation-duration:900ms}
+@keyframes time-fade{0%,100%{opacity:0}20%,70%{opacity:1}}
+@keyframes time-label{from{transform:translateY(6px)}to{transform:translateY(0)}}
 .pie{width:220px;height:220px;border:2px solid var(--line);border-radius:50%;margin:8px auto 12px}
 .legend{display:flex;gap:16px;justify-content:center;font-size:14px}
 .sw{display:inline-block;width:12px;height:12px;border:2px solid var(--line);margin-right:8px;vertical-align:-1px}
 @media (max-width:980px){.stage{min-height:520px}.main,.split{grid-template-columns:minmax(0,1fr)}.phone{max-width:400px;margin:0 auto}}
 @media (prefers-reduced-motion:reduce){.btn,.fill,.icon .tile{transition:none}}
+@media (prefers-reduced-motion:reduce){.time-transition{animation-timing-function:linear}.time-transition .time-transition-label{animation:none}}
 </style>
 </head>
 <body>
@@ -324,6 +332,26 @@ function newState(c){
 }
 const $app = document.getElementById("app");
 const $modal = document.getElementById("modal");
+let timeTransitionTimer;
+function clearTimeTransition(){
+  clearTimeout(timeTransitionTimer);
+  document.getElementById("time-transition")?.remove();
+  $app.inert = false;
+}
+function timeTransition(previousDay){
+  clearTimeTransition();
+  const newDay = S.day !== previousDay;
+  const overlay = document.createElement("div");
+  overlay.id = "time-transition";
+  overlay.className = "time-transition" + (newDay ? " is-new-day" : "");
+  overlay.setAttribute("role", "status");
+  overlay.setAttribute("aria-live", "polite");
+  overlay.setAttribute("aria-atomic", "true");
+  overlay.innerHTML = `<div class="time-transition-label">第 ${S.day} 天 · ${SLOTS[S.slot]}</div>`;
+  $app.inert = true;
+  document.body.append(overlay);
+  timeTransitionTimer = setTimeout(clearTimeTransition, newDay ? 900 : 650);
+}
 const clamp = v => Math.max(0, Math.min(100, v));
 const esc = t => String(t).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 function face(n){ if (S) S.face = n; }
@@ -351,6 +379,7 @@ function unreadWx(){ return S.unreadChat.artist + S.unreadChat.friend; }
 
 /* ---- 开始 ---- */
 function start(){
+  clearTimeTransition();
   $app.innerHTML = `<div class="win center"><div class="bar">开始</div><div class="body">
     <div class="stack"><h1>案件代理人</h1>
     <p>一位画师被指控使用 AI。她有五天时间回应，之后由社区投票。你是她的案件代理人。</p>
@@ -634,14 +663,16 @@ function postMine(title, imgKey){
   S.myNotes.unshift({id: "my" + S.myNotes.length, author: "代理人（你）", av: 5, img: imgKey, title, body: title + "。", tags: "#画师代理", likes: 0, stars: 0, kind: "mine", mine: true, comments: []});
 }
 function consume(n){
+  const previousDay = S.day;
   S.slot += n;
   if (S.stress >= 100) return ending(6);
   if (S.po <= 0) return ending(7);
-  if (S.slot < 3) return desk();
+  if (S.slot < 3){ desk(); return timeTransition(previousDay); }
   if (S.day === 5) return vote();
   S.day += 1; S.slot = 0; newDay();
-  if (S.day === 5 && S.scheduleLivestream) return livestream();
-  desk();
+  if (S.day === 5 && S.scheduleLivestream) livestream();
+  else desk();
+  timeTransition(previousDay);
 }
 function newDay(){
   chatMsg("artist", {who: "her", type: "sys", text: `第 ${S.day} 天`});
