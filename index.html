@@ -341,7 +341,7 @@ const ARTIST_EVIDENCE = ["e3", "e4"].map(id => ({id, ...EVIDENCE[id]}));
    posts: note IDs (e.g. n4); comments: comment IDs (e.g. c2).
    chats: speaker:message ID (e.g. artist:forward-reply:n2), or mhs:thread ID:line index (e.g. mhs:m2:0).
    This is game content configuration, not a general screen-capture permission. */
-const SCREENSHOT_ALLOWLIST = {posts: ["n5"], comments: [], chats: []};
+const SCREENSHOT_ALLOWLIST = {posts: ["livestream-announcement"], comments: [], chats: []};
 const LIVESTREAM_RULES = [
   "本公告为游戏内改编规则，用于提前公开本案的直播对赌安排，供各方核对和留存。",
   `一、筹备与资格：最迟在第 3 天结束前发起，第 5 天进行直播。画师 1 需至少保有 ¥${CHARACTERS[1].livestreamBalance}，画师 2 需至少保有 ¥${CHARACTERS[2].livestreamBalance}。发起和开播前均复核余额，余额不足则无法进行。`,
@@ -366,7 +366,6 @@ const NOTES = [
   {id: "n2", author: "画师本人", av: -1, img: "window", title: "去年的猫猫草稿", body: "翻到一张去年三月的练习，那时候就在画这只猫了。", tags: "#日常练习 #板绘", likes: 88, stars: 12, kind: "evidence", ev: "e1", comments: []},
   {id: "n3", author: "老单主小葵", av: 2, img: "timeline", title: "我约她的时间线", body: "把订单页截图放这里，大家自己看时间。", tags: "#约稿记录", likes: 140, stars: 33, kind: "evidence", ev: "e2", comments: []},
   {id: "n4", author: "墨水瓶", av: 2, img: "palette", title: "她的画风一直是这样的", body: "几年前的作品也是这个配色，别乱扣帽子。", tags: "#为画师说句话", likes: 512, stars: 40, kind: "support", comments: []},
-  {id: "n5", author: "案件协调人", av: 3, img: "rules", title: "直播对赌规则公告", body: LIVESTREAM_RULES.join("\n\n"), tags: "#游戏内改编 #对赌规则 #可截图取证", likes: 0, stars: 0, kind: "rules", comments: []}
 ];
 const LIVE_COMMENTS = [
   {who: "观众21", text: "现场能画，也说明不了以前是怎么画的。"},
@@ -468,7 +467,7 @@ function screenshotSource(kind, id){
   let source;
   if ((kind === "posts" || kind === "comments") && S.app === "xhs" && S.view === "note"){
     const n = findNote(S.arg);
-    if (!n || n.mine) return null;
+    if (!n || (n.mine && !(kind === "posts" && n.kind === "rules" && n.id === "livestream-announcement"))) return null;
     if (kind === "posts" && n.id === id){
       source = {title: `帖子截图：${n.title}`, author: n.author, text: `${n.body}\n${n.tags}`, context: "小粉书 · 帖子", image: n.img};
       if (n.img === "timeline") source.text += "\n" + TIMELINE_LINES.join("\n");
@@ -898,7 +897,6 @@ function xhsCompose(){
   const required = CHARACTERS[S.char].livestreamBalance;
   return `<div class="topbar"><button class="back" data-feed aria-label="返回">‹</button><span class="grow">发笔记</span></div>
     <div class="compose">
-      <button class="opt" data-rules><b>查看对赌规则公告</b><span>可以截图保存为证据</span></button>
       <button class="opt" data-a="respond"><b>公开回应</b><span>以代理人身份回应指控，1 个时段</span></button>
       ${S.day === 5 ? "" : `<button class="opt" data-a="announce" ${S.scheduleLivestream || S.money < required || S.day > 3 ? "disabled" : ""}><b>${S.scheduleLivestream ? "已发起第 5 天的直播对赌" : "直播对赌"}</b><span>${S.day > 3 ? "已经来不及安排" : S.money < required ? `余额不足，至少需要 ¥${required}` : `需保有余额 ¥${required}，安排直播会占用一个时段`}</span></button>`}
     </div>`;
@@ -1028,7 +1026,6 @@ function wire(){
   q("[data-note]", b => go("xhs", "note", b.dataset.note));
   q("[data-feed]", () => go("xhs"));
   q("[data-compose]", () => go("xhs", "compose"));
-  q("[data-rules]", () => go("xhs", "note", "n5"));
   q("[data-nlike]", b => { S.noteLikes[b.dataset.nlike] = !S.noteLikes[b.dataset.nlike]; desk(); });
   q("[data-up]", b => { const id = b.dataset.up; S.votes[id] = S.votes[id] === "up" ? "" : "up"; desk(); });
   q("[data-down]", b => { const id = b.dataset.down; S.votes[id] = S.votes[id] === "down" ? "" : "down"; desk(); });
@@ -1147,13 +1144,18 @@ function act(k){
     const extra = CHARACTERS[S.char].hatesLivestream ? HATES_LIVESTREAM_EXTRA : 0;
     S.stress = clamp(S.stress + LARGE + extra); S.scheduleLivestream = true; face("surprised");
     note(CHARACTERS[S.char].hatesLivestream ? "直播对赌已经安排。她害怕镜头，这让她格外紧张。" : "直播对赌已经安排，画师感到更紧张了。");
-    postMine("第 5 天直播对赌预告", "window");
+    const announcement = postMine("第 5 天直播对赌公告与规则", "rules", {
+      id: "livestream-announcement", kind: "rules", body: LIVESTREAM_RULES.join("\n\n"), tags: "#直播对赌 #规则公告 #可截图取证"
+    });
+    S.app = "xhs"; S.view = "note"; S.arg = announcement.id;
     return queueTime(1);
   }
   if (k === "rest"){ face("idle"); note("你让时间过去了一个时段。"); consume(1); }
 }
-function postMine(title, imgKey){
-  S.myNotes.unshift({id: "my" + S.myNotes.length, author: "代理人（你）", av: 5, img: imgKey, title, body: title + "。", tags: "#画师代理", likes: 0, stars: 0, kind: "mine", mine: true, comments: []});
+function postMine(title, imgKey, options = {}){
+  const item = {id: "my" + S.myNotes.length, author: "代理人（你）", av: 5, img: imgKey, title, body: title + "。", tags: "#画师代理", likes: 0, stars: 0, kind: "mine", mine: true, comments: [], ...options};
+  S.myNotes.unshift(item);
+  return item;
 }
 function consume(n){
   const previousDay = S.day;

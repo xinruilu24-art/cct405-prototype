@@ -150,21 +150,30 @@ test('existing file evidence still reveals, collects, and can be presented', () 
   assert.equal(run('S.po'), 65);
 });
 
-test('the selected rules announcement is capturable in production and preserves every clause', async () => {
+test('only the actually published livestream announcement can be captured as rules evidence', async () => {
   const { run } = game(false);
-  assert.equal(run('screenshotAllowed("posts","n5")'), true);
+  assert.equal(run('screenshotAllowed("posts","livestream-announcement")'), true);
   assert.equal(run('screenshotAllowed("posts","n1")'), false);
-  run('S.app="xhs";S.view="note";S.arg="n5"');
-  assert.match(run('xhsNote("n5")'), /游戏内改编/);
-  assert.match(run('xhsCompose()'), /data-rules/);
-  assert.equal(await run('saveScreenshot("posts","n5")'), true);
-  assert.equal(run('S.evidence[0].capture.author'), '案件协调人');
+  assert.equal(run('NOTES.some(n=>n.id==="n5")'), false);
+  assert.doesNotMatch(run('xhsCompose()'), /data-rules/);
+  run('S.app="xhs";S.view="note";S.arg="livestream-announcement"');
+  assert.equal(await run('saveScreenshot("posts","livestream-announcement")'), false);
+  run('act("announce");readPhone()');
+  assert.equal(run('S.app+":"+S.arg'), 'xhs:livestream-announcement');
+  assert.equal(run('S.myNotes.length'), 1);
+  assert.equal(run('S.myNotes[0].mine'), true);
+  assert.match(run('S.myNotes[0].title'), /公告与规则/);
+  assert.match(run('S.myNotes[0].body'), /六、公开留存/);
+  assert.equal(await run('saveScreenshot("posts","livestream-announcement")'), true);
+  assert.equal(run('S.evidence[0].capture.author'), '代理人（你）');
   assert.match(run('S.evidence[0].capture.text'), /¥50/);
   assert.match(run('S.evidence[0].capture.text'), /¥80/);
   assert.match(run('S.evidence[0].capture.text'), /六、公开留存/);
   assert.match(run('evidenceList()'), /capture-image/);
-  assert.match(run('replySheet("c1")'), /data-evidence="capture:posts:n5"/);
-  assert.equal(await run('saveScreenshot("posts","n5")'), false);
-  assert.equal(run('S.slot'), 1);
+  assert.match(run('replySheet("c1")'), /data-evidence="capture:posts:livestream-announcement"/);
+  assert.equal(await run('saveScreenshot("posts","livestream-announcement")'), false);
+  assert.equal(run('S.slot'), 2);
   assert.equal(run('S.money'), 100);
+  run('var ordinary=postMine("普通回应","palette");SCREENSHOT_ALLOWLIST.posts.push(ordinary.id);S.arg=ordinary.id');
+  assert.equal(run('screenshotSource("posts",ordinary.id)'), null);
 });
