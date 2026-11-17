@@ -193,6 +193,17 @@ p{margin:0 0 12px}
 .bub-row.me{flex-direction:row-reverse}
 .bub{background:var(--paper);border-radius:6px;padding:8px 8px;font-size:15px;max-width:72%}
 .bub-row.me .bub{background:var(--wx-green)}
+.bub.action-guide{max-width:calc(100% - 40px);min-width:0;padding:12px}
+.action-guide h3{margin:0 0 4px;font-size:17px}
+.action-guide > p{margin:0 0 8px;font-size:13px;color:var(--muted)}
+.guide-section + .guide-section{border-top:1px solid var(--hair)}
+.guide-section summary{padding:12px 0;cursor:pointer;font-size:14px;font-weight:700}
+.guide-section summary::marker{color:var(--wx-ok)}
+.guide-section dl{margin:0 0 8px}
+.guide-section dt{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 8px;margin-top:12px;font-size:14px;font-weight:700}
+.guide-section dt:first-child{margin-top:0}
+.guide-cost{font-size:12px;color:var(--muted);font-weight:400}
+.guide-section dd{margin:4px 0 0;font-size:13px;line-height:1.65;overflow-wrap:anywhere}
 .sys-line{align-self:center;font-size:12px;color:var(--grey)}
 .share-card{background:var(--paper);border-radius:6px;padding:8px;display:flex;gap:8px;width:210px;font-size:13px}
 .share-card img{width:48px;height:48px;object-fit:cover;flex:none}
@@ -391,6 +402,7 @@ function pic(key, cls){
 }
 function avatar(i, cls){
   if (i === -1) return `<span class="av ${cls || ""}" style="background:var(--px-p)">画</span>`;
+  if (i === -2) return `<span class="av ${cls || ""}" style="background:var(--px-v)">紫</span>`;
   return `<span class="av ${cls || ""}" style="background:${AVC[i % AVC.length]}">${"甲乙丙丁戊己"[i % 6]}</span>`;
 }
 function sticker(){
@@ -437,7 +449,7 @@ function screenshotSource(kind, id){
   }
   if (kind === "chats" && S.app === "chat" && S.view === "thread" && Object.hasOwn(S.chat, S.arg)){
     const k = S.arg, m = S.chat[k].find(m => m.id && id === `${k}:${m.id}`);
-    if (m && m.type !== "sys"){
+    if (m && m.type !== "sys" && m.type !== "guide"){
       source = {title: `与${WX_NAMES[k]}的聊天截图`, author: m.who === "me" ? "你" : WX_NAMES[k], text: m.text || "", context: `MiChat · 与${WX_NAMES[k]}的聊天`};
       if (m.type === "pay") source.text += ` ¥${m.amount}`;
       if (m.type === "card"){
@@ -547,12 +559,21 @@ function start(){
     <p>一位画师被指控使用 AI。她有五天时间回应，之后由社区投票。你是她的案件代理人。</p>
     <p class="muted">每天分早上、下午、晚上三个时段，每个时段做一件事。</p>
     ${[1,2].map(c => `<button class="btn primary" data-c="${c}">接手${CHARACTERS[c].name}的案子</button>`).join("")}</div></div></div>`;
-  $app.querySelectorAll("[data-c]").forEach(b => b.onclick = () => {
-    S = newState(+b.dataset.c);
-    chatMsg("artist", {id: "greeting", who: "her", text: CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。"});
-    chatMsg("friend", {id: "greeting", who: "her", text: "听说你接了那个画师的案子？加油，有事找我。"});
-    desk();
-  });
+  $app.querySelectorAll("[data-c]").forEach(b => b.onclick = () => beginCase(+b.dataset.c));
+}
+function beginCase(c){
+  S = newState(c);
+  S.app = "chat"; S.view = "thread"; S.arg = "friend";
+  chatMsg("artist", {id: "greeting", who: "her", text: CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。"});
+  chatMsg("friend", {id: "greeting", who: "her", text: "听说你接了画师的案子？我是阿紫，先陪你理一理能做什么。"});
+  chatMsg("friend", {id: "onboarding:time", who: "her", text: "你有五天时间，今天从下午开始。舆论影响最后的社区投票；压力到 100，画师会退出，舆论降到 0 也会提前结束。先别急着行动，看消息和读这份清单都不耗时段。"});
+  chatMsg("friend", {id: "onboarding:actions", who: "her", type: "guide", text: "行动清单：收集证据、陪伴画师、公开回应、时间与直播。"});
+  chatMsg("friend", {id: "onboarding:next", who: "her", text: "画师已经给你发消息，也转来了委托费。可以先去看看她说了什么；想先逛逛 App，就回手机主屏幕。拿不准时，随时回来翻这份清单。"});
+  note("阿紫发来了一份行动清单。读指引、看消息和查看证据都不耗时段。");
+  desk();
+  if (typeof matchMedia === "function" && matchMedia("(max-width:980px)").matches){
+    $app.querySelector(".phone")?.scrollIntoView({block: "start", behavior: "instant"});
+  }
 }
 
 /* ---- 主界面 ---- */
@@ -691,16 +712,42 @@ function album(){
 
 /* ---- MiChat ---- */
 const WX_NAMES = {artist: "画师", friend: "阿紫"};
+function actionGuide(){
+  const livestreamStress = LARGE + (CHARACTERS[S.char].hatesLivestream ? HATES_LIVESTREAM_EXTRA : 0);
+  const groups = [
+    {title: "收集证据", actions: [
+      {name: "收藏证据", cost: "1 个时段", effect: "在小粉书收藏可用的证据帖，加入证据清单和相册。不会直接改变舆论或压力。"},
+      {name: "截图取证", cost: "不耗时段", effect: "只有标有「截图取证」的指定帖子、评论或聊天能保存。截图进入清单和相册，反驳时可出示。"}
+    ]},
+    {title: "陪伴画师", actions: [
+      {name: "和她聊聊", cost: "1 个时段", effect: `在画师的 MiChat 聊天中，或点左侧「和她聊聊」，压力 -${SMALL}；她手上还有文件时会一并发来。早上不在线，不会扣时段。`},
+      {name: "点外卖", cost: "花钱，不耗时段", effect: `在 MiMieat 下单：${FOODS.map(f => `${f.name} ¥${f.price}，压力 -${f.relief}`).join("；")}。余额不足就不能下单。`}
+    ]},
+    {title: "在小粉书回应", actions: [
+      {name: "回复评论", cost: "每条 1 个时段", effect: `同意支持评论：舆论 +${SMALL}；附证据反驳指控：舆论 +${MEDIUM}；不附证据反驳：舆论 -${SMALL}。每条评论只能回复一次。`},
+      {name: "发布公开回应", cost: "1 个时段", effect: `点小粉书底部「+」。当前舆论 ≥50 时，舆论 +${SMALL}；低于 50 时反而 -${SMALL}。`},
+      {name: "发布证明视频", cost: "2 个时段", effect: `同样从小粉书「+」进入，舆论 +${MEDIUM}。当天至少还要剩 2 个时段。`}
+    ]},
+    {title: "转发、时间与直播", actions: [
+      {name: "转发给画师", cost: "不耗时段", effect: `在帖子底部点转发。首次转发指控帖：压力 +${FORWARD_EFFECT}；支持帖：压力 -${FORWARD_EFFECT}；证据帖：压力不变。同一帖子重复转发不再改变压力。`},
+      {name: "下一个时段", cost: "1 个时段", effect: "让时间过去。不会直接改变舆论和压力，晚上结束后进入新的一天。"},
+      {name: "发布直播预告", cost: "1 个时段", effect: `从小粉书「+」进入，最迟第 3 天发布，第 5 天自动开始直播。这位画师的压力会 +${livestreamStress}${CHARACTERS[S.char].hatesLivestream ? "，包含她害怕直播的额外压力" : ""}。`},
+      {name: "直播中回应", cost: `${LIVESTREAM_COMMENTS} 轮，不另扣时段`, effect: `同意弹幕：舆论 +${SMALL}；附证据反驳：+${MEDIUM}；不附证据：-${SMALL}。直播结束后进入社区投票；没有直播则在第 5 天结束后投票。`}
+    ]}
+  ];
+  return `<div class="bub action-guide"><h3>行动清单</h3><p>点开一组，看看消耗和效果。看帖、点赞／踩、读消息和查看证据都不耗时段，也不会直接改变舆论或压力。</p>
+    ${groups.map(g => `<details class="guide-section"><summary>${esc(g.title)}</summary><dl>${g.actions.map(a => `<dt>${esc(a.name)}<span class="guide-cost">${esc(a.cost)}</span></dt><dd>${esc(a.effect)}</dd>`).join("")}</dl></details>`).join("")}</div>`;
+}
 function lastText(m){ return m.type === "card" ? "[笔记]" : m.type === "pic" ? "[图片]" : m.type === "pay" ? "[转账]" : m.text; }
 function wxList(){
   return `<div class="wx"><div class="topbar">MiChat${unreadWx() ? `（${unreadWx()}）` : ""}</div>
     ${["artist", "friend"].map(k => { const m = S.chat[k][S.chat[k].length - 1];
-      return `<button class="row-item" data-thread="${k}">${k === "artist" ? avatar(-1, "sq") : avatar(4, "sq")}
+      return `<button class="row-item" data-thread="${k}">${k === "artist" ? avatar(-1, "sq") : avatar(-2, "sq")}
         <span class="grow"><span class="t">${WX_NAMES[k]}</span><br><span class="s">${m ? esc(lastText(m)) : ""}</span></span>${S.unreadChat[k] ? `<span class="dot">${S.unreadChat[k]}</span>` : ""}</button>`; }).join("")}
     </div><div class="wx-tabs"><button class="on" data-wx="list">消息</button><button data-wx="me">我</button></div>`;
 }
 function wxThread(k){
-  const her = k === "artist" ? avatar(-1, "sq") : avatar(4, "sq");
+  const her = k === "artist" ? avatar(-1, "sq") : avatar(-2, "sq");
   const rows = S.chat[k].map(m => {
     if (m.type === "sys") return `<div class="sys-line">${esc(m.text)}</div>`;
     const me = m.who === "me";
@@ -708,12 +755,13 @@ function wxThread(k){
     if (m.type === "card"){ const n = findNote(m.note); inner = `<div class="share-card">${pic(n.img)}<div>${esc(n.title)}<small>小粉书笔记</small></div></div>`; }
     if (m.type === "pic") inner = `<div class="pic-msg">${EVIDENCE[m.ev].video ? `<span class="play">${pic(EVIDENCE[m.ev].img)}</span>` : pic(EVIDENCE[m.ev].img)}</div>`;
     if (m.type === "pay") inner = `<div class="pay-card">¥${m.amount}<br><small>${esc(m.text)}，已收款</small></div>`;
-    const capture = m.id ? screenshotButton("chats", `${k}:${m.id}`) : "";
+    if (m.type === "guide") inner = actionGuide();
+    const capture = m.id && m.type !== "guide" ? screenshotButton("chats", `${k}:${m.id}`) : "";
     return `<div class="bub-row ${me ? "me" : ""}">${me ? `<span class="av sq" style="background:var(--mhs)">我</span>` : her}${capture ? `<div class="capture-message">${inner}${capture}</div>` : inner}</div>`;
   }).join("");
   const act = k === "artist"
     ? `<div class="wx-act"><button data-a="chat">问问她今天怎么样（1 个时段）</button></div>`
-    : `<div class="wx-act"><button disabled>阿紫只是来打气的</button></div>`;
+    : `<div class="wx-act"><button data-thread="artist">去看画师消息</button><button data-app="home">打开手机主屏幕</button></div>`;
   return `<div class="wx"><div class="topbar"><button class="back" data-wx="list" aria-label="返回">‹</button><span class="grow" style="text-align:center">${WX_NAMES[k]}</span></div>
     <div class="thread">${rows}</div></div>${act}`;
 }
