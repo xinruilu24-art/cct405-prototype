@@ -247,6 +247,17 @@ p{margin:0 0 12px}
 
 .modal{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;padding:16px;z-index:9}
 .modal .win{max-width:420px;width:100%}
+.tour-focus{outline:3px solid var(--focus);outline-offset:4px}
+.hud.tour-focus{outline-offset:-5px}
+.tutorial-coach{position:fixed;z-index:30;left:24px;bottom:24px;width:340px;max-height:calc(100dvh - 48px);overflow:auto}
+.tutorial-coach .bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tutorial-coach .bar span:last-child{font-family:var(--font-ui);font-size:12px}
+.tutorial-coach h2{font-size:22px;margin-bottom:8px}
+.tutorial-coach p{font-size:14px;line-height:1.65}
+.tutorial-controls{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tutorial-controls .btn{font-size:14px}
+.tutorial-skip{border:0;background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:8px 0;cursor:pointer;font-size:13px}
+@media(max-width:980px){.tutorial-coach{left:12px;right:12px;bottom:12px;width:auto;max-height:48dvh}.is-guided .app{padding-bottom:calc(var(--coach-height,260px) + 24px)}}
 /* Time passing: a brief fade for slots, a darker pause for a new day. */
 .time-transition{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:rgba(58,35,71,.72);color:var(--paper);text-align:center;animation:time-fade 650ms ease-out both}
 .time-transition-label{font-family:var(--font-head);font-size:32px;line-height:1.4;animation:time-label 650ms cubic-bezier(.16,1,.3,1) both}
@@ -265,6 +276,7 @@ p{margin:0 0 12px}
 <body>
 <main class="app" id="app"><noscript><div class="win center"><div class="body">这个原型需要开启 JavaScript 才能运行。</div></div></noscript></main>
 <div id="modal"></div>
+<div id="tutorial"></div>
 <script>
 /* ---- 流程图没给具体数值的地方，在这里改 ---- */
 const SMALL = 5, MEDIUM = 10, LARGE = 15;   // "+" "++" "+++"
@@ -367,10 +379,11 @@ function newState(c){
     evidence: [], scheduleLivestream: false, face: "neutral", last: "第 1 天从下午开始。手机里的 App 可以随便看，做事才会用掉时段。",
     usedComments: [], replies: {}, votes: {}, noteLikes: {}, forwarded: [], myNotes: [],
     money: COMMISSION, bills: [{text: "画师转账（委托费）", amount: COMMISSION}], chat: {artist: [{id: "commission", who: "her", type: "pay", amount: COMMISSION, text: "委托费"}], friend: []}, unreadChat: {artist: 1, friend: 0},
-    mhsRead: [], liveIndex: 0, sheet: null};
+    mhsRead: [], liveIndex: 0, sheet: null, tutorial: null};
 }
 const $app = document.getElementById("app");
 const $modal = document.getElementById("modal");
+const $tutorial = document.getElementById("tutorial");
 let timeTransitionTimer;
 function clearTimeTransition(){
   clearTimeout(timeTransitionTimer);
@@ -410,8 +423,8 @@ function sticker(){
   return `<div class="sticker" aria-hidden="true">${row(0)}${row(1)}${row(0)}</div>`;
 }
 function meters(){
-  return `<div class="meter"><div class="meter-top"><span>舆论</span><span>${S.po}</span></div><div class="track"><div class="fill po" style="transform:scaleX(${S.po/100})"></div></div></div>
-    <div class="meter"><div class="meter-top"><span>画师压力</span><span>${S.stress}</span></div><div class="track"><div class="fill stress" style="transform:scaleX(${S.stress/100})"></div></div></div>`;
+  return `<div class="meter" data-tour-target="opinion"><div class="meter-top"><span>舆论</span><span>${S.po}</span></div><div class="track"><div class="fill po" style="transform:scaleX(${S.po/100})"></div></div></div>
+    <div class="meter" data-tour-target="stress"><div class="meter-top"><span>画师压力</span><span>${S.stress}</span></div><div class="track"><div class="fill stress" style="transform:scaleX(${S.stress/100})"></div></div></div>`;
 }
 function chatMsg(who, m){ S.chat[who].push(m); if (!(S.app === "chat" && S.view === "thread" && S.arg === who)) S.unreadChat[who] += 1; }
 function unreadMhs(){ return MHS_THREADS.filter(t => t.day <= S.day && !S.mhsRead.includes(t.id)).length; }
@@ -541,7 +554,7 @@ function evidenceMedia(e, cls){
   return e.video ? `<span class="play">${pic(e.img, cls)}</span>` : pic(e.img, cls);
 }
 function evidenceList(){
-  return `<section class="evidence-list" aria-labelledby="evidence-heading">
+  return `<section class="evidence-list" data-tour-target="evidence" aria-labelledby="evidence-heading">
     <div class="evidence-heading"><h2 id="evidence-heading">证据清单</h2><span class="evidence-count">已收集 ${S.evidence.length} 项</span></div>
     ${S.evidence.length ? S.evidence.map(e => `<details class="evidence-item">
       <summary><b>${esc(e.title)}</b><span class="evidence-source">来源：${esc(e.from)} · ${e.screenshot ? "截图" : e.video ? "视频" : "图片／文件"}</span></summary>
@@ -553,6 +566,7 @@ function evidenceList(){
 /* ---- 开始 ---- */
 function start(){
   clearTimeTransition();
+  clearTutorial();
   S = null;
   $app.innerHTML = `<div class="win center"><div class="bar">开始</div><div class="body">
     <div class="stack"><h1>案件代理人</h1>
@@ -564,16 +578,125 @@ function start(){
 function beginCase(c){
   S = newState(c);
   S.app = "chat"; S.view = "thread"; S.arg = "friend";
+  S.tutorial = {phase: "intro", message: 0, step: 0};
   chatMsg("artist", {id: "greeting", who: "her", text: CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。"});
-  chatMsg("friend", {id: "greeting", who: "her", text: "听说你接了画师的案子？我是阿紫，先陪你理一理能做什么。"});
-  chatMsg("friend", {id: "onboarding:time", who: "her", text: "你有五天时间，今天从下午开始。舆论影响最后的社区投票；压力到 100，画师会退出，舆论降到 0 也会提前结束。先别急着行动，看消息和读这份清单都不耗时段。"});
-  chatMsg("friend", {id: "onboarding:actions", who: "her", type: "guide", text: "行动清单：收集证据、陪伴画师、公开回应、时间与直播。"});
-  chatMsg("friend", {id: "onboarding:next", who: "her", text: "画师已经给你发消息，也转来了委托费。可以先去看看她说了什么；想先逛逛 App，就回手机主屏幕。拿不准时，随时回来翻这份清单。"});
-  note("阿紫发来了一份行动清单。读指引、看消息和查看证据都不耗时段。");
+  chatMsg("friend", {id: "greeting", who: "her", text: openingMessages()[0]});
+  note("阿紫正在和你说话。点击聊天下方的按钮，继续听她介绍。");
   desk();
   if (typeof matchMedia === "function" && matchMedia("(max-width:980px)").matches){
     $app.querySelector(".phone")?.scrollIntoView({block: "start", behavior: "instant"});
   }
+}
+
+/* ---- Click-through opening and a resource-free tour of the real pages. ---- */
+function openingMessages(){
+  return [
+    "听说你接了画师的案子？我是阿紫，先陪你熟悉一下这里。准备好了就点下面，我接着说。",
+    "画师已经发来消息和委托费了。手机里的 App 各有用处：找线索、回应指控、陪她聊天，都要做取舍。我带你一页页看看。",
+    "先回到手机主界面吧！接下来我会用浮窗介绍每一页，最后再一起看左边要控制的数值。导览不会消耗时段或金钱，也可以随时跳过。"
+  ];
+}
+function continueIntro(){
+  const t = S?.tutorial;
+  if (t?.phase !== "intro") return;
+  if (t.message >= openingMessages().length - 1) return startTour();
+  t.message += 1;
+  chatMsg("friend", {id: `onboarding:intro:${t.message}`, who: "her", text: openingMessages()[t.message]});
+  desk();
+  const view = document.getElementById("view"); if (view) view.scrollTop = view.scrollHeight;
+  $app.querySelector("[data-intro-next]")?.focus({preventScroll: true});
+}
+function keepActionGuide(){
+  if (!S.chat.friend.some(m => m.id === "onboarding:actions")){
+    chatMsg("friend", {id: "onboarding:actions", who: "her", type: "guide", text: "行动清单：收集证据、陪伴画师、公开回应、时间与直播。"});
+  }
+}
+function tutorialSteps(){
+  const extra = CHARACTERS[S.char].hatesLivestream ? HATES_LIVESTREAM_EXTRA : 0;
+  const phone = '[data-tour-target="phone"]';
+  return [
+    {title: "先认识手机主界面", app: "home", target: phone, action: '[data-app="xhs"]', next: "打开小粉书", text: ["这就是手机主界面，六个 App 都从这里进入。底部圆形按钮可以随时回到这里。", "先点小粉书图标，或者点浮窗里的按钮，我带你去看舆论现场。"]},
+    {title: "小粉书：看看大家在说什么", app: "xhs", target: phone, action: '[data-note="n1"]', next: "打开帖子", text: ["看帖、点赞和踩都不消耗时段，也不会直接改变舆论数值。读内容，再决定怎么回应。", "点开这条指控帖，看看评论区；可用的证据帖则可以收藏，每次消耗 1 个时段。"]},
+    {title: "帖子和评论：选择怎么回应", app: "xhs", view: "note", arg: "n1", target: phone, viewTarget: ".ccount", next: "看看发布页面", text: [`回复支持评论，舆论 +${SMALL}；附证据反驳指控，舆论 +${MEDIUM}；不附证据反驳，舆论 -${SMALL}。每次回复消耗 1 个时段。`, "指定内容旁才会出现「截图取证」，保存不耗时段，之后可作为证据出示。导览中我们只看页面，不实际回复或收集。"]},
+    {title: "发布回应、视频或直播预告", app: "xhs", view: "compose", target: phone, next: "打开咪画师", text: [`平时从小粉书底部「+」进入。公开回应用 1 个时段：当前舆论 ≥50 则 +${SMALL}，否则 -${SMALL}；证明视频用 2 个时段，舆论 +${MEDIUM}。`, `直播预告用 1 个时段，最迟第 3 天发布，第 5 天开播。这位画师的压力会 +${LARGE + extra}${extra ? "，她害怕直播，所以额外承受压力" : ""}。直播回应规则可以在阿紫的行动清单里重看。`]},
+    {title: "咪画师：听听客户怎么说", app: "mhs", view: "msg", target: phone, next: "打开 MiMieat", text: ["这里能看订单相关的消息和画师主页，后面的天数还会收到新的客户消息。读消息不耗时段。", "留意能核实经过的陈述；只有指定内容会出现「截图取证」，不是所有聊天都能变成证据。"]},
+    {title: "MiMieat：用余额帮她缓一缓", app: "eat", target: phone, next: "打开相册", text: [`下单不耗时段，但会花钱：${FOODS.map(f => `${f.name} ¥${f.price}，压力 -${f.relief}`).join("；")}。`, "余额不足就不能下单。导览不会真的购买，先记住它是降低压力的一个办法。"]},
+    {title: "相册：保存你拿到的证据", app: "album", target: phone, next: "看看画师的聊天", text: ["收藏的证据、画师发来的文件，以及指定内容的截图都会放在这里。点开可以检查内容，查看不耗时段。", "有证据后，回复指控或直播反驳时才能选择具体证据出示。不是把证据存下来，舆论就会自动上涨。"]},
+    {title: "MiChat：别忘了画师本人", app: "chat", view: "thread", arg: "artist", target: phone, next: "认识左侧的舆论", text: [`她的问候和委托费就在这里。点「问问她今天怎么样」消耗 1 个时段，压力 -${SMALL}；有文件时，她会一起发来。早上不在线，不会扣时段。`, `从小粉书转发给她不耗时段，但首次转发指控帖会让压力 +${FORWARD_EFFECT}，支持帖则 -${FORWARD_EFFECT}。接下来，看左边需要兼顾的数值。`]},
+    {title: "舆论：争取支持，但别盲目回应", app: "home", target: '[data-tour-target="opinion"]', next: "看看画师压力", text: [`现在的舆论是 ${S.po}。它会成为最终投票中「人工绘制」的比例，超过 50 才有多数支持；降到 0 会提前结束。`, `附证据反驳可 +${MEDIUM}，但空口反驳会 -${SMALL}。舆论低于 50 时，公开回应也会减分，先想清楚再行动。`]},
+    {title: "画师压力：越低越能撑下去", app: "home", target: '[data-tour-target="stress"]', next: "看看余额与时间", text: [`现在的压力是 ${S.stress}。尽量控制在 50 以下；达到 100 时，画师会退出，案件提前结束。`, `聊天可 -${SMALL}，外卖也能减压；转发指控和宣布直播会加压。争取舆论时，也要照顾她的承受能力。`]},
+    {title: "余额和时段：两种不同的预算", app: "home", target: '[data-tour-target="resources"]', next: "最后看看证据清单", text: [`现在是第 ${S.day} 天${SLOTS[S.slot]}，余额 ¥${S.money}。每天有早上、下午、晚上，开局从下午开始；五天后进入社区投票。`, "外卖扣钱，聊天、收藏和回应等行动消耗时段。不要把「不耗时段」当成「没有代价」。读消息、看证据和这次导览都不消耗这两种预算。"]},
+    {title: "证据清单：看看你真正掌握了什么", app: "home", target: '[data-tour-target="evidence"]', next: "开始代理", text: ["左侧清单会汇总已经收集的证据和截图，点开就能预览。它与相册同步，出示证据也不会把原件消耗掉。", "导览结束了。接下来由你决定先找线索，还是先关心画师。需要时回到阿紫聊天查看行动清单，或在设置里重看导览。"]}
+  ];
+}
+function startTour(){
+  if (!S) return;
+  keepActionGuide();
+  S.tutorial = {phase: "tour", message: openingMessages().length - 1, step: 0};
+  showTourStep();
+}
+function showTourStep(){
+  if (S?.tutorial?.phase !== "tour") return;
+  const step = tutorialSteps()[S.tutorial.step];
+  S.app = step.app; S.view = step.view || ""; S.arg = step.arg || ""; S.sheet = null;
+  note("阿紫正在带你熟悉界面。跟着浮窗继续，导览不会消耗时段、金钱或证据。");
+  desk();
+}
+function advanceTour(delta = 1){
+  if (S?.tutorial?.phase !== "tour") return;
+  const next = S.tutorial.step + delta;
+  if (next >= tutorialSteps().length) return finishTutorial();
+  S.tutorial.step = Math.max(0, next);
+  showTourStep();
+}
+function clearTutorial(){
+  if (!$tutorial) return;
+  $tutorial.innerHTML = "";
+  $app.querySelectorAll(".tour-focus").forEach(el => el.classList.remove("tour-focus"));
+  document.body.classList.remove("is-guided");
+  document.body.style.removeProperty("--coach-height");
+}
+function finishTutorial(){
+  if (!S) return;
+  keepActionGuide();
+  S.tutorial = {...S.tutorial, phase: "done"};
+  note("接下来由你安排。兼顾舆论和画师压力，也要留意余额、时段和证据。阿紫的行动清单可以随时重看。");
+  clearTutorial();
+  go("home");
+  $app.querySelector(".phone")?.scrollIntoView({block: "start", behavior: "instant"});
+  $app.querySelector('[data-app="xhs"]')?.focus({preventScroll: true});
+}
+function renderTutorial(){
+  if (!$tutorial) return;
+  clearTutorial();
+  const t = S?.tutorial;
+  if (!t || t.phase === "done") return;
+  const steps = tutorialSteps(), step = steps[t.step];
+  const enabled = t.phase === "intro" ? "[data-intro-next],[data-tour-skip]" : step.action;
+  $app.querySelectorAll("button").forEach(b => {
+    if (!enabled || !b.matches(enabled)) b.disabled = true;
+    else if (t.phase === "tour") b.onclick = () => advanceTour();
+  });
+  if (t.phase === "intro") return;
+  document.body.classList.add("is-guided");
+  $tutorial.innerHTML = `<aside class="tutorial-coach win" aria-labelledby="tutorial-title"><div class="bar"><span>阿紫 · 新手导览</span><span>${t.step + 1} / ${steps.length}</span></div><div class="body">
+    <h2 id="tutorial-title">${esc(step.title)}</h2><div id="tutorial-body" aria-live="polite">${step.text.map(text => `<p>${esc(text)}</p>`).join("")}</div>
+    <div class="tutorial-controls"><button class="btn" data-tour-prev ${t.step ? "" : "disabled"}>上一步</button><button class="btn primary" data-tour-next aria-describedby="tutorial-title">${esc(step.next)}</button></div>
+    <button class="tutorial-skip" data-tour-skip>跳过导览，自己探索</button></div></aside>`;
+  $tutorial.querySelector("[data-tour-next]").onclick = () => advanceTour();
+  $tutorial.querySelector("[data-tour-prev]").onclick = () => advanceTour(-1);
+  $tutorial.querySelector("[data-tour-skip]").onclick = () => finishTutorial();
+  $tutorial.onkeydown = event => { if (event.key === "Escape"){ event.preventDefault(); finishTutorial(); } };
+  document.body.style.setProperty("--coach-height", $tutorial.firstElementChild.offsetHeight + "px");
+  const target = $app.querySelector(step.target);
+  target?.classList.add("tour-focus");
+  const scrollTarget = step.app === "home" && step.target !== '[data-tour-target="phone"]' ? $app.querySelector(".stage") : target;
+  scrollTarget?.scrollIntoView({block: "start", behavior: "instant"});
+  if (step.viewTarget){
+    const view = document.getElementById("view"), anchor = $app.querySelector(step.viewTarget);
+    if (view && anchor) view.scrollTop += anchor.getBoundingClientRect().top - view.getBoundingClientRect().top - 48;
+  }
+  $tutorial.querySelector("[data-tour-next]").focus({preventScroll: true});
 }
 
 /* ---- 主界面 ---- */
@@ -582,17 +705,18 @@ function desk(){
   S.screen = "main";
   $app.innerHTML = `<div class="main">
     <section class="stage" aria-label="画师">
-      <div class="hud"><div class="day-col"><div class="day"><b>${S.day}</b><span>${SLOTS[S.slot]}</span></div>${sticker()}</div>
+      <div class="hud" data-tour-target="resources"><div class="day-col"><div class="day"><b>${S.day}</b><span>${SLOTS[S.slot]}</span></div>${sticker()}</div>
         <div class="hud-right"><div class="money">¥${S.money}</div><div class="meters">${meters()}</div></div></div>
       <div class="spot">${evidenceList()}</div>
       ${S.last ? `<div class="bubble">${esc(S.last)}</div>` : ""}
       <div class="actions"><button class="btn" data-a="chat">和她聊聊</button><button class="btn" data-a="rest">下一个时段</button></div>
     </section>
-    <div class="phone"><div class="screen">
+    <div class="phone" data-tour-target="phone"><div class="screen">
       <div class="status"><span>${CLOCK[S.slot]}</span><span>第 ${S.day} 天</span></div>
       <div class="view" id="view">${screen()}</div>${S.sheet || ""}</div>
       <button class="home" id="home" aria-label="回到主屏幕"></button></div></div>`;
   wire();
+  renderTutorial();
 }
 function screen(){
   const a = S.app;
@@ -605,7 +729,7 @@ function screen(){
   if (a === "album") return album();
   if (a === "chat") return S.view === "thread" ? wxThread(S.arg) : S.view === "me" ? wxMe() : wxList();
   if (a === "set") return `<div class="topbar"><span class="grow">设置</span></div>
-    <div class="set-list"><button data-restart>重新开始</button><button data-title>回到标题画面</button></div>`;
+    <div class="set-list"><button data-tour-start>重看新手导览</button><button data-restart>重新开始</button><button data-title>回到标题画面</button></div>`;
   return "";
 }
 function icon(k, label, badge){
@@ -759,9 +883,12 @@ function wxThread(k){
     const capture = m.id && m.type !== "guide" ? screenshotButton("chats", `${k}:${m.id}`) : "";
     return `<div class="bub-row ${me ? "me" : ""}">${me ? `<span class="av sq" style="background:var(--mhs)">我</span>` : her}${capture ? `<div class="capture-message">${inner}${capture}</div>` : inner}</div>`;
   }).join("");
-  const act = k === "artist"
+  const introducing = k === "friend" && S.tutorial?.phase === "intro";
+  const act = introducing
+    ? `<div class="wx-act"><button data-intro-next>${S.tutorial.message < openingMessages().length - 1 ? "点击继续（" + (S.tutorial.message + 1) + " / " + openingMessages().length + "）" : "回到主界面，开始导览"}</button><button data-tour-skip>跳过指引</button></div>`
+    : k === "artist"
     ? `<div class="wx-act"><button data-a="chat">问问她今天怎么样（1 个时段）</button></div>`
-    : `<div class="wx-act"><button data-thread="artist">去看画师消息</button><button data-app="home">打开手机主屏幕</button></div>`;
+    : `<div class="wx-act"><button data-thread="artist">去看画师消息</button><button data-tour-start>重看新手导览</button></div>`;
   return `<div class="wx"><div class="topbar"><button class="back" data-wx="list" aria-label="返回">‹</button><span class="grow" style="text-align:center">${WX_NAMES[k]}</span></div>
     <div class="thread">${rows}</div></div>${act}`;
 }
@@ -776,6 +903,9 @@ function wxMe(){
 function wire(){
   const q = (sel, fn) => $app.querySelectorAll(sel).forEach(b => b.onclick = () => fn(b));
   document.getElementById("home").onclick = () => go("home");
+  q("[data-intro-next]", () => continueIntro());
+  q("[data-tour-start]", () => startTour());
+  q("[data-tour-skip]", () => finishTutorial());
   q("[data-a]", b => act(b.dataset.a));
   q("[data-app]", b => { const k = b.dataset.app; go(k, k === "mhs" ? "msg" : ""); });
   q("[data-note]", b => go("xhs", "note", b.dataset.note));

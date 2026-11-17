@@ -1,0 +1,90 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const test = require('node:test');
+
+const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+
+function game(character = 1) {
+  const app = { innerHTML: '', inert: false, querySelectorAll: () => [], querySelector: () => null };
+  const modal = { innerHTML: '' };
+  const view = { scrollTop: 0, scrollHeight: 400 };
+  const context = vm.createContext({ document: { getElementById: id => ({ app, modal, view }[id] || null) }, clearTimeout() {}, setTimeout() {} });
+  const run = code => vm.runInContext(code, context);
+  run(script);
+  run(`wire=()=>{}; beginCase(${character})`);
+  const budget = () => run('JSON.stringify([S.day,S.slot,S.money,S.po,S.stress,S.evidence,S.bills,S.scheduleLivestream,S.usedComments,S.myNotes])');
+  return { run, budget, app };
+}
+
+test('opening reveals exactly one new chat message per click, then goes home', () => {
+  const { run, budget } = game();
+  const before = budget();
+  assert.equal(run('S.chat.friend.length'), 1);
+  assert.equal(run('S.app+":"+S.arg'), 'chat:friend');
+  assert.equal(run('S.tutorial.phase'), 'intro');
+  run('continueIntro()');
+  assert.equal(run('S.chat.friend.length'), 2);
+  run('continueIntro()');
+  assert.equal(run('S.chat.friend.length'), 3);
+  assert.equal(run('S.tutorial.phase'), 'intro');
+  run('continueIntro()');
+  assert.equal(run('S.tutorial.phase'), 'tour');
+  assert.equal(run('S.app'), 'home');
+  assert.equal(budget(), before);
+});
+
+test('both characters can tour every real page and metric without spending resources', () => {
+  for (const character of [1, 2]) {
+    const { run, budget } = game(character);
+    const before = budget();
+    run('startTour(); act=consume=order=collect=()=>{throw Error("tour performed a game action")};');
+    const visited = [];
+    const count = run('tutorialSteps().length');
+    for (let i = 0; i < count; i++) {
+      assert.equal(run('S.tutorial.step'), i);
+      visited.push(run('S.app+":"+S.view'));
+      assert.equal(budget(), before);
+      run('advanceTour()');
+    }
+    assert.ok(visited.includes('xhs:note'));
+    assert.ok(visited.includes('xhs:compose'));
+    assert.ok(visited.includes('mhs:msg'));
+    assert.ok(visited.includes('eat:'));
+    assert.ok(visited.includes('album:'));
+    assert.ok(visited.includes('chat:thread'));
+    assert.equal(run('S.tutorial.phase'), 'done');
+    assert.equal(run('S.app'), 'home');
+    assert.equal(budget(), before);
+    assert.equal(run('S.chat.friend.filter(m=>m.type==="guide").length'), 1);
+  }
+});
+
+test('previous, skip, replay, and restart preserve the intended tutorial lifecycle', () => {
+  const { run, budget } = game();
+  const before = budget();
+  run('finishTutorial()');
+  assert.equal(run('S.tutorial.phase'), 'done');
+  assert.equal(budget(), before);
+  run('startTour();advanceTour();advanceTour(-1)');
+  assert.equal(run('S.tutorial.step'), 0);
+  assert.equal(run('S.app'), 'home');
+  run('advanceTour(-1)');
+  assert.equal(run('S.tutorial.step'), 0);
+  run('finishTutorial();startTour();finishTutorial()');
+  assert.equal(run('S.chat.friend.filter(m=>m.type==="guide").length'), 1);
+  assert.equal(budget(), before);
+  run('start()');
+  assert.equal(run('S'), null);
+});
+
+test('the final tour steps highlight opinion, stress, budgets, and collected evidence', () => {
+  const { run } = game(2);
+  const finalTargets = JSON.parse(run('JSON.stringify(tutorialSteps().slice(-4).map(step=>step.target))'));
+  assert.deepEqual(finalTargets, ['[data-tour-target="opinion"]', '[data-tour-target="stress"]', '[data-tour-target="resources"]', '[data-tour-target="evidence"]']);
+  assert.match(run('tutorialSteps()[3].text.join(" ")'), /压力会 \+25/);
+  assert.match(run('tutorialSteps().find(step=>step.target.includes("opinion")).text.join(" ")'), /超过 50/);
+  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /达到 100/);
+});
