@@ -28,6 +28,7 @@ html,body{overflow-x:clip;margin:0}
 body{background:var(--desk);background-image:radial-gradient(var(--desk-dot) 1.5px, transparent 1.5px);background-size:14px 14px;color:var(--ink);font-family:var(--font-ui);font-size:16px;line-height:1.45;min-height:100vh}
 button{font:inherit;color:inherit}
 button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+summary:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
 .app{max-width:1180px;margin:0 auto;padding:16px}
 .win{background:var(--win);border:2px solid var(--line);box-shadow:4px 4px 0 var(--line);min-width:0}
 .bar{background:var(--title);border-bottom:2px solid var(--line);padding:4px 12px;font-family:var(--font-head);font-size:17px}
@@ -67,6 +68,21 @@ p{margin:0 0 12px}
 .hud-right{flex:1;min-width:0;max-width:300px;display:flex;flex-direction:column}
 .money{font-family:var(--font-head);font-size:22px;margin-bottom:4px}
 .spot{flex:1}
+.evidence-list{margin:0 16px 16px;border:2px solid var(--line);background:var(--win);min-width:0}
+.evidence-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-bottom:2px solid var(--line);background:var(--soft)}
+.evidence-heading h2{margin:0;font-size:24px}
+.evidence-count{font-size:14px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.evidence-empty{padding:16px 12px;margin:0;color:var(--muted);font-size:14px}
+.evidence-item + .evidence-item{border-top:1px solid var(--line)}
+.evidence-item summary{padding:12px;cursor:pointer;overflow-wrap:anywhere}
+.evidence-item summary:hover{background:var(--soft)}
+.evidence-item summary::marker{color:var(--accent)}
+.evidence-item summary b{font-size:15px}
+.evidence-source{display:block;margin:4px 0 0 16px;font-size:13px;color:var(--muted)}
+.evidence-preview{padding:0 12px 12px}
+.evidence-preview img{display:block;width:100%;max-height:180px;object-fit:contain;background:var(--paper)}
+.evidence-preview .timeline{margin:0;max-width:100%}
+.evidence-preview p{margin:8px 0 0;font-size:13px;color:var(--muted)}
 .meter{margin-bottom:8px} .meter:last-child{margin-bottom:0}
 .meter-top{display:flex;justify-content:space-between;font-size:14px}
 .track{height:14px;border:2px solid var(--line);background:var(--win);overflow:hidden}
@@ -376,6 +392,15 @@ function meters(){
 function chatMsg(who, m){ S.chat[who].push(m); if (!(S.app === "chat" && S.view === "thread" && S.arg === who)) S.unreadChat[who] += 1; }
 function unreadMhs(){ return MHS_THREADS.filter(t => t.day <= S.day && !S.mhsRead.includes(t.id)).length; }
 function unreadWx(){ return S.unreadChat.artist + S.unreadChat.friend; }
+function evidenceList(){
+  return `<section class="evidence-list" aria-labelledby="evidence-heading">
+    <div class="evidence-heading"><h2 id="evidence-heading">证据清单</h2><span class="evidence-count">已收集 ${S.evidence.length} 项</span></div>
+    ${S.evidence.length ? S.evidence.map(e => `<details class="evidence-item">
+      <summary><b>${esc(e.title)}</b><span class="evidence-source">来源：${esc(e.from)} · ${e.video ? "视频" : "图片／文件"}</span></summary>
+      <div class="evidence-preview">${pic(e.img)}${e.video ? `<p>绘画录屏的封面预览</p>` : ""}</div>
+    </details>`).join("") : `<p class="evidence-empty">还没有收集到证据。在小粉书收藏证据，或和画师聊天后，证据会自动出现在这里。</p>`}
+  </section>`;
+}
 
 /* ---- 开始 ---- */
 function start(){
@@ -401,7 +426,7 @@ function desk(){
     <section class="stage" aria-label="画师">
       <div class="hud"><div class="day-col"><div class="day"><b>${S.day}</b><span>${SLOTS[S.slot]}</span></div>${sticker()}</div>
         <div class="hud-right"><div class="money">¥${S.money}</div><div class="meters">${meters()}</div></div></div>
-      <div class="spot" aria-hidden="true"></div>
+      <div class="spot">${evidenceList()}</div>
       ${S.last ? `<div class="bubble">${esc(S.last)}</div>` : ""}
       <div class="actions"><button class="btn" data-a="chat">和她聊聊</button><button class="btn" data-a="rest">下一个时段</button></div>
     </section>
@@ -601,6 +626,7 @@ function rebut(withEvidence){
   else { S.po = clamp(S.po - SMALL); face("sad"); note(`你没有证据就反驳了。舆论 -${SMALL}`); }
 }
 function collect(e, fromFeed){
+  if (!e || S.evidence.some(item => item.id === e.id)) return;
   S.evidence.push(e); face("smile"); note(`你收藏了证据：${e.title}，已存进相册。`);
   if (fromFeed) consume(1);
 }
@@ -686,7 +712,7 @@ function livestream(){
   S.screen = "live";
   const c = LIVE_COMMENTS[S.liveIndex];
   $app.innerHTML = `<div class="main">
-    <section class="stage live" aria-label="直播"><div class="hud"><div class="day-col"><div class="day"><b>5</b><span>直播中</span></div>${sticker()}</div><div class="hud-right"><div class="money">¥${S.money}</div><div class="meters">${meters()}</div></div></div><div class="live-tag">直播中</div><div class="spot" aria-hidden="true"></div>${S.last ? `<div class="bubble">${esc(S.last)}</div>` : ""}</section>
+    <section class="stage live" aria-label="直播"><div class="hud"><div class="day-col"><div class="day"><b>5</b><span>直播中</span></div>${sticker()}</div><div class="hud-right"><div class="money">¥${S.money}</div><div class="meters">${meters()}</div></div></div><div class="live-tag">直播中</div><div class="spot">${evidenceList()}</div>${S.last ? `<div class="bubble">${esc(S.last)}</div>` : ""}</section>
     <div class="phone"><div class="screen"><div class="status"><span>${CLOCK[1]}</span><span>第 5 天</span></div>
       <div class="view"><div class="topbar"><span class="grow">小粉书直播 弹幕 ${S.liveIndex + 1} / ${LIVESTREAM_COMMENTS}</span></div>
       ${LIVE_COMMENTS.slice(0, S.liveIndex).map(x => `<div class="cmt">${avatar(1)}<div class="cb"><div class="cn">${esc(x.who)}</div><div class="ctext">${esc(x.text)}</div></div></div>`).join("")}
