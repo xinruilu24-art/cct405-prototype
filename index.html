@@ -209,7 +209,7 @@ p{margin:0 0 12px}
 .guide-cost{font-size:12px;color:var(--muted);font-weight:400}
 .guide-section dd{margin:4px 0 0;font-size:13px;line-height:1.65;overflow-wrap:anywhere}
 .sys-line{align-self:center;font-size:12px;color:var(--grey)}
-.share-card{background:var(--paper);border-radius:6px;padding:8px;display:flex;gap:8px;width:210px;font-size:13px}
+.share-card{background:var(--paper);border:0;border-radius:6px;padding:8px;display:flex;gap:8px;width:210px;font:inherit;font-size:13px;text-align:left;color:var(--ink);cursor:pointer}
 .share-card img{width:48px;height:48px;object-fit:cover;flex:none}
 .share-card small{display:block;color:var(--grey);margin-top:4px}
 .pic-msg img{width:120px;border-radius:6px;display:block}
@@ -325,7 +325,9 @@ const EVIDENCE = {
   e1: {title: "约稿之前就有的草稿", img: "window", from: "小粉书"},
   e2: {title: "约稿时间线截图", img: "timeline", from: "小粉书"},
   e3: {title: "分层源文件", img: "tablet", from: "画师"},
-  e4: {title: "未剪辑的绘画录屏", img: "tablet", video: true, from: "画师"}
+  e4: {title: "未剪辑的绘画录屏", img: "tablet", video: true, from: "画师"},
+  e5: {title: "客户布丁的两次约稿过程记录", from: "咪画师 · 客户布丁", text: "客户布丁提供的历史约稿材料\n\n第一次约稿：留存了草稿、铺色和细化阶段的过程记录。\n第二次约稿：也留存了从草稿到成稿的过程记录。\n\n客户陈述：我约过她两次，每次都收到过过程图。\n\n这些材料对应布丁自己的历史订单，可用于了解画师以往的创作过程；不能直接代替本次争议订单的制作记录。"},
+  e6: {title: "客户阿青的订单核对记录", from: "咪画师 · 客户阿青", text: "客户阿青提供的订单沟通记录\n\n客户询问：我的稿子会不会也有问题？\n代理人回复：请先提供订单和沟通记录，我们按已有材料核对。\n客户说明：目前是看到争议后担心，暂时没有发现自己订单中的具体问题。\n\n这份记录用于区分客户的担忧与已经核实的问题，不是对作品来源的鉴定。"}
 };
 const FEED_EVIDENCE = ["e1", "e2"].map(id => ({id, ...EVIDENCE[id]}));
 const ARTIST_EVIDENCE = ["e3", "e4"].map(id => ({id, ...EVIDENCE[id]}));
@@ -359,6 +361,16 @@ const LIVE_COMMENTS = [
   {who: "粉彩笔", text: "线条好干净，她明显会画。"},
   {who: "怀疑派", text: "这个姿势她可能提前练过。"}
 ];
+const DAY3_NOTE = {
+  id: "n5", author: "鉴图小分队", av: 0, img: "sketchbook", title: "补充鉴定：这些细节还是对不上", publishedDay: 3,
+  body: "补充一轮鉴定：我们又看了这张约稿，手部结构、背景接线和局部笔触依然有疑点。\n\n有人拿旧稿和其他订单的过程记录回应，但那些材料并不等于这次争议订单的制作过程。我们仍然要求画师说明这张图是怎么完成的。\n\n以上为发布者的判断，尚未经过独立核实。",
+  tags: "#补充鉴定 #约稿争议 #等待回应", likes: 1840, stars: 206, kind: "accuse",
+  comments: [
+    {id: "c7", who: "围观中", av: 1, text: "又有新鉴定了？等一个解释。", stance: "accuse", likes: 143},
+    {id: "c8", who: "墨水瓶", av: 2, text: "细节有疑点，也需要具体证据才能下结论。", stance: "support", likes: 87},
+    {id: "c9", who: "追问进度", av: 3, text: "希望画师能拿出这次订单的过程记录。", stance: "accuse", likes: 65}
+  ]
+};
 const FOODS = [
   {id: "f1", name: "草莓奶茶", price: 20, relief: SMALL, icon: "cup"},
   {id: "f2", name: "热汤面套餐", price: 35, relief: MEDIUM, icon: "eat"},
@@ -366,10 +378,10 @@ const FOODS = [
 ];
 const MHS_THREADS = [
   {id: "m0", who: "咪画师小助手", day: 1, lines: ["你已成为这位画师的案件代理人。代理期间请保持沟通文明。"]},
-  {id: "m1", who: "单主小葵（被退款的订单）", day: 1, lines: ["我只是想要一张手画的图……退款收到了，但我还是想知道真相。"]},
-  {id: "m2", who: "客户布丁", day: 2, lines: ["我约过她两次，每次都有过程图，需要的话我可以作证。"]},
-  {id: "m3", who: "单主小葵（被退款的订单）", day: 3, lines: ["好多人在骂她，也有人来骂我，我有点害怕。"]},
-  {id: "m4", who: "客户阿青", day: 4, lines: ["我的稿子会不会也有问题？能帮我问问她吗？"]}
+  {id: "m1", who: "单主小葵（被退款的订单）", day: 1, lines: ["我只是想要一张手画的图……退款收到了，但我还是想知道真相。"], reply: {label: "回复，索取订单时间线", text: "我会核对已有材料。可以把订单时间线发给我吗？", messages: [{text: "可以，这是下单、交稿和退款的记录。希望你能把事情弄清楚。"}, {ev: "e2"}]}},
+  {id: "m2", who: "客户布丁", day: 2, lines: ["我约过她两次，每次都有过程图，需要的话我可以作证。"], reply: {label: "回复，索取约稿过程记录", text: "谢谢你愿意作证，可以把两次约稿的过程记录发给我吗？", messages: [{text: "可以，我把两次约稿留下的过程记录整理给你。"}, {text: "这些是我自己的历史订单，和这次争议的订单要分开看。"}, {ev: "e5"}]}},
+  {id: "m3", who: "单主小葵（被退款的订单）", day: 3, lines: ["好多人在骂她，也有人来骂我，我有点害怕。"], reply: {label: "回复，关心她的情况", text: "辛苦了。你可以先离开评论区，我们会按材料核对，不需要你独自回应所有人。", messages: [{text: "谢谢你，我先缓一缓。需要核对订单的时候再联系我吧。"}]}},
+  {id: "m4", who: "客户阿青", day: 4, lines: ["我的稿子会不会也有问题？能帮我问问她吗？"], reply: {label: "回复，核对订单情况", text: "请先提供订单和沟通记录，我们按已有材料核对。你发现了什么具体问题吗？", messages: [{text: "暂时没有发现具体问题，只是看到争议以后有点担心。我把沟通记录发给你。"}, {ev: "e6"}]}}
 ];
 
 /* ---- 状态 ---- */
@@ -377,10 +389,10 @@ let S;
 function newState(c){
   const ch = CHARACTERS[c];
   return {screen: "main", app: "home", view: "", arg: "", char: c, po: ch.po, stress: ch.stress, day: 1, slot: 1,
-    evidence: [], scheduleLivestream: false, face: "neutral", last: "第 1 天从下午开始。手机里的 App 可以随便看，做事才会用掉时段。",
+    evidence: [], scheduleLivestream: false, day3Accusation: false, face: "neutral", last: "第 1 天从下午开始。手机里的 App 可以随便看，做事才会用掉时段。",
     usedComments: [], replies: {}, votes: {}, noteLikes: {}, forwarded: [], myNotes: [],
     money: COMMISSION, bills: [{text: "画师转账（委托费）", amount: COMMISSION}], chat: {artist: [{id: "commission", who: "her", type: "pay", amount: COMMISSION, text: "委托费"}], friend: []}, unreadChat: {artist: 1, friend: 0},
-    mhsRead: [], liveIndex: 0, sheet: null, tutorial: null, chatVisible: {artist: 1, friend: 0}, pendingAction: null, pendingTime: 0};
+    mhsRead: [], mhsReplies: {}, liveIndex: 0, sheet: null, tutorial: null, chatVisible: {artist: 1, friend: 0}, pendingAction: null, pendingTime: 0};
 }
 const $app = document.getElementById("app");
 const $modal = document.getElementById("modal");
@@ -449,7 +461,7 @@ function evidenceList(){
   const items = preview ? [{id: "tutorial-example", ...EVIDENCE.e1}] : S.evidence;
   return `<section class="evidence-list" data-tour-target="evidence" aria-labelledby="evidence-heading">
     <div class="evidence-heading"><h2 id="evidence-heading">证据清单</h2><span class="evidence-count">${preview ? "教程示例" : `已收集 ${items.length} 项`}</span></div>
-    ${items.length ? items.map(e => `<details class="evidence-item"><summary><b>${esc(e.title)}</b><span class="evidence-source">来源：${esc(e.from)} · ${e.text ? "公告／文字" : e.video ? "视频" : "图片／文件"}</span></summary><div class="evidence-preview">${evidenceMedia(e)}${e.video ? `<p>绘画录屏的封面预览</p>` : ""}</div></details>`).join("") : `<p class="evidence-empty">还没有收集到证据。在小粉书收藏证据，或和画师聊天后，证据会自动出现在这里。</p>`}
+    ${items.length ? items.map(e => `<details class="evidence-item"><summary><b>${esc(e.title)}</b><span class="evidence-source">来源：${esc(e.from)} · ${e.text ? "文字／记录" : e.video ? "视频" : "图片／文件"}</span></summary><div class="evidence-preview">${evidenceMedia(e)}${e.video ? `<p>绘画录屏的封面预览</p>` : ""}</div></details>`).join("") : `<p class="evidence-empty">还没有收集到证据。在小粉书收藏证据，或和画师聊天后，证据会自动出现在这里。</p>`}
   </section>`;
 }
 
@@ -523,6 +535,8 @@ function tutorialSteps(){
     note("n2", {title: "选择转发给画师", sheet: "share", action: '[data-fwd="n2"]', text: ["正式发送会消耗一个行动点。支持帖可能让她安心，指控帖可能让她更紧张；这里不会真的发送。"]}),
     {title: "点一份外卖的位置", app: "eat", target: phone, action: '[data-food="f1"]', text: ["点这份饮料的「下单」练习一下。正式下单会花钱，也会消耗一个行动点，帮她稍微缓一缓。"]},
     {title: "查看客户消息", app: "mhs", view: "msg", target: phone, action: '[data-mthread="m1"]', text: ["这里能看订单相关的陈述，读消息不消耗行动点。点这条消息认识入口。"]},
+    {title: "回复单主，核对订单", app: "mhs", view: "msg", arg: "m1", target: phone, action: '[data-mhs-reply="m1"]', text: ["消息底部可以回复。向单主索取订单时间线，读到对方发来的材料后就会加入证据清单，不消耗行动点。这里只练习点击。"]},
+    {title: "向客户索取过程记录", app: "mhs", view: "msg", arg: "m2", previewMhs: true, target: phone, action: '[data-mhs-reply="m2"]', text: ["布丁会在第二天联系你。这是她的消息预览：点这里回复，就能索取两次约稿的过程记录。多条回复要点手机逐条阅读，教程不会真的发送。"]},
     chat({title: "问问画师怎么样", action: '.artist-actions [data-a="chat"]', text: ["聊天入口在底部，也可以用左侧「和她聊聊」。正式聊天会消耗一个行动点，让她放松一些，有文件时她也会发来。"]}),
     chat({title: "请求制作过程视频", action: '[data-a="video"]', text: ["点这里先提出请求，画师会说明需要的时间；在你确认前不会发布，也不会扣行动点。"]}),
     chat({title: "同意制作视频的位置", decision: "video", action: '[data-video-approve]', text: ["正式同意后才会制作并发布，展示完回复后消耗两个行动点。点这个选项练习，不会真的制作。"]}),
@@ -655,6 +669,15 @@ function focusPhone(){ $app.querySelector(".screen")?.focus({preventScroll: true
 function readPhone(){
   if (!S || S.screen !== "main" || S.tutorial?.phase === "tour" || S.sheet) return;
   if (S.tutorial?.phase === "intro") return continueIntro();
+  if (S.app === "mhs" && S.view === "msg" && unreadMhsDialogue()){
+    const t = MHS_THREADS.find(t => t.id === S.arg), reply = S.mhsReplies[t.id];
+    const message = t.reply.messages[reply.visible++];
+    if (message.ev && !S.evidence.some(e => e.id === message.ev)){
+      S.evidence.push({id: message.ev, ...EVIDENCE[message.ev], from: `咪画师 · ${t.who}`});
+      note(`收到${t.who}的材料：${EVIDENCE[message.ev].title}，已加入证据清单。`);
+    }
+    desk(); scrollChatToEnd(); focusPhone(); return;
+  }
   if (S.app === "chat" && S.view === "thread"){
     const k = S.arg;
     if (unreadDialogue(k)){
@@ -714,7 +737,8 @@ function renderPhoneInteraction(){
   if (!screen) return;
   const phase = S.tutorial?.phase;
   const inChat = S.app === "chat" && S.view === "thread";
-  const readable = phase === "intro" || phase === "outro" || S.pendingTime || (inChat && (unreadDialogue(S.arg) || S.pendingAction));
+  const inMhsDialogue = S.app === "mhs" && S.view === "msg" && unreadMhsDialogue();
+  const readable = phase === "intro" || phase === "outro" || S.pendingTime || inMhsDialogue || (inChat && (unreadDialogue(S.arg) || S.pendingAction));
   if (readable){
     screen.tabIndex = 0;
     screen.setAttribute("role", "group");
@@ -724,7 +748,7 @@ function renderPhoneInteraction(){
       if (event.target === screen && (event.key === "Enter" || event.key === " ")){ event.preventDefault(); readPhone(); }
     };
   }
-  if (phase === "intro" || phase === "outro" || S.pendingTime || S.pendingAction){
+  if (phase === "intro" || phase === "outro" || S.pendingTime || S.pendingAction || inMhsDialogue){
     $app.querySelectorAll("button").forEach(b => { if (!b.matches("[data-tour-skip],[data-video-approve],[data-video-decline],[data-wager-approve],[data-wager-decline]")) b.disabled = true; });
   }
 }
@@ -767,8 +791,9 @@ function icon(k, label, badge){
 }
 
 /* ---- 小粉书 ---- */
+function availableNotes(){ return [...(S.day3Accusation ? [DAY3_NOTE] : []), ...S.myNotes, ...NOTES]; }
 function xhsFeed(){
-  const notes = [...S.myNotes, ...NOTES];
+  const notes = availableNotes();
   return `<div class="topbar"><span class="grow" style="text-align:center">发现</span></div>
     <div class="feed">${notes.map(n => `<button class="card" data-note="${n.id}">${pic(n.img, "shot")}
       <div class="ct">${esc(n.title)}</div><div class="cm">${avatar(n.av)}<span class="n">${esc(n.author)}</span>${px(S.noteLikes[n.id] ? "heart" : "heartO", 12)}${n.likes + (S.noteLikes[n.id] ? 1 : 0)}</div></button>`).join("")}</div>
@@ -776,7 +801,7 @@ function xhsFeed(){
 }
 function findNote(id){
   if (S.tutorial?.phase === "tour" && tutorialSteps()[S.tutorial.step].previewAnnouncement && id === "livestream-announcement") return makeWagerAnnouncement();
-  return [...S.myNotes, ...NOTES].find(n => n.id === id);
+  return availableNotes().find(n => n.id === id);
 }
 function postEvidence(id){
   const n = findNote(id);
@@ -792,7 +817,7 @@ function xhsNote(id){
   const starred = collectible && S.evidence.some(e => e.id === collectible.id);
   return `<div class="topbar"><button class="back" data-feed aria-label="返回">‹</button>${avatar(n.av)}<span class="grow">${esc(n.author)}</span></div>
     ${pic(n.img, "note-img")}
-    <div class="note-body"><div class="nt">${esc(n.title)}</div><p>${esc(n.body)}</p><div class="tags">${esc(n.tags)}</div><div class="ndate">${n.kind === "rules" ? "本案公开规则 · 游戏内改编" : n.mine ? "刚刚" : "2 天前"}</div></div>
+    <div class="note-body"><div class="nt">${esc(n.title)}</div><p>${esc(n.body)}</p><div class="tags">${esc(n.tags)}</div><div class="ndate">${n.kind === "rules" ? "本案公开规则 · 游戏内改编" : n.publishedDay ? `第 ${n.publishedDay} 天发布` : n.mine ? "刚刚" : "2 天前"}</div></div>
     <div class="ccount">共 ${n.comments.length} 条评论</div>
     ${n.comments.map(c => {
       const v = S.votes[c.id], used = S.usedComments.includes(c.id);
@@ -814,7 +839,8 @@ function xhsCompose(){
     </div>`;
 }
 function replySheet(cid, evidence = S.evidence, preview = false){
-  const c = NOTES[0].comments.find(x => x.id === cid);
+  const c = availableNotes().flatMap(n => n.comments).find(x => x.id === cid);
+  if (!c) return "";
   const opts = c.stance === "support"
     ? [`<button class="opt" data-rp="agree"><b>说得对，谢谢支持！</b><span>同意这条评论，一个行动点</span></button>`]
     : [...evidence.map(e => `<button class="opt" data-rp="ev" data-evidence="${esc(e.id)}"><b>这是证据：${esc(e.title)}</b><span>带证据反驳，一个行动点</span></button>`),
@@ -828,14 +854,33 @@ function shareSheet(id){
 }
 
 /* ---- 咪画师 ---- */
+function unreadMhsDialogue(){
+  const t = MHS_THREADS.find(t => t.id === S.arg), reply = S.mhsReplies[S.arg];
+  return !!(t?.reply && reply && reply.visible < t.reply.messages.length);
+}
+function replyMhs(id){
+  const t = MHS_THREADS.find(t => t.id === id);
+  if (!t?.reply || t.day > S.day || S.screen !== "main" || S.app !== "mhs" || S.view !== "msg" || S.arg !== id || S.mhsReplies[id] || S.pendingAction || S.pendingTime || (S.tutorial && S.tutorial.phase !== "done")) return false;
+  S.mhsReplies[id] = {visible: 0};
+  note(`你回复了${t.who}，等待对方发来消息。`);
+  desk(); scrollChatToEnd(); focusPhone(); return true;
+}
 function mhs(){
   const tab = S.view || "msg";
   const ch = CHARACTERS[S.char];
   let body = "";
   if (tab === "msg" && S.arg){
     const t = MHS_THREADS.find(x => x.id === S.arg);
+    const preview = S.tutorial?.phase === "tour" && tutorialSteps()[S.tutorial.step].previewMhs;
+    if (!t || (t.day > S.day && !preview)) return `<div class="topbar"><button class="back" data-mhs="msg">返回消息</button></div>`;
+    const practicingReply = S.tutorial?.phase === "tour" && tutorialSteps()[S.tutorial.step].action?.startsWith('[data-mhs-reply=');
+    const replied = practicingReply ? null : S.mhsReplies[t.id], her = avatar(t.id.charCodeAt(1), "sq");
+    const messages = replied ? t.reply.messages.slice(0, replied.visible) : [];
     body = `<div class="topbar"><button class="back" data-mhs="msg" aria-label="返回">‹</button><span class="grow">${esc(t.who)}</span></div>
-      <div class="thread">${t.lines.map((l, i) => `<div class="bub-row">${avatar(3, "sq")}<div class="bub">${esc(l)}</div></div>`).join("")}</div>`;
+      <div class="thread">${t.lines.map(l => `<div class="bub-row">${her}<div class="bub">${esc(l)}</div></div>`).join("")}
+      ${replied ? `<div class="bub-row me"><span class="av sq" style="background:var(--mhs)">我</span><div class="bub">${esc(t.reply.text)}</div></div>` : ""}
+      ${messages.map(m => `<div class="bub-row">${her}${m.ev ? `<div class="pic-msg">${evidenceMedia({id: m.ev, ...EVIDENCE[m.ev]})}</div>` : `<div class="bub">${esc(m.text)}</div>`}</div>`).join("")}</div>
+      ${t.reply && !replied ? `<div class="wx-act"><button data-mhs-reply="${t.id}">${esc(t.reply.label)}</button></div>` : ""}`;
     return body;
   }
   if (tab === "msg") body = MHS_THREADS.filter(t => t.day <= S.day).slice().reverse().map(t => `<button class="row-item" data-mthread="${t.id}">${avatar(t.id.charCodeAt(1), "sq")}
@@ -862,7 +907,7 @@ function eat(){
 const WX_NAMES = {artist: "画师", friend: "阿紫"};
 function actionGuide(){
   const groups = [
-    {title: "收集证据", actions: [{name: "收藏帖子或对赌公告", cost: "不消耗行动点", effect: "用帖子底部的星星收藏可用材料，完整内容会进入左侧证据清单。对赌公告需正式发布后才可收藏。"}]},
+    {title: "收集证据", actions: [{name: "收藏帖子或对赌公告", cost: "不消耗行动点", effect: "用帖子底部的星星收藏可用材料，完整内容会进入左侧证据清单。对赌公告需正式发布后才可收藏。"}, {name: "回复咪画师客户消息", cost: "不消耗行动点", effect: "从消息底部回复客户，索取订单或过程记录。点手机逐条阅读，读到材料时会自动加入证据清单；不同客户能提供的内容不同。"}]},
     {title: "照顾画师", actions: [{name: "和她聊聊", cost: "一个行动点", effect: "陪伴能让她放松，她有文件时也会发来。早上不在线。"}, {name: "点外卖", cost: "花钱和一个行动点", effect: "给她送饮料或热饭可以缓解压力；不同餐点的价格和效果不同。"}]},
     {title: "回应与自证", actions: [{name: "回复评论、公开回应", cost: "一个行动点", effect: "感谢支持可以争取认同，附证据更有说服力；空口争辩或贸然回应也可能招来更多怀疑。"}, {name: "制作并发布过程视频", cost: "同意后两个行动点", effect: "在 MiChat 提出请求，听她说明耗时后决定；拒绝不会发布，也不扣行动点。"}]},
     {title: "转发和对赌", actions: [{name: "转发给画师", cost: "一个行动点", effect: "读完她的回复后结算。支持可能让她安心，指控可能让她更紧张；重复转发同一帖不会反复改变压力。"}, {name: "商量直播对赌", cost: "确认后一个行动点", effect: "先在 MiChat 听她说明压力，再确认或拒绝。确认后约在第五天，发布公告，再扣行动点；仍需满足余额资格。"}]}
@@ -892,7 +937,7 @@ function wxThread(k){
     if (m.type === "sys") return `<div class="sys-line">${esc(m.text)}</div>`;
     const me = m.who === "me";
     let inner = `<div class="bub">${esc(m.text)}</div>`;
-    if (m.type === "card"){ const n = findNote(m.note); inner = `<div class="share-card">${pic(n.img)}<div>${esc(n.title)}<small>小粉书笔记</small></div></div>`; }
+    if (m.type === "card"){ const n = findNote(m.note); inner = `<button class="share-card" data-note="${esc(n.id)}">${pic(n.img)}<div>${esc(n.title)}<small>打开小粉书笔记</small></div></button>`; }
     if (m.type === "pic") inner = `<div class="pic-msg">${evidenceMedia({id: m.ev, ...EVIDENCE[m.ev]})}</div>`;
     if (m.type === "pay") inner = `<div class="pay-card">¥${m.amount}<br><small>${esc(m.text)}，已收款</small></div>`;
     if (m.type === "guide") inner = actionGuide();
@@ -950,6 +995,7 @@ function wire(){
   q("[data-fwd]", b => forward(b.dataset.fwd));
   q("[data-mhs]", b => go("mhs", b.dataset.mhs));
   q("[data-mthread]", b => { const id = b.dataset.mthread; if (!S.mhsRead.includes(id)) S.mhsRead.push(id); go("mhs", "msg", id); });
+  q("[data-mhs-reply]", b => replyMhs(b.dataset.mhsReply));
   q("[data-food]", b => order(FOODS.find(f => f.id === b.dataset.food)));
   q("[data-thread]", b => { S.unreadChat[b.dataset.thread] = 0; go("chat", "thread", b.dataset.thread); });
   q("[data-wx]", b => go("chat", b.dataset.wx === "me" ? "me" : ""));
@@ -1100,12 +1146,21 @@ function consume(n){
       note("开播前余额不足，直播对赌无法进行。");
     }
     desk();
+    if (S.day === 3 && S.app === "chat" && S.arg === "artist"){ scrollChatToEnd(); focusPhone(); }
   }
   timeTransition(previousDay);
 }
 function newDay(){
   chatMsg("artist", {id: `day:${S.day}`, who: "her", type: "sys", text: `第 ${S.day} 天`});
-  chatMsg("artist", {id: `morning:${S.day}`, who: "her", text: S.stress >= 70 ? "我今天好累，不太想看评论了……" : S.stress >= 40 ? "早。今天有什么需要我做的吗？" : "早！今天状态还不错。"});
+  if (S.day === 3 && !S.day3Accusation){
+    S.day3Accusation = true;
+    S.po = clamp(S.po - 20); S.stress = clamp(S.stress + 10); face("sad");
+    chatMsg("artist", {id: "day3:new-accusation", who: "her", text: "那个指控我的账号又在小粉书发了新的鉴定帖……现在更多人在怀疑我，我有点撑不住了。你能去看看吗？"});
+    S.chatVisible.artist = S.chat.artist.length;
+    chatMsg("artist", {id: "day3:accusation-link", who: "her", type: "card", note: DAY3_NOTE.id});
+    S.app = "chat"; S.view = "thread"; S.arg = "artist"; S.sheet = null; S.unreadChat.artist = 0;
+    note("指控方发布了新的鉴定帖，质疑声变多，画师更紧张了。她发来消息请你查看。");
+  } else chatMsg("artist", {id: `morning:${S.day}`, who: "her", text: S.stress >= 70 ? "我今天好累，不太想看评论了……" : S.stress >= 40 ? "早。今天有什么需要我做的吗？" : "早！今天状态还不错。"});
   if (S.po < 40) chatMsg("friend", {id: `morning:${S.day}`, who: "her", text: "评论区好凶……你还撑得住吗？"});
   else if (S.po >= 60) chatMsg("friend", {id: `morning:${S.day}`, who: "her", text: "风向好像变好了，干得漂亮。"});
 }

@@ -15,7 +15,7 @@ function game(character = 1) {
   const run = code => vm.runInContext(code, context);
   run(script);
   run(`wire=()=>{}; beginCase(${character})`);
-  const budget = () => run('JSON.stringify([S.day,S.slot,S.money,S.po,S.stress,S.evidence,S.bills,S.scheduleLivestream,S.usedComments,S.myNotes,S.chat.artist,S.forwarded,S.noteLikes,S.votes,S.replies])');
+  const budget = () => run('JSON.stringify([S.day,S.slot,S.money,S.po,S.stress,S.evidence,S.bills,S.scheduleLivestream,S.usedComments,S.myNotes,S.chat.artist,S.forwarded,S.noteLikes,S.votes,S.replies,S.mhsReplies])');
   return { run, budget, app };
 }
 

@@ -41,7 +41,7 @@ test('collecting a published announcement preserves its complete text and dedupl
   run('S.myNotes.push(makeWagerAnnouncement());collectPost("livestream-announcement")');
   assert.equal(run('S.evidence.length'), 1);
   assert.equal(run('S.evidence[0].text'), run('makeWagerAnnouncement().body'));
-  assert.match(run('evidenceList()'), /公告／文字/);
+  assert.match(run('evidenceList()'), /文字／记录/);
   assert.match(run('evidenceMedia(S.evidence[0])'), /公开留存/);
   assert.equal(run('S.pendingTime'), 0);
   assert.equal(run('S.slot'), 1);
