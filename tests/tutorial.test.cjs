@@ -53,10 +53,13 @@ test('both characters can tour every real page and metric without spending resou
     assert.ok(visited.includes('xhs:compose'));
     assert.ok(visited.includes('mhs:msg'));
     assert.ok(visited.includes('eat:'));
-    assert.ok(visited.includes('album:'));
+    assert.ok(!visited.includes('album:'));
     assert.ok(visited.includes('chat:thread'));
+    assert.equal(run('S.tutorial.phase'), 'outro');
+    assert.equal(run('S.app+":"+S.arg'), 'chat:friend');
+    run('readPhone(); readPhone()');
     assert.equal(run('S.tutorial.phase'), 'done');
-    assert.equal(run('S.app'), 'home');
+    assert.equal(run('S.app+":"+S.arg'), 'chat:friend');
     assert.equal(budget(), before);
     assert.equal(run('S.chat.friend.filter(m=>m.type==="guide").length'), 1);
   }
@@ -66,6 +69,8 @@ test('previous, skip, replay, and restart preserve the intended tutorial lifecyc
   const { run, budget } = game();
   const before = budget();
   run('finishTutorial()');
+  assert.equal(run('S.tutorial.phase'), 'outro');
+  run('readPhone(); readPhone()');
   assert.equal(run('S.tutorial.phase'), 'done');
   assert.equal(budget(), before);
   run('startTour();advanceTour();advanceTour(-1)');
@@ -84,7 +89,7 @@ test('the final tour steps highlight opinion, stress, budgets, and collected evi
   const { run } = game(2);
   const finalTargets = JSON.parse(run('JSON.stringify(tutorialSteps().slice(-4).map(step=>step.target))'));
   assert.deepEqual(finalTargets, ['[data-tour-target="opinion"]', '[data-tour-target="stress"]', '[data-tour-target="resources"]', '[data-tour-target="evidence"]']);
-  assert.match(run('tutorialSteps()[3].text.join(" ")'), /压力会 \+25/);
-  assert.match(run('tutorialSteps().find(step=>step.target.includes("opinion")).text.join(" ")'), /超过 50/);
-  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /达到 100/);
+  assert.doesNotMatch(run('tutorialSteps().flatMap(step=>step.text).join(" ")'), /\d|[+≥≤]/);
+  assert.match(run('tutorialSteps().find(step=>step.target.includes("opinion")).text.join(" ")'), /信任/);
+  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /撑不住/);
 });

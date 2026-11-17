@@ -92,21 +92,21 @@ test('locked chat cannot be captured early; MiChat captures only messages that a
   run('S.app="chat"; S.view="thread"; S.arg="artist"');
   assert.equal(await run('saveScreenshot("chats", "artist:forward-reply:n2")'), false);
   run('forward("n2"); S.app="chat"; S.view="thread"; S.arg="artist"');
+  assert.equal(await run('saveScreenshot("chats", "artist:forward-reply:n2")'), false);
+  run('readPhone()');
   assert.equal(await run('saveScreenshot("chats", "artist:forward-reply:n2")'), true);
   assert.equal(run('S.evidence[1].capture.text'), '对，这是我的。');
   assert.match(run('S.evidence[1].capture.context'), /去年的猫猫草稿/);
 });
 
-test('screenshots display in evidence list, album, and the exact selected rebuttal', async () => {
+test('screenshots display in evidence list and the exact selected rebuttal', async () => {
   const { run } = game();
   run('SCREENSHOT_ALLOWLIST.comments.push("c2"); S.app="xhs"; S.view="note"; S.arg="n1"');
   await run('saveScreenshot("comments", "c2")');
   assert.match(run('evidenceList()'), /截图/);
   assert.match(run('evidenceList()'), /data:image\/png/);
   assert.match(run('replySheet("c1")'), /data-evidence="capture:comments:c2"/);
-  run('S.app="album"; S.view="photo"; S.arg="capture:comments:c2"');
-  assert.match(run('album()'), /data:image\/png/);
-  assert.match(run('album()'), /墨水瓶的评论截图/);
+  assert.equal(run('typeof album'), 'undefined');
   run('rebut("capture:comments:c2")');
   assert.equal(run('S.po'), 65);
   assert.match(run('S.last'), /墨水瓶的评论截图/);
@@ -139,13 +139,12 @@ test('pending capture cannot leak into a restarted game and rapid repeated saves
   assert.equal(run('S'), null);
 });
 
-test('existing file evidence still collects, opens in the album, and can be presented', () => {
+test('existing file evidence still reveals, collects, and can be presented', () => {
   const { run } = game();
-  run('act("chat"); collect(FEED_EVIDENCE[0], true)');
+  run('act("chat"); readPhone(); readPhone(); readPhone(); collect(FEED_EVIDENCE[0], true)');
   assert.equal(run('S.evidence.length'), 2);
-  run('S.app="album"; S.view="photo"; S.arg="e3"');
-  assert.match(run('album()'), /分层源文件/);
-  assert.ok(!run('album()').includes('src="undefined"'));
+  assert.match(run('evidenceList()'), /分层源文件/);
+  assert.ok(!run('evidenceList()').includes('src="undefined"'));
   run('rebut("e1")');
   assert.match(run('S.last'), /约稿之前就有的草稿/);
   assert.equal(run('S.po'), 65);
