@@ -132,8 +132,11 @@ test('livestream eligibility checks the exact balance for each artist without sp
     assert.equal(run('S.scheduleLivestream'), false);
     assert.equal(run('S.pendingTime'), 0);
     assert.equal(run('S.slot'), 1);
-    assert.match(run('xhsCompose()'), /disabled/);
+    assert.match(run('wxThread("artist")'), /data-a="announce" disabled/);
     run(`S.money=${required};act("announce")`);
+    assert.equal(run('S.scheduleLivestream'), false);
+    assert.equal(run('S.pendingAction.type'), 'wagerDecision');
+    run('readPhone();decideWager(true);readPhone();readPhone()');
     assert.equal(run('S.scheduleLivestream'), true);
     assert.equal(run('S.money'), required);
     assert.equal(run('S.pendingTime'), 1);
@@ -141,6 +144,66 @@ test('livestream eligibility checks the exact balance for each artist without sp
     run('readPhone()');
     assert.equal(run('S.slot'), 2);
   }
+});
+
+test('support replies add two opinion points; livestream support still adds five', () => {
+  const { run } = game();
+  run('agree()');
+  assert.equal(run('S.po'), 57);
+  run('agree(SMALL)');
+  assert.equal(run('S.po'), 62);
+});
+
+test('wager confirmation applies artist pressure, then replies, publishes, and spends one slot', () => {
+  for (const [character, pressure] of [[1, 20], [2, 30]]) {
+    const { run, flushResults } = game(character);
+    run('S.stress=20;act("announce")');
+    assert.equal(run('decideWager(true)'), false);
+    assert.equal(run('S.stress'), 20);
+    run('readPhone()');
+    assert.match(run('wxThread("artist")'), /压力/);
+    assert.equal(run('decideWager(true)'), true);
+    assert.equal(run('decideWager(true)'), false);
+    assert.equal(run('S.stress'), 20 + pressure);
+    assert.equal(run('S.myNotes.length'), 0);
+    assert.equal(run('S.slot'), 1);
+    run('readPhone()');
+    assert.match(run('wxThread("artist")'), /定在第五天/);
+    assert.equal(run('S.myNotes.length'), 0);
+    run('readPhone()');
+    assert.equal(run('S.myNotes[0].id'), 'livestream-announcement');
+    assert.equal(run('S.app+":"+S.arg'), 'xhs:livestream-announcement');
+    assert.equal(run('S.slot'), 1);
+    flushResults();
+    assert.equal(run('S.slot'), 2);
+    assert.equal(run('transitions'), 1);
+  }
+});
+
+test('declining a wager leaves pressure, time, and published posts unchanged', () => {
+  const { run } = game(2);
+  run('act("announce");readPhone();decideWager(false);readPhone();readPhone()');
+  assert.equal(run('S.stress'), 75);
+  assert.equal(run('S.slot'), 1);
+  assert.equal(run('S.myNotes.length'), 0);
+  assert.equal(run('S.scheduleLivestream'), false);
+  assert.equal(run('S.pendingAction'), null);
+});
+
+test('forwarding waits for the reply and spends one slot; food spends money and one slot', () => {
+  const { run, flushResults } = game();
+  run('forward("n1")');
+  assert.equal(run('S.slot'), 1);
+  assert.equal(run('S.stress'), 40);
+  run('readPhone();readPhone()');
+  assert.equal(run('S.slot'), 2);
+  run('order(FOODS[0])');
+  assert.equal(run('S.money'), 80);
+  assert.equal(run('S.stress'), 35);
+  assert.equal(run('S.slot'), 2);
+  flushResults();
+  assert.equal(run('S.day'), 2);
+  assert.equal(run('S.slot'), 0);
 });
 
 test('day-five livestream eligibility is checked again after later spending', () => {

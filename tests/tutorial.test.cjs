@@ -15,7 +15,7 @@ function game(character = 1) {
   const run = code => vm.runInContext(code, context);
   run(script);
   run(`wire=()=>{}; beginCase(${character})`);
-  const budget = () => run('JSON.stringify([S.day,S.slot,S.money,S.po,S.stress,S.evidence,S.bills,S.scheduleLivestream,S.usedComments,S.myNotes])');
+  const budget = () => run('JSON.stringify([S.day,S.slot,S.money,S.po,S.stress,S.evidence,S.bills,S.scheduleLivestream,S.usedComments,S.myNotes,S.chat.artist,S.forwarded,S.noteLikes,S.votes,S.replies])');
   return { run, budget, app };
 }
 
@@ -89,7 +89,7 @@ test('the final tour steps highlight opinion, stress, budgets, and collected evi
   const { run } = game(2);
   const finalTargets = JSON.parse(run('JSON.stringify(tutorialSteps().slice(-4).map(step=>step.target))'));
   assert.deepEqual(finalTargets, ['[data-tour-target="opinion"]', '[data-tour-target="stress"]', '[data-tour-target="resources"]', '[data-tour-target="evidence"]']);
-  assert.doesNotMatch(run('tutorialSteps().flatMap(step=>step.text).join(" ")'), /\d|[+≥≤]/);
+  assert.doesNotMatch(run('tutorialSteps().flatMap(step=>step.text).join(" ")'), /\d|[≥≤]|(?:舆论|压力)\s*[+\-]/);
   assert.match(run('tutorialSteps().find(step=>step.target.includes("opinion")).text.join(" ")'), /信任/);
-  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /撑不住/);
+  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /退出/);
 });
