@@ -83,6 +83,12 @@ p{margin:0 0 12px}
 .evidence-preview img{display:block;width:100%;max-height:180px;object-fit:contain;background:var(--paper)}
 .evidence-preview .timeline{margin:0;max-width:100%}
 .evidence-preview p{margin:8px 0 0;font-size:13px;color:var(--muted)}
+.capture-action{display:block;width:fit-content;max-width:100%;margin:8px 0;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--win);color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.capture-action:hover{background:var(--soft)}
+.capture-action:disabled{background:var(--disabled);color:var(--muted);cursor:default}
+.capture-message{min-width:0;max-width:calc(100% - 40px)}
+.capture-message .capture-action{margin-bottom:0}
+.bub-row.me .capture-action{margin-left:auto}
 .meter{margin-bottom:8px} .meter:last-child{margin-bottom:0}
 .meter-top{display:flex;justify-content:space-between;font-size:14px}
 .track{height:14px;border:2px solid var(--line);background:var(--win);overflow:hidden}
@@ -303,6 +309,12 @@ const EVIDENCE = {
 };
 const FEED_EVIDENCE = ["e1", "e2"].map(id => ({id, ...EVIDENCE[id]}));
 const ARTIST_EVIDENCE = ["e3", "e4"].map(id => ({id, ...EVIDENCE[id]}));
+/* Only these authored content IDs may be captured. Leave empty until screenshot targets are selected.
+   posts: note IDs (e.g. n4); comments: comment IDs (e.g. c2).
+   chats: speaker:message ID (e.g. artist:forward-reply:n2), or mhs:thread ID:line index (e.g. mhs:m2:0).
+   This is game content configuration, not a general screen-capture permission. */
+const SCREENSHOT_ALLOWLIST = {posts: [], comments: [], chats: []};
+const TIMELINE_LINES = ["咪画师订单详情", "下单：4 月 2 日", "约定交稿：4 月 30 日", "草稿提交：6 月 18 日", "成图提交：9 月 12 日", "状态：已全额退款"];
 const AVC = ["var(--px-p)", "var(--px-b)", "var(--px-g)", "var(--px-v)", "var(--px-o)", "var(--px-n)"];
 const NOTES = [
   {id: "n1", author: "鉴图小分队", av: 0, img: "sketchbook", title: "这张约稿是 AI 描改的吗？", body: "看看手和背景，线条糊成一片。单主等了五个月等来这个，大家来鉴一下。", tags: "#鉴ai #约稿避雷", likes: 2316, stars: 418, kind: "accuse",
@@ -343,7 +355,7 @@ function newState(c){
   return {screen: "main", app: "home", view: "", arg: "", char: c, po: ch.po, stress: ch.stress, day: 1, slot: 1,
     evidence: [], scheduleLivestream: false, face: "neutral", last: "第 1 天从下午开始。手机里的 App 可以随便看，做事才会用掉时段。",
     usedComments: [], replies: {}, votes: {}, noteLikes: {}, forwarded: [], myNotes: [],
-    money: COMMISSION, bills: [{text: "画师转账（委托费）", amount: COMMISSION}], chat: {artist: [{who: "her", type: "pay", amount: COMMISSION, text: "委托费"}], friend: []}, unreadChat: {artist: 1, friend: 0},
+    money: COMMISSION, bills: [{text: "画师转账（委托费）", amount: COMMISSION}], chat: {artist: [{id: "commission", who: "her", type: "pay", amount: COMMISSION, text: "委托费"}], friend: []}, unreadChat: {artist: 1, friend: 0},
     mhsRead: [], liveIndex: 0, sheet: null};
 }
 const $app = document.getElementById("app");
@@ -374,7 +386,7 @@ function face(n){ if (S) S.face = n; }
 function note(t){ S.last = t; }
 function img(){ return ""; }
 function pic(key, cls){
-  if (key === "timeline") return `<div class="timeline ${cls || ""}"><b>咪画师订单详情</b>下单：4 月 2 日<br>约定交稿：4 月 30 日<br>草稿提交：6 月 18 日<br>成图提交：9 月 12 日<br>状态：已全额退款</div>`;
+  if (key === "timeline") return `<div class="timeline ${cls || ""}"><b>${TIMELINE_LINES[0]}</b>${TIMELINE_LINES.slice(1).join("<br>")}</div>`;
   return `<img class="${cls || ""}" src="${IMG[key]}" alt="">`;
 }
 function avatar(i, cls){
@@ -392,12 +404,136 @@ function meters(){
 function chatMsg(who, m){ S.chat[who].push(m); if (!(S.app === "chat" && S.view === "thread" && S.arg === who)) S.unreadChat[who] += 1; }
 function unreadMhs(){ return MHS_THREADS.filter(t => t.day <= S.day && !S.mhsRead.includes(t.id)).length; }
 function unreadWx(){ return S.unreadChat.artist + S.unreadChat.friend; }
+/* ---- Author-selected screenshot evidence. The save handler validates the list and visible source too. ---- */
+function screenshotAllowed(kind, id){
+  return Object.hasOwn(SCREENSHOT_ALLOWLIST, kind) && SCREENSHOT_ALLOWLIST[kind].includes(id);
+}
+function screenshotButton(kind, id){
+  if (!screenshotAllowed(kind, id)) return "";
+  const saved = S.evidence.some(e => e.id === `capture:${kind}:${id}`);
+  return `<button class="capture-action" data-screenshot-kind="${kind}" data-screenshot-id="${esc(id)}" ${saved ? "disabled" : ""}>${saved ? "已截图取证" : "截图取证"}</button>`;
+}
+function screenshotSource(kind, id){
+  if (!S || S.screen !== "main" || S.sheet || !screenshotAllowed(kind, id)) return null;
+  let source;
+  if ((kind === "posts" || kind === "comments") && S.app === "xhs" && S.view === "note"){
+    const n = findNote(S.arg);
+    if (!n || n.mine) return null;
+    if (kind === "posts" && n.id === id){
+      source = {title: `帖子截图：${n.title}`, author: n.author, text: `${n.body}\n${n.tags}`, context: "小粉书 · 帖子", image: n.img};
+      if (n.img === "timeline") source.text += "\n" + TIMELINE_LINES.join("\n");
+    }
+    if (kind === "comments"){
+      const c = n.comments.find(c => c.id === id);
+      if (c) source = {title: `${c.who}的评论截图`, author: c.who, text: c.text, context: `小粉书 ·「${n.title}」评论区`};
+    }
+  }
+  if (kind === "chats" && S.app === "mhs" && S.view === "msg"){
+    const t = MHS_THREADS.find(t => t.id === S.arg && t.day <= S.day);
+    if (t){
+      const i = t.lines.findIndex((line, i) => id === `mhs:${t.id}:${i}`);
+      if (i >= 0) source = {title: `${t.who}的聊天截图`, author: t.who, text: t.lines[i], context: "咪画师 · 聊天记录"};
+    }
+  }
+  if (kind === "chats" && S.app === "chat" && S.view === "thread" && Object.hasOwn(S.chat, S.arg)){
+    const k = S.arg, m = S.chat[k].find(m => m.id && id === `${k}:${m.id}`);
+    if (m && m.type !== "sys"){
+      source = {title: `与${WX_NAMES[k]}的聊天截图`, author: m.who === "me" ? "你" : WX_NAMES[k], text: m.text || "", context: `MiChat · 与${WX_NAMES[k]}的聊天`};
+      if (m.type === "pay") source.text += ` ¥${m.amount}`;
+      if (m.type === "card"){
+        const n = findNote(m.note);
+        source.text = `转发帖子：${n.title}\n${n.body}`; source.image = n.img;
+        if (n.img === "timeline") source.text += "\n" + TIMELINE_LINES.join("\n");
+      }
+      if (m.type === "pic"){
+        const e = EVIDENCE[m.ev]; source.text = e.title; source.image = e.img;
+      }
+      if (m.id.startsWith("forward-reply:")){
+        const n = findNote(m.id.slice("forward-reply:".length));
+        if (n) source.context += ` · 关于「${n.title}」`;
+      }
+    }
+  }
+  return source ? {...source, kind, sourceId: id, day: S.day, slot: S.slot} : null;
+}
+async function renderScreenshot(source){
+  const canvas = document.createElement("canvas"), width = 720, padding = 32;
+  canvas.width = width;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("截图暂不可用");
+  const font = getComputedStyle(document.body).fontFamily;
+  const blocks = [], textWidth = width - padding * 2;
+  let y = padding;
+  const addText = (text, size, color, bold = false) => {
+    ctx.font = `${bold ? "700 " : ""}${size}px ${font}`;
+    for (const paragraph of text.split("\n")){
+      let line = "";
+      for (const ch of Array.from(paragraph)){
+        if (line && ctx.measureText(line + ch).width > textWidth){
+          blocks.push({line, y, size, color, bold}); y += size * 1.6; line = "";
+        }
+        line += ch;
+      }
+      blocks.push({line, y, size, color, bold}); y += size * 1.6;
+    }
+    y += 12;
+  };
+  addText(source.context, 22, "#6b5a73");
+  addText(source.title, 30, "#3a2347", true);
+  addText(source.author, 24, "#c2286d", true);
+  addText(source.text, 26, "#3a2347");
+  let image;
+  if (source.image && IMG[source.image]){
+    image = new Image(); image.src = IMG[source.image]; await image.decode();
+  }
+  const imageY = y;
+  const imageHeight = image ? Math.min(360, textWidth * image.naturalHeight / image.naturalWidth) : 0;
+  y += imageHeight ? imageHeight + 24 : 0;
+  addText(`保存于第 ${source.day} 天 · ${SLOTS[source.slot]}`, 20, "#6b5a73");
+  canvas.height = Math.ceil(y + padding);
+  ctx.fillStyle = "#fff8fc"; ctx.fillRect(0, 0, width, canvas.height);
+  ctx.strokeStyle = "#3a2347"; ctx.lineWidth = 3; ctx.strokeRect(1.5, 1.5, width - 3, canvas.height - 3);
+  ctx.textBaseline = "top";
+  blocks.forEach(b => { ctx.font = `${b.bold ? "700 " : ""}${b.size}px ${font}`; ctx.fillStyle = b.color; ctx.fillText(b.line, padding, b.y); });
+  if (image){
+    const imageWidth = imageHeight * image.naturalWidth / image.naturalHeight;
+    ctx.drawImage(image, (width - imageWidth) / 2, imageY, imageWidth, imageHeight);
+  }
+  return canvas.toDataURL("image/png");
+}
+let screenshotBusy = false;
+async function saveScreenshot(kind, id, button){
+  const source = screenshotSource(kind, id), evidenceId = `capture:${kind}:${id}`;
+  if (!source || screenshotBusy || S.evidence.some(e => e.id === evidenceId)) return false;
+  const state = S;
+  screenshotBusy = true;
+  if (button){ button.disabled = true; button.textContent = "保存中…"; }
+  try {
+    const image = await renderScreenshot(source);
+    if (S !== state) return false;
+    S.evidence.push({id: evidenceId, title: source.title, from: source.context, screenshot: true, image, capture: source});
+    note(`已截图取证：${source.title}。已加入证据清单和相册，可以在反驳时出示。`);
+    const view = document.getElementById("view"), scrollTop = view ? view.scrollTop : 0;
+    if (S.screen === "main") desk();
+    else if (S.screen === "live") livestream();
+    const nextView = document.getElementById("view"); if (nextView) nextView.scrollTop = scrollTop;
+    return true;
+  } catch (error){
+    if (S === state) note("截图保存失败，请重试。");
+    if (button){ button.disabled = false; button.textContent = "保存失败，点击重试"; }
+    return false;
+  } finally { screenshotBusy = false; }
+}
+function evidenceMedia(e, cls){
+  if (e.screenshot) return `<img class="${cls || ""}" src="${esc(e.image)}" alt="${esc(e.capture.author + "：" + e.capture.text)}">`;
+  return e.video ? `<span class="play">${pic(e.img, cls)}</span>` : pic(e.img, cls);
+}
 function evidenceList(){
   return `<section class="evidence-list" aria-labelledby="evidence-heading">
     <div class="evidence-heading"><h2 id="evidence-heading">证据清单</h2><span class="evidence-count">已收集 ${S.evidence.length} 项</span></div>
     ${S.evidence.length ? S.evidence.map(e => `<details class="evidence-item">
-      <summary><b>${esc(e.title)}</b><span class="evidence-source">来源：${esc(e.from)} · ${e.video ? "视频" : "图片／文件"}</span></summary>
-      <div class="evidence-preview">${pic(e.img)}${e.video ? `<p>绘画录屏的封面预览</p>` : ""}</div>
+      <summary><b>${esc(e.title)}</b><span class="evidence-source">来源：${esc(e.from)} · ${e.screenshot ? "截图" : e.video ? "视频" : "图片／文件"}</span></summary>
+      <div class="evidence-preview">${evidenceMedia(e)}${e.screenshot ? `<p>保存于第 ${e.capture.day} 天 · ${SLOTS[e.capture.slot]}</p>` : e.video ? `<p>绘画录屏的封面预览</p>` : ""}</div>
     </details>`).join("") : `<p class="evidence-empty">还没有收集到证据。在小粉书收藏证据，或和画师聊天后，证据会自动出现在这里。</p>`}
   </section>`;
 }
@@ -405,6 +541,7 @@ function evidenceList(){
 /* ---- 开始 ---- */
 function start(){
   clearTimeTransition();
+  S = null;
   $app.innerHTML = `<div class="win center"><div class="bar">开始</div><div class="body">
     <div class="stack"><h1>案件代理人</h1>
     <p>一位画师被指控使用 AI。她有五天时间回应，之后由社区投票。你是她的案件代理人。</p>
@@ -412,8 +549,8 @@ function start(){
     ${[1,2].map(c => `<button class="btn primary" data-c="${c}">接手${CHARACTERS[c].name}的案子</button>`).join("")}</div></div></div>`;
   $app.querySelectorAll("[data-c]").forEach(b => b.onclick = () => {
     S = newState(+b.dataset.c);
-    chatMsg("artist", {who: "her", text: CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。"});
-    chatMsg("friend", {who: "her", text: "听说你接了那个画师的案子？加油，有事找我。"});
+    chatMsg("artist", {id: "greeting", who: "her", text: CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。"});
+    chatMsg("friend", {id: "greeting", who: "her", text: "听说你接了那个画师的案子？加油，有事找我。"});
     desk();
   });
 }
@@ -468,7 +605,7 @@ function xhsNote(id){
   const starred = n.ev && S.evidence.some(e => e.id === n.ev);
   return `<div class="topbar"><button class="back" data-feed aria-label="返回">‹</button>${avatar(n.av)}<span class="grow">${esc(n.author)}</span></div>
     ${pic(n.img, "note-img")}
-    <div class="note-body"><div class="nt">${esc(n.title)}</div><p>${esc(n.body)}</p><div class="tags">${esc(n.tags)}</div><div class="ndate">${n.mine ? "刚刚" : "2 天前"}</div></div>
+    <div class="note-body"><div class="nt">${esc(n.title)}</div><p>${esc(n.body)}</p><div class="tags">${esc(n.tags)}</div><div class="ndate">${n.mine ? "刚刚" : "2 天前"}</div>${screenshotButton("posts", n.id)}</div>
     <div class="ccount">共 ${n.comments.length} 条评论</div>
     ${n.comments.map(c => {
       const v = S.votes[c.id], used = S.usedComments.includes(c.id);
@@ -476,7 +613,7 @@ function xhsNote(id){
         <div class="cact"><button class="ghost ${v === "up" ? "on" : ""}" data-up="${c.id}">${px(v === "up" ? "heart" : "heartO", 14)}${c.likes + (v === "up" ? 1 : 0)}</button>
         <button class="ghost" data-down="${c.id}" aria-label="踩">${px(v === "down" ? "downOn" : "down", 14)}</button>
         <button class="ghost" data-reply="${c.id}" ${used ? "disabled" : ""}>${used ? "已回复" : "回复"}</button></div>
-        ${S.replies[c.id] ? `<div class="reply">你：${esc(S.replies[c.id])}</div>` : ""}</div></div>`;
+        ${screenshotButton("comments", c.id)}${S.replies[c.id] ? `<div class="reply">你：${esc(S.replies[c.id])}</div>` : ""}</div></div>`;
     }).join("") || `<div class="cmt"><span class="cn">还没有评论</span></div>`}
     <div class="nbar"><span class="say">说点什么…</span>
       <button class="ghost ${liked ? "on" : ""}" data-nlike="${id}">${px(liked ? "heart" : "heartO", 16)}${n.likes + (liked ? 1 : 0)}</button>
@@ -496,7 +633,7 @@ function replySheet(cid){
   const c = NOTES[0].comments.find(x => x.id === cid);
   const opts = c.stance === "support"
     ? [`<button class="opt" data-rp="agree"><b>说得对，谢谢支持！</b><span>同意这条评论，1 个时段</span></button>`]
-    : [...S.evidence.map(e => `<button class="opt" data-rp="ev"><b>这是证据：${esc(e.title)}</b><span>带证据反驳，1 个时段</span></button>`),
+    : [...S.evidence.map(e => `<button class="opt" data-rp="ev" data-evidence="${esc(e.id)}"><b>这是证据：${esc(e.title)}</b><span>带证据反驳，1 个时段</span></button>`),
        `<button class="opt" data-rp="noev"><b>这是没有根据的猜测。</b><span>不带证据反驳，1 个时段</span></button>`];
   if (c.stance !== "support" && !S.evidence.length) face("confused");
   return `<div class="sheet-bg" data-close></div><div class="sheet"><div class="sh">回复 ${esc(c.who)}</div>${opts.join("")}<button class="opt" data-close><b>取消</b></button></div>`;
@@ -514,7 +651,7 @@ function mhs(){
   if (tab === "msg" && S.arg){
     const t = MHS_THREADS.find(x => x.id === S.arg);
     body = `<div class="topbar"><button class="back" data-mhs="msg" aria-label="返回">‹</button><span class="grow">${esc(t.who)}</span></div>
-      <div class="thread">${t.lines.map(l => `<div class="bub-row">${avatar(3, "sq")}<div class="bub">${esc(l)}</div></div>`).join("")}</div>`;
+      <div class="thread">${t.lines.map((l, i) => `<div class="bub-row">${avatar(3, "sq")}<div class="capture-message"><div class="bub">${esc(l)}</div>${screenshotButton("chats", `mhs:${t.id}:${i}`)}</div></div>`).join("")}</div>`;
     return body;
   }
   if (tab === "msg") body = MHS_THREADS.filter(t => t.day <= S.day).slice().reverse().map(t => `<button class="row-item" data-mthread="${t.id}">${avatar(t.id.charCodeAt(1), "sq")}
@@ -541,13 +678,14 @@ function eat(){
 function album(){
   const items = S.evidence;
   if (S.view === "photo"){
-    const e = EVIDENCE[S.arg];
+    const e = items.find(item => item.id === S.arg);
+    if (!e) return `<div class="ph-title">找不到这项证据</div><button class="ios-back" data-album>‹ 图库</button>`;
     return `<div class="ph-full"><div><button class="ios-back" data-album>‹ 图库</button></div>
-      <div class="img">${e.video ? `<span class="play">${pic(e.img)}</span>` : pic(e.img)}</div>
+      <div class="img">${evidenceMedia(e)}</div>
       <div class="ph-cap"><b>${esc(e.title)}</b><div class="muted">来自${e.from}</div></div></div>`;
   }
   return `<div class="ph-title">图库</div><div class="ph-sub">${items.length} 张照片和视频</div>
-    <div class="ph-grid">${items.map(e => `<button data-photo="${e.id}">${e.video ? `<span class="play">${pic(e.img)}</span>` : pic(e.img)}</button>`).join("")}</div>
+    <div class="ph-grid">${items.map(e => `<button data-photo="${esc(e.id)}" aria-label="${esc(e.title)}">${evidenceMedia(e)}</button>`).join("")}</div>
     ${items.length ? "" : `<p class="muted" style="padding:14px">还没有照片。和画师聊天会收到她的文件，在小粉书收藏证据也会存到这里。</p>`}`;
 }
 
@@ -570,7 +708,8 @@ function wxThread(k){
     if (m.type === "card"){ const n = findNote(m.note); inner = `<div class="share-card">${pic(n.img)}<div>${esc(n.title)}<small>小粉书笔记</small></div></div>`; }
     if (m.type === "pic") inner = `<div class="pic-msg">${EVIDENCE[m.ev].video ? `<span class="play">${pic(EVIDENCE[m.ev].img)}</span>` : pic(EVIDENCE[m.ev].img)}</div>`;
     if (m.type === "pay") inner = `<div class="pay-card">¥${m.amount}<br><small>${esc(m.text)}，已收款</small></div>`;
-    return `<div class="bub-row ${me ? "me" : ""}">${me ? `<span class="av sq" style="background:var(--mhs)">我</span>` : her}${inner}</div>`;
+    const capture = m.id ? screenshotButton("chats", `${k}:${m.id}`) : "";
+    return `<div class="bub-row ${me ? "me" : ""}">${me ? `<span class="av sq" style="background:var(--mhs)">我</span>` : her}${capture ? `<div class="capture-message">${inner}${capture}</div>` : inner}</div>`;
   }).join("");
   const act = k === "artist"
     ? `<div class="wx-act"><button data-a="chat">问问她今天怎么样（1 个时段）</button></div>`
@@ -600,10 +739,11 @@ function wire(){
   q("[data-reply]", b => { S.sheet = replySheet(b.dataset.reply); S.replyTo = b.dataset.reply; desk(); });
   q("[data-share]", b => { S.sheet = shareSheet(b.dataset.share); desk(); });
   q("[data-close]", () => { S.sheet = null; desk(); });
+  q("[data-screenshot-kind]", b => saveScreenshot(b.dataset.screenshotKind, b.dataset.screenshotId, b));
   q("[data-rp]", b => {
     const cid = S.replyTo, kind = b.dataset.rp; S.sheet = null; S.usedComments.push(cid);
     S.replies[cid] = b.querySelector("b").textContent;
-    if (kind === "agree") agree(); else rebut(kind === "ev");
+    if (kind === "agree") agree(); else rebut(kind === "ev" ? b.dataset.evidence : null);
     consume(1);
   });
   q("[data-star]", b => { const n = findNote(b.dataset.star); collect(FEED_EVIDENCE.find(e => e.id === n.ev), true); });
@@ -621,8 +761,9 @@ function wire(){
 
 /* ---- 行动与规则 ---- */
 function agree(){ S.po = clamp(S.po + SMALL); face("smile"); note(`你同意了一条评论。舆论 +${SMALL}`); }
-function rebut(withEvidence){
-  if (withEvidence){ S.po = clamp(S.po + MEDIUM); face("happy"); note(`你带证据反驳。舆论 +${MEDIUM}`); }
+function rebut(evidenceId){
+  const evidence = S.evidence.find(e => e.id === evidenceId);
+  if (evidence){ S.po = clamp(S.po + MEDIUM); face("happy"); note(`你出示了「${evidence.title}」进行反驳。舆论 +${MEDIUM}`); }
   else { S.po = clamp(S.po - SMALL); face("sad"); note(`你没有证据就反驳了。舆论 -${SMALL}`); }
 }
 function collect(e, fromFeed){
@@ -632,12 +773,12 @@ function collect(e, fromFeed){
 }
 function forward(id){
   const n = findNote(id); S.sheet = null;
-  chatMsg("artist", {who: "me", type: "card", note: id});
+  chatMsg("artist", {id: `forward:${id}`, who: "me", type: "card", note: id});
   if (!S.forwarded.includes(id)){
     S.forwarded.push(id);
-    if (n.kind === "accuse"){ S.stress = clamp(S.stress + FORWARD_EFFECT); face("sad"); chatMsg("artist", {who: "her", text: "……我看到了。好难受。"}); note(`你把指控帖转给了画师。画师压力 +${FORWARD_EFFECT}`); }
-    else if (n.kind === "support"){ S.stress = clamp(S.stress - FORWARD_EFFECT); face("smile"); chatMsg("artist", {who: "her", text: "有人帮我说话，好开心！"}); note(`你把支持的帖子转给了画师。画师压力 -${FORWARD_EFFECT}`); }
-    else { face("neutral"); chatMsg("artist", {who: "her", text: "对，这是我的。"}); note("你把帖子转给了画师。"); }
+    if (n.kind === "accuse"){ S.stress = clamp(S.stress + FORWARD_EFFECT); face("sad"); chatMsg("artist", {id: `forward-reply:${id}`, who: "her", text: "……我看到了。好难受。"}); note(`你把指控帖转给了画师。画师压力 +${FORWARD_EFFECT}`); }
+    else if (n.kind === "support"){ S.stress = clamp(S.stress - FORWARD_EFFECT); face("smile"); chatMsg("artist", {id: `forward-reply:${id}`, who: "her", text: "有人帮我说话，好开心！"}); note(`你把支持的帖子转给了画师。画师压力 -${FORWARD_EFFECT}`); }
+    else { face("neutral"); chatMsg("artist", {id: `forward-reply:${id}`, who: "her", text: "对，这是我的。"}); note("你把帖子转给了画师。"); }
   }
   S.unreadChat.artist = 0;
   if (S.stress >= 100) return ending(6);
@@ -647,7 +788,7 @@ function order(f){
   if (S.money < f.price) return;
   S.money -= f.price; S.bills.unshift({text: `MiMieat ${f.name}`, amount: -f.price});
   S.stress = clamp(S.stress - f.relief); face("happy");
-  chatMsg("artist", {who: "her", text: `${f.name}到了，谢谢你！`});
+  chatMsg("artist", {id: `order:${f.id}`, who: "her", text: `${f.name}到了，谢谢你！`});
   note(`你给画师点了${f.name}。画师压力 -${f.relief}`); desk();
 }
 function act(k){
@@ -669,9 +810,9 @@ function act(k){
     if (S.slot === 0){ face("speechless"); note("画师早上不在线，她睡得晚。这个时段没有用掉。"); return desk(); }
     S.stress = clamp(S.stress - SMALL); face("smile");
     const e = ARTIST_EVIDENCE.find(x => !S.evidence.some(y => y.id === x.id));
-    S.chat.artist.push({who: "me", text: "今天怎么样？"});
-    S.chat.artist.push({who: "her", text: e ? `谢谢你来问。这个发你，应该有用。` : "谢谢你陪我聊天，我手上的文件都给你了。"});
-    if (e){ S.chat.artist.push({who: "her", type: "pic", ev: e.id}); S.evidence.push(e); }
+    S.chat.artist.push({id: `check-in:${S.day}:${S.slot}`, who: "me", text: "今天怎么样？"});
+    S.chat.artist.push({id: `check-in-reply:${S.day}:${S.slot}`, who: "her", text: e ? `谢谢你来问。这个发你，应该有用。` : "谢谢你陪我聊天，我手上的文件都给你了。"});
+    if (e){ S.chat.artist.push({id: `file:${e.id}`, who: "her", type: "pic", ev: e.id}); S.evidence.push(e); }
     note(`你和画师聊了聊。画师压力 -${SMALL}${e ? `，她发来了：${e.title}` : ""}`);
     S.app = "chat"; S.view = "thread"; S.arg = "artist"; S.unreadChat.artist = 0;
     return consume(1);
@@ -701,10 +842,10 @@ function consume(n){
   timeTransition(previousDay);
 }
 function newDay(){
-  chatMsg("artist", {who: "her", type: "sys", text: `第 ${S.day} 天`});
-  chatMsg("artist", {who: "her", text: S.stress >= 70 ? "我今天好累，不太想看评论了……" : S.stress >= 40 ? "早。今天有什么需要我做的吗？" : "早！今天状态还不错。"});
-  if (S.po < 40) chatMsg("friend", {who: "her", text: "评论区好凶……你还撑得住吗？"});
-  else if (S.po >= 60) chatMsg("friend", {who: "her", text: "风向好像变好了，干得漂亮。"});
+  chatMsg("artist", {id: `day:${S.day}`, who: "her", type: "sys", text: `第 ${S.day} 天`});
+  chatMsg("artist", {id: `morning:${S.day}`, who: "her", text: S.stress >= 70 ? "我今天好累，不太想看评论了……" : S.stress >= 40 ? "早。今天有什么需要我做的吗？" : "早！今天状态还不错。"});
+  if (S.po < 40) chatMsg("friend", {id: `morning:${S.day}`, who: "her", text: "评论区好凶……你还撑得住吗？"});
+  else if (S.po >= 60) chatMsg("friend", {id: `morning:${S.day}`, who: "her", text: "风向好像变好了，干得漂亮。"});
 }
 
 /* ---- 直播 ---- */
@@ -731,9 +872,9 @@ function rebutDialog(done){
   const has = S.evidence.length > 0;
   if (!has) face("confused");
   modal(`<h2>反驳</h2><p>${has ? "要附上证据吗？" : "你还没有证据。"}</p>
-    <div class="stack">${S.evidence.map(e => `<button class="btn" data-use="1">附上证据：${esc(e.title)}</button>`).join("")}
-    <button class="btn" data-use="0">不附证据，直接反驳</button></div>`, root => {
-    root.querySelectorAll("[data-use]").forEach(b => b.onclick = () => { closeModal(); rebut(b.dataset.use === "1"); done(); });
+    <div class="stack">${S.evidence.map(e => `<button class="btn" data-use="${esc(e.id)}">附上证据：${esc(e.title)}</button>`).join("")}
+    <button class="btn" data-use="">不附证据，直接反驳</button></div>`, root => {
+    root.querySelectorAll("[data-use]").forEach(b => b.onclick = () => { closeModal(); rebut(b.dataset.use); done(); });
   });
 }
 
