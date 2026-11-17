@@ -242,14 +242,14 @@ p{margin:0 0 12px}
 .modal .win{max-width:420px;width:100%}
 .tour-focus{outline:3px solid var(--focus);outline-offset:4px}
 .hud.tour-focus{outline-offset:-5px}
-.tutorial-coach{position:fixed;z-index:30;width:340px;max-height:calc(100dvh - 48px);overflow:auto}
+.tutorial-coach{position:fixed;z-index:30;width:300px;max-height:calc(100dvh - 48px);overflow:auto}
 .tutorial-coach .bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .tutorial-coach .bar span:last-child{font-family:var(--font-ui);font-size:12px}
-.tutorial-coach h2{font-size:22px;margin-bottom:8px}
-.tutorial-coach p{font-size:14px;line-height:1.65}
-.tutorial-controls{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.tutorial-controls .btn{font-size:14px}
-.tutorial-skip{border:0;background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:8px 0;cursor:pointer;font-size:13px}
+.tutorial-coach h2{font-size:18px;margin-bottom:6px}
+.tutorial-coach p{font-size:13px;line-height:1.55;margin-bottom:8px}
+.tutorial-controls{display:flex;align-items:center;gap:4px 16px;flex-wrap:wrap}
+.tutorial-link{border:0;background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:4px 0;cursor:pointer;font-size:13px;line-height:1.4}
+.tutorial-link:disabled{opacity:.5;text-decoration:none;cursor:default}
 @media(max-width:980px){.tutorial-coach{max-height:48dvh}.is-guided .app{padding-bottom:calc(var(--coach-height,260px) + 24px)}}
 .screen[tabindex="0"]{cursor:pointer}
 .screen:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
@@ -518,7 +518,7 @@ function tutorialSteps(){
     note("n1", {title: "没有证据时的回应", sheet: "accuse", action: '[data-rp="noev"]', text: ["也可以选择不附证据，但空口争辩可能让质疑变多。点一下认识这个位置，不会真正回复。"]}),
     {title: "找到发布入口", app: "xhs", target: phone, action: '[data-compose]', viewTarget: '[data-compose]', text: ["底部中央的发布按钮会打开写笔记页面。点一下认识入口。"]},
     {title: "发布公开回应", app: "xhs", view: "compose", target: phone, action: '[data-a="respond"]', text: ["点公开回应试试：正式发布会消耗行动点，风向不利时也可能适得其反。"]},
-    note("n2", {title: "收藏证据", action: '[data-star="n2"]', viewTarget: '[data-star="n2"]', text: ["底部的星星就是收藏。正式游戏中会把材料放进左侧证据清单，并消耗一个行动点。现在只点一次练习。"]}),
+    note("n2", {title: "收藏证据", action: '[data-star="n2"]', viewTarget: '[data-star="n2"]', text: ["底部的星星就是收藏。材料会进入左侧证据清单，收藏不消耗行动点。现在点一次练习。"]}),
     note("n2", {title: "把帖子转给画师", action: '[data-share="n2"]', viewTarget: '[data-share="n2"]', text: ["转发入口在帖子底部。点一下，再看看收件人。"]}),
     note("n2", {title: "选择转发给画师", sheet: "share", action: '[data-fwd="n2"]', text: ["正式发送会消耗一个行动点。支持帖可能让她安心，指控帖可能让她更紧张；这里不会真的发送。"]}),
     {title: "点一份外卖的位置", app: "eat", target: phone, action: '[data-food="f1"]', text: ["点这份饮料的「下单」练习一下。正式下单会花钱，也会消耗一个行动点，帮她稍微缓一缓。"]},
@@ -602,9 +602,9 @@ function renderTutorial(){
   document.body.classList.add("is-guided");
   $tutorial.innerHTML = `<aside class="tutorial-coach win" aria-labelledby="tutorial-title"><div class="bar"><span>阿紫 · 新手导览</span><span>${t.step + 1} / ${steps.length}</span></div><div class="body">
     <h2 id="tutorial-title">${esc(step.title)}</h2><div id="tutorial-body" aria-live="polite">${step.text.map(text => `<p>${esc(text)}</p>`).join("")}</div>
-    <div class="tutorial-controls"><button class="btn" data-tour-prev ${t.step ? "" : "disabled"}>上一步</button><button class="btn primary" data-tour-next ${step.action ? "disabled" : ""} aria-describedby="tutorial-title">${step.action ? "请点高亮位置" : esc(step.next)}</button></div>
-    <button class="tutorial-skip" data-tour-skip>跳过导览，自己探索</button></div></aside>`;
-  $tutorial.querySelector("[data-tour-next]").onclick = () => { if (!step.action) advanceTour(); };
+    <div class="tutorial-controls"><button class="tutorial-link" data-tour-prev ${t.step ? "" : "disabled"}>上一步</button>${step.action ? "" : `<button class="tutorial-link" data-tour-next aria-describedby="tutorial-title">${esc(step.next)}</button>`}<button class="tutorial-link tutorial-skip" data-tour-skip>跳过导览，自己探索</button></div></div></aside>`;
+  const nextButton = $tutorial.querySelector("[data-tour-next]");
+  if (nextButton) nextButton.onclick = () => advanceTour();
   $tutorial.querySelector("[data-tour-prev]").onclick = () => advanceTour(-1);
   $tutorial.querySelector("[data-tour-skip]").onclick = () => finishTutorial();
   $tutorial.onkeydown = event => { if (event.key === "Escape"){ event.preventDefault(); finishTutorial(); } };
@@ -630,7 +630,7 @@ function positionTutorialCoach(){
   const onPhone = step.target === '[data-tour-target="phone"]';
   const anchor = onPhone ? $app.querySelector(".screen") : target;
   const rect = anchor.getBoundingClientRect();
-  const width = Math.min(340, (onPhone ? rect.width : $app.querySelector(".stage").getBoundingClientRect().width) - 24, window.innerWidth - 24);
+  const width = Math.min(300, (onPhone ? rect.width : $app.querySelector(".stage").getBoundingClientRect().width) - 24, window.innerWidth - 24);
   coach.style.width = width + "px";
   const height = coach.offsetHeight;
   const left = onPhone ? rect.left + (rect.width - width) / 2 : $app.querySelector(".stage").getBoundingClientRect().left + 12;
@@ -785,7 +785,7 @@ function postEvidence(id){
   if (n.id === "livestream-announcement" && n.kind === "rules" && n.mine) return {id: n.id, title: n.title, from: "小粉书 · 代理人公告", text: n.body, author: n.author, img: "rules"};
   return null;
 }
-function collectPost(id){ const evidence = postEvidence(id); if (evidence) collect(evidence, true); }
+function collectPost(id){ const evidence = postEvidence(id); if (evidence) collect(evidence); }
 function xhsNote(id){
   const n = findNote(id), liked = !!S.noteLikes[id];
   const collectible = postEvidence(id);
@@ -862,7 +862,7 @@ function eat(){
 const WX_NAMES = {artist: "画师", friend: "阿紫"};
 function actionGuide(){
   const groups = [
-    {title: "收集证据", actions: [{name: "收藏帖子或对赌公告", cost: "一个行动点", effect: "用帖子底部的星星收藏可用材料，完整内容会进入左侧证据清单。对赌公告需正式发布后才可收藏。"}]},
+    {title: "收集证据", actions: [{name: "收藏帖子或对赌公告", cost: "不消耗行动点", effect: "用帖子底部的星星收藏可用材料，完整内容会进入左侧证据清单。对赌公告需正式发布后才可收藏。"}]},
     {title: "照顾画师", actions: [{name: "和她聊聊", cost: "一个行动点", effect: "陪伴能让她放松，她有文件时也会发来。早上不在线。"}, {name: "点外卖", cost: "花钱和一个行动点", effect: "给她送饮料或热饭可以缓解压力；不同餐点的价格和效果不同。"}]},
     {title: "回应与自证", actions: [{name: "回复评论、公开回应", cost: "一个行动点", effect: "感谢支持可以争取认同，附证据更有说服力；空口争辩或贸然回应也可能招来更多怀疑。"}, {name: "制作并发布过程视频", cost: "同意后两个行动点", effect: "在 MiChat 提出请求，听她说明耗时后决定；拒绝不会发布，也不扣行动点。"}]},
     {title: "转发和对赌", actions: [{name: "转发给画师", cost: "一个行动点", effect: "读完她的回复后结算。支持可能让她安心，指控可能让她更紧张；重复转发同一帖不会反复改变压力。"}, {name: "商量直播对赌", cost: "确认后一个行动点", effect: "先在 MiChat 听她说明压力，再确认或拒绝。确认后约在第五天，发布公告，再扣行动点；仍需满足余额资格。"}]}
@@ -964,11 +964,11 @@ function rebut(evidenceId){
   if (evidence){ S.po = clamp(S.po + MEDIUM); face("happy"); note(`你出示了「${evidence.title}」进行反驳。这让更多网友愿意相信她`); }
   else { S.po = clamp(S.po - SMALL); face("sad"); note(`你没有证据就反驳了。网友们反而更怀疑了`); }
 }
-function collect(e, fromFeed){
+function collect(e){
   if (S.tutorial?.phase === "tour") return;
   if (!e || S.evidence.some(item => item.id === e.id)) return;
   S.evidence.push(e); face("smile"); note(`你收藏了证据：${e.title}，已加入证据清单。`);
-  if (fromFeed) queueTime(1);
+  desk();
 }
 function forward(id){
   if (S.tutorial?.phase === "tour" || S.pendingAction || S.pendingTime) return;

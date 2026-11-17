@@ -31,7 +31,9 @@ test('only published rules and designated evidence posts can be collected', () =
   assert.equal(run('S.evidence.length'), 0);
   run('collectPost("n2")');
   assert.equal(run('S.evidence[0].id'), 'e1');
-  assert.equal(run('S.pendingTime'), 1);
+  assert.equal(run('S.pendingTime'), 0);
+  assert.equal(run('S.slot'), 1);
+  assert.equal(run('S.day'), 1);
 });
 
 test('collecting a published announcement preserves its complete text and deduplicates', () => {
@@ -41,7 +43,9 @@ test('collecting a published announcement preserves its complete text and dedupl
   assert.equal(run('S.evidence[0].text'), run('makeWagerAnnouncement().body'));
   assert.match(run('evidenceList()'), /公告／文字/);
   assert.match(run('evidenceMedia(S.evidence[0])'), /公开留存/);
-  assert.equal(run('S.pendingTime'), 1);
+  assert.equal(run('S.pendingTime'), 0);
+  assert.equal(run('S.slot'), 1);
+  assert.equal(run('S.day'), 1);
   run('S.pendingTime=0;collectPost("livestream-announcement")');
   assert.equal(run('S.evidence.length'), 1);
   assert.equal(run('S.pendingTime'), 0);

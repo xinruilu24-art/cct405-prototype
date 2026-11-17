@@ -6,7 +6,7 @@
 
 新手指引：点手机屏幕逐条阅读阿紫消息，再从手机主界面开始浮窗导览。浮窗紧邻当前操作或指标，玩家逐个点击高亮的真实操作位置；练习不会实施行动，也不会改变时间、余额、舆论、压力或证据。效果以文字描述，包含收藏证据和公告。导览结束后回到阿紫聊天，由她作结，再交给玩家自行探索。可以跳过，也可从阿紫聊天或设置中重看。
 
-收藏证据：可收藏材料和正式发布的对赌公告，点击帖子底部星星进入证据清单，消耗一个行动点。截图功能已删除。配置说明见 [EVIDENCE_COLLECTION.md](EVIDENCE_COLLECTION.md)，公告改编说明见 [LIVESTREAM_RULES_SOURCE.md](LIVESTREAM_RULES_SOURCE.md)。
+收藏证据：可收藏材料和正式发布的对赌公告，点击帖子底部星星进入证据清单，不消耗行动点。截图功能已删除。配置说明见 [EVIDENCE_COLLECTION.md](EVIDENCE_COLLECTION.md)，公告改编说明见 [LIVESTREAM_RULES_SOURCE.md](LIVESTREAM_RULES_SOURCE.md)。
 
 画师聊天：点手机屏幕逐条展开回复和文件，读完后再推进时段及播放转场。评论回复等非聊天行动短暂展示结果后自动转场，无需再点一次。
 
