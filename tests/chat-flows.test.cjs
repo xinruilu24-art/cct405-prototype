@@ -9,11 +9,13 @@ const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 function game(character = 1) {
   const app = { innerHTML: '', inert: false, querySelectorAll: () => [], querySelector: () => null };
   const modal = { innerHTML: '' }, view = { scrollTop: 0, scrollHeight: 400 };
-  const context = vm.createContext({ document: { getElementById: id => ({ app, modal, view }[id] || null) }, clearTimeout() {}, setTimeout() {} });
+  const timers = new Map(); let nextTimer = 0;
+  const context = vm.createContext({ document: { getElementById: id => ({ app, modal, view }[id] || null) }, clearTimeout(id) { timers.delete(id); }, setTimeout(fn, delay) { timers.set(++nextTimer, { fn, delay }); return nextTimer; } });
   const run = code => vm.runInContext(code, context);
   run(script);
   run(`wire=()=>{}; var transitions=0; timeTransition=()=>transitions++; ending=n=>{S.screen="ending";S.ending=n}; S=newState(${character})`);
-  return { run, app };
+  const flushResults = () => { for (const [id, timer] of Array.from(timers)) { if (timer.delay === 1200) { timers.delete(id); timer.fn(); } } };
+  return { run, app, timers, flushResults };
 }
 
 test('artist replies and evidence reveal one at a time before the slot and day change', () => {
@@ -93,17 +95,34 @@ test('evening video and unread artist messages cannot bypass the preparation flo
   assert.equal(run('S.pendingAction.type'), 'videoDecision');
 });
 
-test('public action results remain visible before the time transition', () => {
-  const { run, app } = game();
+test('non-chat results automatically advance after a brief result display', () => {
+  const { run, app, flushResults } = game();
   run('S.slot=2;act("respond")');
   assert.equal(run('S.myNotes.length'), 1);
   assert.equal(run('S.pendingTime'), 1);
   assert.equal(run('S.day'), 1);
   assert.equal(run('transitions'), 0);
   assert.match(app.innerHTML, /action-result/);
-  run('readPhone()');
+  flushResults();
   assert.equal(run('S.day'), 2);
   assert.equal(run('transitions'), 1);
+});
+
+test('comment result auto-advance runs once and cannot affect a restarted game', () => {
+  const { run, timers, flushResults } = game();
+  run('agree();queueTime(1)');
+  assert.equal(run('S.slot'), 1);
+  const stale = Array.from(timers.values())[0].fn;
+  run('readPhone()');
+  flushResults(); stale();
+  assert.equal(run('S.slot'), 2);
+  assert.equal(run('transitions'), 1);
+  run('queueTime(1)');
+  const cancelled = Array.from(timers.values())[0].fn;
+  run('start();S=newState(2)');
+  cancelled(); flushResults();
+  assert.equal(run('S.slot'), 1);
+  assert.equal(run('S.day'), 1);
 });
 
 test('livestream eligibility checks the exact balance for each artist without spending it', () => {

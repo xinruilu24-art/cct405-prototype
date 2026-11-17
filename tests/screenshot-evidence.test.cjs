@@ -7,7 +7,7 @@ const test = require('node:test');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 
-function game() {
+function game(resetAllowlist = true) {
   const app = { innerHTML: '', inert: false, querySelectorAll: () => [], querySelector: () => null };
   const modal = { innerHTML: '' };
   const view = { scrollTop: 120 };
@@ -30,7 +30,7 @@ function game() {
   const run = code => vm.runInContext(code, sandbox);
   run(script);
   // Each fixture chooses its own content, independently of future production list changes.
-  run('Object.values(SCREENSHOT_ALLOWLIST).forEach(list => list.length = 0)');
+  if (resetAllowlist) run('Object.values(SCREENSHOT_ALLOWLIST).forEach(list => list.length = 0)');
   run('wire = () => {}; timeTransition = () => {}; S = newState(1)');
   return { run, app, modal, view, paints };
 }
@@ -148,4 +148,23 @@ test('existing file evidence still reveals, collects, and can be presented', () 
   run('rebut("e1")');
   assert.match(run('S.last'), /约稿之前就有的草稿/);
   assert.equal(run('S.po'), 65);
+});
+
+test('the selected rules announcement is capturable in production and preserves every clause', async () => {
+  const { run } = game(false);
+  assert.equal(run('screenshotAllowed("posts","n5")'), true);
+  assert.equal(run('screenshotAllowed("posts","n1")'), false);
+  run('S.app="xhs";S.view="note";S.arg="n5"');
+  assert.match(run('xhsNote("n5")'), /游戏内改编/);
+  assert.match(run('xhsCompose()'), /data-rules/);
+  assert.equal(await run('saveScreenshot("posts","n5")'), true);
+  assert.equal(run('S.evidence[0].capture.author'), '案件协调人');
+  assert.match(run('S.evidence[0].capture.text'), /¥50/);
+  assert.match(run('S.evidence[0].capture.text'), /¥80/);
+  assert.match(run('S.evidence[0].capture.text'), /六、公开留存/);
+  assert.match(run('evidenceList()'), /capture-image/);
+  assert.match(run('replySheet("c1")'), /data-evidence="capture:posts:n5"/);
+  assert.equal(await run('saveScreenshot("posts","n5")'), false);
+  assert.equal(run('S.slot'), 1);
+  assert.equal(run('S.money'), 100);
 });
