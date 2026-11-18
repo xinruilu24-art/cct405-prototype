@@ -20,7 +20,7 @@
   --xhs-red:#d9264a; --xhs-tag:#2a5ba8; --mhs:#6a4bbf; --mhs-soft:#f1ecfc; --wx-bg:#ededed; --wx-green:#95ec69; --wx-ok:#05753f;
   --wx-pay:#a9560a; --eat:#ffcf3d; --eat-soft:#fff6d6; --ios-blue:#0a6cff;
   --px-k:#3a2347; --px-w:#fff8fb; --px-p:#ff9cc4; --px-r:#ff5a7a; --px-y:#ffd36b; --px-o:#ffb067; --px-g:#7fd6a0; --px-b:#8ccdf0; --px-v:#b79cf0; --px-n:#c98b5e;
-  --stage-bg:#d6f2ec; --stage-stripe:#c3eae2; --tile-xhs:#ffd0e2; --tile-mhs:#e3d6ff; --tile-eat:#fff0bf; --tile-chat:#d2f5df; --tile-set:#ece6ef;
+  --stage-bg:#d6f2ec; --stage-stripe:#c3eae2; --fog:rgba(200,180,236,.74); --tile-xhs:#ffd0e2; --tile-mhs:#e3d6ff; --tile-eat:#fff0bf; --tile-chat:#d2f5df; --tile-set:#ece6ef;
   --font-ui:"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; --font-head:"ZCOOL QingKe HuangYou", "Noto Sans SC", sans-serif;
 }
 *{box-sizing:border-box}
@@ -240,8 +240,11 @@ p{margin:0 0 12px}
 
 .modal{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;padding:16px;z-index:9}
 .modal .win{max-width:420px;width:100%}
-.tour-focus{outline:3px solid var(--focus);outline-offset:4px}
-.hud.tour-focus{outline-offset:-5px}
+.tour-spot{position:fixed;left:0;top:0;z-index:25;border-radius:16px;pointer-events:none;box-shadow:0 0 0 200vmax var(--fog),inset 0 0 18px 10px var(--fog);animation:spot-in 320ms ease-out both}
+@keyframes spot-in{from{opacity:0}to{opacity:1}}
+.is-guided{overflow:hidden}
+.is-guided .view{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.tour-spot{animation:none}}
 .tutorial-coach{position:fixed;z-index:30;width:300px;max-height:calc(100dvh - 48px);overflow:auto}
 .tutorial-coach .bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .tutorial-coach .bar span:last-child{font-family:var(--font-ui);font-size:12px}
@@ -635,6 +638,7 @@ function renderTutorial(){
   const action = step.action ? $app.querySelector(step.action) : null;
   const target = action || $app.querySelector(step.target);
   target?.classList.add("tour-focus");
+  $tutorial.insertAdjacentHTML("beforeend", '<div class="tour-spot" aria-hidden="true"></div>');
   const scrollTarget = step.target === '[data-tour-target="phone"]' ? $app.querySelector(step.target) : $app.querySelector(".stage");
   scrollTarget?.scrollIntoView({block: "start", behavior: "instant"});
   if (step.viewTarget){
@@ -643,7 +647,15 @@ function renderTutorial(){
   }
   action?.scrollIntoView({block: "nearest", inline: "nearest", behavior: "instant"});
   positionTutorialCoach();
+  placeSpot();
   (action || $tutorial.querySelector("[data-tour-next]")).focus({preventScroll: true});
+}
+function placeSpot(){
+  const spot = $tutorial?.querySelector(".tour-spot"), focus = $app.querySelector(".tour-focus");
+  if (!spot || !focus) return;
+  const r = focus.getBoundingClientRect(), pad = 8;
+  spot.style.width = (r.width + pad * 2) + "px"; spot.style.height = (r.height + pad * 2) + "px";
+  spot.style.transform = `translate(${r.left - pad}px, ${r.top - pad}px)`;
 }
 function positionTutorialCoach(){
   if (!$tutorial || S?.tutorial?.phase !== "tour" || !$tutorial.firstElementChild) return;
@@ -665,8 +677,22 @@ function positionTutorialCoach(){
   coach.style.top = Math.max(12, Math.min(top, window.innerHeight - height - 12)) + "px";
 }
 if (typeof window !== "undefined"){
-  window.addEventListener("resize", positionTutorialCoach);
-  window.addEventListener("scroll", positionTutorialCoach, true);
+  window.addEventListener("resize", () => { positionTutorialCoach(); placeSpot(); });
+  /* During the guided tour the player can only press the highlighted control or the coach buttons. */
+  const guided = () => S?.tutorial?.phase === "tour";
+  const allowed = el => !!(el && el.closest && (el.closest("[data-tour-action]") || ($tutorial && $tutorial.contains(el))));
+  ["click", "pointerdown", "mousedown", "touchstart", "dblclick", "contextmenu"].forEach(type => document.addEventListener(type, event => {
+    if (guided() && !allowed(event.target)){ event.preventDefault(); event.stopPropagation(); }
+  }, {capture: true, passive: false}));
+  ["wheel", "touchmove"].forEach(type => document.addEventListener(type, event => {
+    if (guided() && !($tutorial && $tutorial.contains(event.target))) event.preventDefault();
+  }, {capture: true, passive: false}));
+  document.addEventListener("keydown", event => {
+    if (!guided()) return;
+    const scrollKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "PageUp", "PageDown", "Home", "End"];
+    if (scrollKeys.includes(event.key) || (event.key === " " && !allowed(event.target))) event.preventDefault();
+  }, true);
+  window.addEventListener("scroll", () => { positionTutorialCoach(); placeSpot(); }, true);
 }
 
 /* ---- Messages are revealed by tapping the phone; time waits until the result is read. ---- */
