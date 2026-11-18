@@ -485,7 +485,7 @@ function beginCase(c){
   chatMsg("artist", {id: "greeting", who: "her", text: CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。"});
   chatMsg("friend", {id: "greeting", who: "her", text: openingMessages()[0]});
   S.chatVisible.friend = S.chat.friend.length;
-  note("阿紫发来了消息。");
+  note("Chloe 发来了消息。");
   desk();
   if (typeof matchMedia === "function" && matchMedia("(max-width:980px)").matches){
     $app.querySelector(".phone")?.scrollIntoView({block: "start", behavior: "instant"});
@@ -495,7 +495,7 @@ function beginCase(c){
 /* ---- Click-through opening and a resource-free tour of the real pages. ---- */
 function openingMessages(){
   return [
-    "听说你接了画师的案子？我是阿紫，先陪你熟悉一下这里。",
+    "听说你接了画师的案子？我是 Chloe，先陪你熟悉一下这里。",
     "画师已经发来消息和委托费了。手机里的 App 各有用处：找线索、回应指控、陪她聊天，都要做取舍。我带你一页页看看。",
     "先回到手机主界面吧！接下来我会用浮窗介绍每一页，最后再一起看左边要控制的数值。导览不会消耗时段或金钱，也可以随时跳过。"
   ];
@@ -563,7 +563,7 @@ function showTourStep(){
   S.app = step.app; S.view = step.view || ""; S.arg = step.arg || "";
   const sample = [{id: "tutorial-example", ...EVIDENCE.e1, title: "过程材料（教程示例）"}];
   S.sheet = step.sheet === "support" ? replySheet("c2", [], true) : step.sheet === "accuse" ? replySheet("c1", sample, true) : step.sheet === "share" ? shareSheet("n2") : null;
-  note("阿紫正在带你熟悉界面。跟着浮窗继续，导览不会消耗时段、金钱或证据。");
+  note("Chloe 正在带你熟悉界面。跟着浮窗继续，导览不会消耗时段、金钱或证据。");
   desk();
 }
 function advanceTour(delta = 1){
@@ -589,7 +589,7 @@ function finishTutorial(){
   chatMsg("friend", {id: `onboarding:outro:${S.chat.friend.length}`, who: "her", text: "暂时就这些啦。我把行动清单留在聊天里，拿不准的时候可以回来看看。"});
   S.chatVisible.friend = S.chat.friend.length;
   chatMsg("friend", {id: `onboarding:outro:${S.chat.friend.length}`, who: "her", text: "接下来你自己逛逛吧。先听听画师怎么说，还是去找线索，都由你决定。我就在这里，祝你顺利。"});
-  note("阿紫还有几句话想对你说。");
+  note("Chloe 还有几句话想对你说。");
   clearTutorial();
   desk();
   scrollChatToEnd();
@@ -614,7 +614,7 @@ function renderTutorial(){
   });
   if (t.phase === "intro") return;
   document.body.classList.add("is-guided");
-  $tutorial.innerHTML = `<aside class="tutorial-coach win" aria-labelledby="tutorial-title"><div class="bar"><span>阿紫 · 新手导览</span><span>${t.step + 1} / ${steps.length}</span></div><div class="body">
+  $tutorial.innerHTML = `<aside class="tutorial-coach win" aria-labelledby="tutorial-title"><div class="bar"><span>Chloe · 新手导览</span><span>${t.step + 1} / ${steps.length}</span></div><div class="body">
     <h2 id="tutorial-title">${esc(step.title)}</h2><div id="tutorial-body" aria-live="polite">${step.text.map(text => `<p>${esc(text)}</p>`).join("")}</div>
     <div class="tutorial-controls"><button class="tutorial-link" data-tour-prev ${t.step ? "" : "disabled"}>上一步</button>${step.action ? "" : `<button class="tutorial-link" data-tour-next aria-describedby="tutorial-title">${esc(step.next)}</button>`}<button class="tutorial-link tutorial-skip" data-tour-skip>跳过导览，自己探索</button></div></div></aside>`;
   const nextButton = $tutorial.querySelector("[data-tour-next]");
@@ -694,7 +694,7 @@ function readPhone(){
     }
     if (S.tutorial?.phase === "outro"){
       S.tutorial.phase = "done";
-      note("接下来由你安排。阿紫的行动清单和导览都可以随时重看。");
+      note("接下来由你安排。Chloe 的行动清单和导览都可以随时重看。");
       desk(); scrollChatToEnd(); focusPhone(); return;
     }
     if (S.pendingAction?.type === "wagerConfirmed"){
@@ -904,7 +904,7 @@ function eat(){
 }
 
 /* ---- MiChat ---- */
-const WX_NAMES = {artist: "画师", friend: "阿紫"};
+const WX_NAMES = {artist: "画师", friend: "Chloe"};
 function actionGuide(){
   const groups = [
     {title: "收集证据", actions: [{name: "收藏帖子或对赌公告", cost: "不消耗行动点", effect: "用帖子底部的星星收藏可用材料，完整内容会进入左侧证据清单。对赌公告需正式发布后才可收藏。"}, {name: "回复咪画师客户消息", cost: "不消耗行动点", effect: "从消息底部回复客户，索取订单或过程记录。点手机逐条阅读，读到材料时会自动加入证据清单；不同客户能提供的内容不同。"}]},
