@@ -6,6 +6,16 @@ CCT405 游戏原型。
 
 本地试玩：下载 index.html，用浏览器打开。
 
+剧本管理器：[在线编辑](https://xinruilu24-art.github.io/cct405-prototype/script-manager.html)。首次在线打开会载入已发布的剧本；已有浏览器数据会保留，不会自动覆盖。
+
+发布更新：先在「GitHub 设置」中填写自己的 Token，保持 owner 为 xinruilu24-art、repo 为 cct405-prototype、分支为 main、路径为 data/script.json。编辑后点击「提交并发布」，确认提交说明即可直接提交并推送，不需要另做 push。有效文本会自动编译；语法错误会阻止提交，并给出事件和行号。远程版本变化时仍须处理冲突。GitHub Pages 发布完成后刷新游戏，新开的一局会读取最新 JSON；正在进行的局保持原版本。Token 仅在当前浏览器设置中，不进入备份或提交文件。
+
+角色管理：先切换画师 Case，再进入左侧「角色管理」。可以新增、修改名称、英文 key、别名和备注；下方可查看引用它的 block 并跳转。改名保留旧名为别名，台词可以使用名称、key 或别名；改名不会替换台词正文里提及的人名。仍被引用的角色不能删除。角色随所属 Case 一起复制、导入、导出和同步，副本独立保存。
+
+同步范围：现有游戏入口的帖子、评论、聊天文案、选项标签、Action 数值和画师偏好通过发布包读取。额外新增聊天、选项或剧情跳转不会自动创建新的游戏入口，仍需接入游戏流程；发布时会列出未绑定的自建聊天 block。已有示例旧稿保留在管理器里，未修改的示例不作为新剧情发布。本地双击 index.html 使用随 HTML 保存的剧本版本；要使用后续发布的最新数据，请打开网页版游戏。
+
+Token 权限：优先使用仅授权本仓库、Contents → Read and write 的 fine-grained token。若当前账号是他人个人仓库的协作者、无法选中该仓库，可检查仓库授权或使用带 public_repo 权限的 classic token。[GitHub 官方说明](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)。
+
 新手指引：点手机屏幕逐条阅读 Chloe 消息，再从手机主界面开始浮窗导览。浮窗紧邻当前操作或指标，玩家逐个点击高亮的真实操作位置；练习不会实施行动，也不会改变时间、余额、舆论、压力或证据。效果以文字描述，包含收藏证据和公告。导览结束后回到 Chloe 聊天，由她作结，再交给玩家自行探索。可以跳过，也可从 Chloe 聊天或设置中重看。
 
 收藏证据：可收藏材料和正式发布的对赌公告，点击帖子底部星星进入证据清单，不消耗行动点。截图功能已删除。配置说明见 [EVIDENCE_COLLECTION.md](EVIDENCE_COLLECTION.md)，公告改编说明见 [LIVESTREAM_RULES_SOURCE.md](LIVESTREAM_RULES_SOURCE.md)。
