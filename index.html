@@ -294,6 +294,39 @@ const CHARACTERS = {
   1: {name: "角色 1", stress: 35, po: 55, hatesLivestream: false, livestreamBalance: 50, livestreamStress: 20},
   2: {name: "角色 2", stress: 75, po: 30, hatesLivestream: true, livestreamBalance: 80, livestreamStress: 30}
 };
+/* 上传剧本中已修改的文案快照。保留在单文件内，离线打开也可使用。
+   完整可编辑源文件见 data/script.json；这里只绑定现有游戏中的对应消息入口。 */
+const SCRIPT_TEXT = {
+  "source": "data/script.json",
+  "updatedAt": "2026-11-18T19:40:10.682Z",
+  "revision": "b21c6b84c1142cc725a60f4fabeba8d0590c0a21f4ca500087c3fd8e755a9c20",
+  "cases": {
+    "1": {
+      "caseId": "case_artist_1",
+      "artist": "Iris",
+      "opening": [
+        "Hey! I'm Chloe. I heard you took a case? I'll help you get settled before you start.",
+        "Iris has already sent you a message and the case fee. She's waiting in MiChat.",
+        "You're here to help her respond to an AI-art accusation. For the next five days, you can look into the claims, collect materials, speak with Iris, and decide how to respond.",
+        "Let's take a quick look around the phone. "
+      ],
+      "outro": [
+        "That's everything for now! I've left the action list here in our chat, so you can come back to it whenever you're not sure what to do next.",
+        "Feel free to chat with Iris first or do something else! "
+      ],
+      "commissionText": "[Transfer: $100, deposited to your account]",
+      "artistGreeting": "Hi. I sent the case fee just now. Thank you for taking this on.",
+      "mhsMessages": {
+        "m0": [
+          "You've been assigned to this artist's case. Please keep all communication respectful throughout the process."
+        ]
+      }
+    }
+  }
+};
+for (const [id, text] of Object.entries(SCRIPT_TEXT.cases)){
+  if (CHARACTERS[id] && text.artist) CHARACTERS[id].name = text.artist;
+}
 const SLOTS = ["早上", "下午", "晚上"];
 const CLOCK = ["09:41", "14:20", "21:05"];
 const ENDINGS = {1: "公众支持，画师压力大", 2: "公众支持，画师压力小", 3: "无休止的自证",
@@ -390,12 +423,18 @@ const MHS_THREADS = [
 
 /* ---- 状态 ---- */
 let S;
+function scriptCase(c = S?.char){ return SCRIPT_TEXT.cases[c] || null; }
+function artistChatName(){ return scriptCase()?.artist || "画师"; }
+function mhsThreads(){
+  const messages = scriptCase()?.mhsMessages;
+  return messages ? MHS_THREADS.map(t => messages[t.id] ? {...t, lines: messages[t.id]} : t) : MHS_THREADS;
+}
 function newState(c){
   const ch = CHARACTERS[c];
   return {screen: "main", app: "home", view: "", arg: "", char: c, po: ch.po, stress: ch.stress, day: 1, slot: 1,
     evidence: [], scheduleLivestream: false, day3Accusation: false, face: "neutral", last: "第 1 天从下午开始。手机里的 App 可以随便看，做事才会用掉时段。",
     usedComments: [], replies: {}, votes: {}, noteLikes: {}, forwarded: [], myNotes: [],
-    money: COMMISSION, bills: [{text: "画师转账（委托费）", amount: COMMISSION}], chat: {artist: [{id: "commission", who: "her", type: "pay", amount: COMMISSION, text: "委托费"}], friend: []}, unreadChat: {artist: 1, friend: 0},
+    money: COMMISSION, bills: [{text: "画师转账（委托费）", amount: COMMISSION}], chat: {artist: [{id: "commission", who: "her", type: "pay", amount: COMMISSION, text: scriptCase(c)?.commissionText || "委托费", scriptText: scriptCase(c)?.commissionText || ""}], friend: []}, unreadChat: {artist: 1, friend: 0},
     mhsRead: [], mhsReplies: {}, liveIndex: 0, sheet: null, tutorial: null, chatVisible: {artist: 1, friend: 0}, pendingAction: null, pendingTime: 0};
 }
 const $app = document.getElementById("app");
@@ -462,7 +501,7 @@ function chatMsg(who, m){
   if (m.who === "me") S.chatVisible[who] = S.chat[who].length;
   if (!(S.app === "chat" && S.view === "thread" && S.arg === who)) S.unreadChat[who] += 1;
 }
-function unreadMhs(){ return MHS_THREADS.filter(t => t.day <= S.day && !S.mhsRead.includes(t.id)).length; }
+function unreadMhs(){ return mhsThreads().filter(t => t.day <= S.day && !S.mhsRead.includes(t.id)).length; }
 function unreadWx(){ return S.unreadChat.artist + S.unreadChat.friend; }
 function evidenceMedia(e, cls){
   if (e.text) return `<div class="evidence-document"><b>${esc(e.title)}</b><p>${esc(e.text)}</p></div>`;
@@ -487,14 +526,14 @@ function start(){
     <div class="stack"><h1>Prove It, Picasso!</h1>
     <p>一位画师被指控使用 AI。她有五天时间回应，之后由社区投票。你是她的案件代理人。</p>
     <p class="muted">每天分早上、下午、晚上三个时段，每个时段做一件事。</p>
-    ${[1,2].map(c => `<button class="btn primary" data-c="${c}">接手${CHARACTERS[c].name}的案子</button>`).join("")}</div></div></div>`;
+    ${[1,2].map(c => `<button class="btn primary" data-c="${c}">接手${esc(CHARACTERS[c].name)}的案子</button>`).join("")}</div></div></div>`;
   $app.querySelectorAll("[data-c]").forEach(b => b.onclick = () => beginCase(+b.dataset.c));
 }
 function beginCase(c){
   S = newState(c);
   S.app = "chat"; S.view = "thread"; S.arg = "friend";
   S.tutorial = {phase: "intro", message: 0, step: 0};
-  chatMsg("artist", {id: "greeting", who: "her", text: CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。"});
+  chatMsg("artist", {id: "greeting", who: "her", text: scriptCase()?.artistGreeting || (CHARACTERS[S.char].hatesLivestream ? "你好……拜托别让我直播，我真的很怕镜头。" : "你好，接下来几天就拜托你了。")});
   chatMsg("friend", {id: "greeting", who: "her", text: openingMessages()[0]});
   S.chatVisible.friend = S.chat.friend.length;
   note("Chloe 发来了消息。");
@@ -506,6 +545,7 @@ function beginCase(c){
 
 /* ---- Click-through opening and a resource-free tour of the real pages. ---- */
 function openingMessages(){
+  if (scriptCase()?.opening) return scriptCase().opening;
   return [
     "听说你接了画师的案子？我是 Chloe，先陪你熟悉一下这里。",
     "画师已经发来消息和委托费了。手机里的 App 各有用处：找线索、回应指控、陪她聊天，都要做取舍。我带你一页页看看。",
@@ -598,9 +638,11 @@ function finishTutorial(){
   keepActionGuide();
   S.tutorial = {...S.tutorial, phase: "outro"};
   S.app = "chat"; S.view = "thread"; S.arg = "friend"; S.sheet = null;
-  chatMsg("friend", {id: `onboarding:outro:${S.chat.friend.length}`, who: "her", text: "暂时就这些啦。我把行动清单留在聊天里，拿不准的时候可以回来看看。"});
-  S.chatVisible.friend = S.chat.friend.length;
-  chatMsg("friend", {id: `onboarding:outro:${S.chat.friend.length}`, who: "her", text: "接下来你自己逛逛吧。先听听画师怎么说，还是去找线索，都由你决定。我就在这里，祝你顺利。"});
+  const outro = scriptCase()?.outro || ["暂时就这些啦。我把行动清单留在聊天里，拿不准的时候可以回来看看。", "接下来你自己逛逛吧。先听听画师怎么说，还是去找线索，都由你决定。我就在这里，祝你顺利。"];
+  outro.forEach((text, i) => {
+    chatMsg("friend", {id: `onboarding:outro:${S.chat.friend.length}`, who: "her", text});
+    if (i === 0) S.chatVisible.friend = S.chat.friend.length;
+  });
   note("Chloe 还有几句话想对你说。");
   clearTutorial();
   desk();
@@ -705,7 +747,7 @@ function readPhone(){
   if (!S || S.screen !== "main" || S.tutorial?.phase === "tour" || S.sheet) return;
   if (S.tutorial?.phase === "intro") return continueIntro();
   if (S.app === "mhs" && S.view === "msg" && unreadMhsDialogue()){
-    const t = MHS_THREADS.find(t => t.id === S.arg), reply = S.mhsReplies[t.id];
+    const t = mhsThreads().find(t => t.id === S.arg), reply = S.mhsReplies[t.id];
     const message = t.reply.messages[reply.visible++];
     if (message.ev && !S.evidence.some(e => e.id === message.ev)){
       S.evidence.push({id: message.ev, ...EVIDENCE[message.ev], from: `咪画师 · ${t.who}`});
@@ -890,11 +932,11 @@ function shareSheet(id){
 
 /* ---- 咪画师 ---- */
 function unreadMhsDialogue(){
-  const t = MHS_THREADS.find(t => t.id === S.arg), reply = S.mhsReplies[S.arg];
+  const t = mhsThreads().find(t => t.id === S.arg), reply = S.mhsReplies[S.arg];
   return !!(t?.reply && reply && reply.visible < t.reply.messages.length);
 }
 function replyMhs(id){
-  const t = MHS_THREADS.find(t => t.id === id);
+  const t = mhsThreads().find(t => t.id === id);
   if (!t?.reply || t.day > S.day || S.screen !== "main" || S.app !== "mhs" || S.view !== "msg" || S.arg !== id || S.mhsReplies[id] || S.pendingAction || S.pendingTime || (S.tutorial && S.tutorial.phase !== "done")) return false;
   S.mhsReplies[id] = {visible: 0};
   note(`你回复了${t.who}，等待对方发来消息。`);
@@ -905,7 +947,7 @@ function mhs(){
   const ch = CHARACTERS[S.char];
   let body = "";
   if (tab === "msg" && S.arg){
-    const t = MHS_THREADS.find(x => x.id === S.arg);
+    const t = mhsThreads().find(x => x.id === S.arg);
     const preview = S.tutorial?.phase === "tour" && tutorialSteps()[S.tutorial.step].previewMhs;
     if (!t || (t.day > S.day && !preview)) return `<div class="topbar"><button class="back" data-mhs="msg">返回消息</button></div>`;
     const practicingReply = S.tutorial?.phase === "tour" && tutorialSteps()[S.tutorial.step].action?.startsWith('[data-mhs-reply=');
@@ -918,10 +960,10 @@ function mhs(){
       ${t.reply && !replied ? `<div class="wx-act"><button data-mhs-reply="${t.id}">${esc(t.reply.label)}</button></div>` : ""}`;
     return body;
   }
-  if (tab === "msg") body = MHS_THREADS.filter(t => t.day <= S.day).slice().reverse().map(t => `<button class="row-item" data-mthread="${t.id}">${avatarOf(t.who, t.id.charCodeAt(1), "sq")}
+  if (tab === "msg") body = mhsThreads().filter(t => t.day <= S.day).slice().reverse().map(t => `<button class="row-item" data-mthread="${t.id}">${avatarOf(t.who, t.id.charCodeAt(1), "sq")}
       <span class="grow"><span class="t">${esc(t.who)}</span><br><span class="s">${esc(t.lines[0])}</span></span>${S.mhsRead.includes(t.id) ? "" : `<span class="dot">1</span>`}</button>`).join("");
   if (tab === "artist") body = `<div class="banner" style="background-image:url(${IMG.pouch})"></div>
-    <div class="prof">${avatar(-1, "lg")}<h2 style="margin-top:6px">${ch.name}</h2>
+    <div class="prof">${avatar(-1, "lg")}<h2 style="margin-top:6px">${esc(ch.name)}</h2>
       <div><span class="chip">板绘</span><span class="chip">厚涂</span><span class="chip">${ch.hatesLivestream ? "不接直播" : "接稿中"}</span></div>
       <div class="stats"><span>成交 128</span><span>好评 96%</span><span>粉丝 3.2k</span></div></div>
     <div class="works">${["sketchbook", "window", "palette", "pouch", "tablet"].map(k => `<img src="${IMG[k]}" alt="作品">`).join("")}</div>
@@ -939,7 +981,7 @@ function eat(){
 }
 
 /* ---- MiChat ---- */
-const WX_NAMES = {artist: "画师", friend: "Chloe"};
+const WX_NAMES = {get artist(){ return artistChatName(); }, friend: "Chloe"};
 function actionGuide(){
   const groups = [
     {title: "收集证据", actions: [{name: "收藏帖子或对赌公告", cost: "不消耗行动点", effect: "用帖子底部的星星收藏可用材料，完整内容会进入左侧证据清单。对赌公告需正式发布后才可收藏。"}, {name: "回复咪画师客户消息", cost: "不消耗行动点", effect: "从消息底部回复客户，索取订单或过程记录。点手机逐条阅读，读到材料时会自动加入证据清单；不同客户能提供的内容不同。"}]},
@@ -954,7 +996,7 @@ function wxList(){
   return `<div class="wx"><div class="topbar">MiChat${unreadWx() ? `（${unreadWx()}）` : ""}</div>
     ${["artist", "friend"].map(k => { const m = S.chat[k][S.chat[k].length - 1];
       return `<button class="row-item" data-thread="${k}">${k === "artist" ? avatar(-1, "sq") : avatar(-2, "sq")}
-        <span class="grow"><span class="t">${WX_NAMES[k]}</span><br><span class="s">${m ? esc(lastText(m)) : ""}</span></span>${S.unreadChat[k] ? `<span class="dot">${S.unreadChat[k]}</span>` : ""}</button>`; }).join("")}
+        <span class="grow"><span class="t">${esc(WX_NAMES[k])}</span><br><span class="s">${m ? esc(lastText(m)) : ""}</span></span>${S.unreadChat[k] ? `<span class="dot">${S.unreadChat[k]}</span>` : ""}</button>`; }).join("")}
     </div><div class="wx-tabs"><button class="on" data-wx="list">消息</button><button data-wx="me">我</button></div>`;
 }
 function decisionButtons(type){
@@ -974,7 +1016,7 @@ function wxThread(k){
     let inner = `<div class="bub">${esc(m.text)}</div>`;
     if (m.type === "card"){ const n = findNote(m.note); inner = `<button class="share-card" data-note="${esc(n.id)}">${pic(n.img)}<div>${esc(n.title)}<small>打开小粉书笔记</small></div></button>`; }
     if (m.type === "pic") inner = `<div class="pic-msg">${evidenceMedia({id: m.ev, ...EVIDENCE[m.ev]})}</div>`;
-    if (m.type === "pay") inner = `<div class="pay-card">¥${m.amount}<br><small>${esc(m.text)}，已收款</small></div>`;
+    if (m.type === "pay") inner = m.scriptText ? `<div class="pay-card">${esc(m.scriptText)}</div>` : `<div class="pay-card">¥${m.amount}<br><small>${esc(m.text)}，已收款</small></div>`;
     if (m.type === "guide") inner = actionGuide();
     return `<div class="bub-row ${me ? "me" : ""}">${me ? `<img class="av sq av-img" src="${AVATARS.me}" alt="我">` : her}${inner}</div>`;
   }).join("");
@@ -990,7 +1032,7 @@ function wxThread(k){
       actions = `<div class="wx-act artist-actions"><button data-a="chat">问问她今天怎么样</button><button data-a="video" ${left < 2 ? "disabled" : ""}>${left < 2 ? "今天已没有足够时间制作视频" : "制作并发布作画过程视频"}</button><button data-a="announce" ${wagerBlocked ? "disabled" : ""}>${wagerLabel}</button></div>`;
     } else if (!S.pendingAction && k === "friend") actions = `<div class="wx-act"><button data-thread="artist">去看画师消息</button><button data-tour-start>重看新手导览</button></div>`;
   }
-  return `<div class="wx"><div class="topbar"><button class="back" data-wx="list" aria-label="返回">‹</button><span class="grow">${WX_NAMES[k]}</span>${phase === "intro" ? `<button class="ghost" data-tour-skip>跳过</button>` : ""}</div><div class="thread">${rows}</div></div>${actions}`;
+  return `<div class="wx"><div class="topbar"><button class="back" data-wx="list" aria-label="返回">‹</button><span class="grow">${esc(WX_NAMES[k])}</span>${phase === "intro" ? `<button class="ghost" data-tour-skip>跳过</button>` : ""}</div><div class="thread">${rows}</div></div>${actions}`;
 }
 function wxMe(){
   return `<div class="wx"><div class="topbar">我</div>
