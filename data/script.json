@@ -13309,8 +13309,66 @@
             "stance": "neutral"
           },
           "trigger": ""
+        },
+        {
+          "key": "counter_gv8e01",
+          "id": "system.irrelevant-evidence-reply",
+          "caseId": "case_artist_1",
+          "catalogId": "system.irrelevant-evidence-reply",
+          "title": "无关证据 · 评论者的楼中楼回复",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 69,
+          "source": "=== system.irrelevant-evidence-reply\ncase: case_artist_1\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
+          "appliedSource": "=== system.irrelevant-evidence-reply\ncase: case_artist_1\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
+          "catalogBaseline": "=== system.irrelevant-evidence-reply\ncase: case_artist_1\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "system.irrelevant-evidence-reply",
+            "caseId": "case_artist_1",
+            "title": "无关证据 · 评论者的楼中楼回复",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "type": "say",
+                "speaker": "系统",
+                "text": "这完全是 bs。",
+                "emotion": "",
+                "id": "",
+                "line": 12
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 14
+              }
+            ],
+            "choices": [],
+            "notes": "仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
+          },
+          "trigger": ""
         }
-      ]
+      ],
+      "evidenceCounterReplyRevision": 1
     },
     {
       "id": "case_artist_2",
@@ -28185,14 +28243,73 @@
             "stance": "neutral"
           },
           "trigger": ""
+        },
+        {
+          "key": "counter_1ybe2oa",
+          "id": "system.irrelevant-evidence-reply",
+          "caseId": "case_artist_2",
+          "catalogId": "system.irrelevant-evidence-reply",
+          "title": "无关证据 · 评论者的楼中楼回复",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 70,
+          "source": "=== system.irrelevant-evidence-reply\ncase: case_artist_2\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
+          "appliedSource": "=== system.irrelevant-evidence-reply\ncase: case_artist_2\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
+          "catalogBaseline": "=== system.irrelevant-evidence-reply\ncase: case_artist_2\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-18T17:27:11.697Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "system.irrelevant-evidence-reply",
+            "caseId": "case_artist_2",
+            "title": "无关证据 · 评论者的楼中楼回复",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "type": "say",
+                "speaker": "系统",
+                "text": "这完全是 bs。",
+                "emotion": "",
+                "id": "",
+                "line": 12
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 14
+              }
+            ],
+            "choices": [],
+            "notes": "仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
+          },
+          "trigger": ""
         }
-      ]
+      ],
+      "evidenceCounterReplyRevision": 1
     }
   ],
   "game": {
     "version": 1,
     "timingVersion": 1,
     "responseRulesVersion": 1,
+    "counterReplyVersion": 1,
     "updatedAt": "2026-11-19T02:40:05.913Z",
     "stats": [
       {
@@ -34158,6 +34275,44 @@
             "trigger": "",
             "evidenceRule": null,
             "stance": "neutral"
+          },
+          {
+            "catalogId": "system.irrelevant-evidence-reply",
+            "customized": false,
+            "id": "system.irrelevant-evidence-reply",
+            "caseId": "case_artist_1",
+            "title": "无关证据 · 评论者的楼中楼回复",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "type": "say",
+                "speaker": "系统",
+                "text": "这完全是 bs。",
+                "emotion": "",
+                "id": "",
+                "line": 12
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 14
+              }
+            ],
+            "choices": [],
+            "notes": "仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           }
         ]
       },
@@ -39152,6 +39307,44 @@
             ],
             "choices": [],
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
+          },
+          {
+            "catalogId": "system.irrelevant-evidence-reply",
+            "customized": false,
+            "id": "system.irrelevant-evidence-reply",
+            "caseId": "case_artist_2",
+            "title": "无关证据 · 评论者的楼中楼回复",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "type": "say",
+                "speaker": "系统",
+                "text": "这完全是 bs。",
+                "emotion": "",
+                "id": "",
+                "line": 12
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 14
+              }
+            ],
+            "choices": [],
+            "notes": "仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。",
             "blockType": "system",
             "through": 5,
             "trigger": "",

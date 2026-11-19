@@ -489,6 +489,7 @@ function normalizeProject(input){
  for(const c of out.cases)normalizeCaseRoles(c);
  ensureActionTimingBlocks(out);
  ensureResponseActions(out);
+ ensureEvidenceCounterReply(out);
  for(const c of out.cases)for(const e of c.events){const result=parseEventText(e.source,out,c,e);e.diagnostics=result.errors;e.warnings=result.warnings;e.compiled=result.errors.length?null:result.ast;if(!result.errors.length){for(const key of ['id','title','day','slot','status','blockType','through','trigger'])e[key]=result.ast[key]}e.caseId=c.id}
  return out;
 }
@@ -585,7 +586,7 @@ function bindEventTextUI(){
 }
 
 /* ==================== 分开的文案 block：完整游戏目录与无损升级 ==================== */
-function hasPublicationFormat(doc){return hasBlockFormat(doc)&&doc.game?.version===1&&doc.game?.timingVersion===1&&doc.game?.responseRulesVersion===1&&doc.cases.every(c=>Array.isArray(c.roles)&&c.actionTimingRevision===1)}
+function hasPublicationFormat(doc){return hasBlockFormat(doc)&&doc.game?.version===1&&doc.game?.timingVersion===1&&doc.game?.responseRulesVersion===1&&doc.game?.counterReplyVersion===1&&doc.cases.every(c=>Array.isArray(c.roles)&&c.actionTimingRevision===1)}
 function hasBlockFormat(doc){return doc?.version===3&&Array.isArray(doc.cases)&&doc.cases.every(c=>c.blockRevision===1)}
 const BLOCK_TYPES={post:'帖子 · 评论与楼中楼',chat:'聊天对话',system:'流程与结局'};
 // 仅转录 index.html 已存在的文案，不添加新剧情或修改游戏数值。
@@ -810,6 +811,20 @@ function ensureResponseActions(project){
  }
 }
 
+/* 无关证据后的评论者回复：每个 Case 独立编辑，默认不添加证据对应名单。 */
+function ensureEvidenceCounterReply(project){
+ for(const c of project.cases){
+  if(c.evidenceCounterReplyRevision===1)continue;
+  const catalog='system.irrelevant-evidence-reply';
+  if(!c.events.some(e=>e.catalogId===catalog)){
+   let id=catalog,i=2;while(c.events.some(e=>eventSourceId(e)===id))id=catalog+'_'+i++;
+   const source=['=== '+id,'case: '+c.id,'type: system','title: "无关证据 · 评论者的楼中楼回复"','day: 1','through: 5','slot: any','status: final','when: true','','@notes: "仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。"','系统:','  这完全是 bs。','-> END'].join('\n');
+   c.events.push({key:'counter_'+blockHash(c.id+'|'+catalog),id,caseId:c.id,catalogId:catalog,title:'无关证据 · 评论者的楼中楼回复',blockType:'system',day:1,through:5,slot:'any',status:'final',order:Math.max(-1,...c.events.map(e=>e.order))+1,source,appliedSource:source,catalogBaseline:source,legacy:{},updatedAt:c.updatedAt});
+  }
+  c.evidenceCounterReplyRevision=1;
+ }
+}
+
 /* ==================== 发布包：同一份 JSON 供管理器与游戏读取 ==================== */
 /* 给原来没有独立文本的操作补充可编辑的时序入口；只添加指令，不补写剧情。 */
 function ensureActionTimingBlocks(project){
@@ -827,7 +842,7 @@ function ensureActionTimingBlocks(project){
 
 function publicationData(source){
  const doc=normalizeProject(source),cases=doc.cases.map(c=>({id:c.id,name:c.name,artist:c.artist,gameArtist:c.gameArtist||({'case_artist_1':1,'case_artist_2':2}[c.id])||null,roles:clone(c.roles),initialValues:clone(c.initialValues),preferences:clone(c.preferences),commentMetadata:Object.fromEntries(c.days.flatMap(d=>d.comments).map(x=>[x.id,clone(x)])),posts:c.events.filter(e=>!e.legacyOnly&&e.compiled?.blockType==='post'&&(!e.compiled.notes?.includes('示例内容')||e.source!==e.catalogBaseline)).map(e=>({eventId:e.id,metadata:clone(c.days.flatMap(d=>d.posts).find(p=>p.id===e.legacy?.postId)||{}),...clone(e.compiled)})),events:c.events.filter(e=>!e.legacyOnly&&e.compiled?.blockType!=='post').map(e=>({catalogId:e.catalogId||null,customized:e.source!==e.catalogBaseline,...clone(e.compiled)}))}));
- doc.game={version:1,timingVersion:1,responseRulesVersion:1,updatedAt:doc.updatedAt,stats:clone(doc.stats),actions:clone(doc.actions),cases};return doc;
+ doc.game={version:1,timingVersion:1,responseRulesVersion:1,counterReplyVersion:1,updatedAt:doc.updatedAt,stats:clone(doc.stats),actions:clone(doc.actions),cases};return doc;
 }
 function compileBeforePublish(){
  const next=normalizeProject(data),errors=[];
