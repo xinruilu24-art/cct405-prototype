@@ -90,6 +90,6 @@ test('the final tour steps highlight opinion, stress, budgets, and collected evi
   const finalTargets = JSON.parse(run('JSON.stringify(tutorialSteps().slice(-4).map(step=>step.target))'));
   assert.deepEqual(finalTargets, ['[data-tour-target="opinion"]', '[data-tour-target="stress"]', '[data-tour-target="resources"]', '[data-tour-target="evidence"]']);
   assert.doesNotMatch(run('tutorialSteps().flatMap(step=>step.text).join(" ")'), /\d|[≥≤]|(?:舆论|压力)\s*[+\-]/);
-  assert.match(run('tutorialSteps().find(step=>step.target.includes("opinion")).text.join(" ")'), /信任/);
-  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /退出/);
+  assert.match(run('tutorialSteps().find(step=>step.target.includes("opinion")).text.join(" ")'), /trust/);
+  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /walk away/);
 });
