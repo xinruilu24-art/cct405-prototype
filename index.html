@@ -444,8 +444,8 @@ function eventNodes(id,choice=''){const e=gameEvent(id);return choice?choiceFor(
 function eventLines(id,choice=''){return eventNodes(id,choice)?.filter(n=>n.type==='say');}
 function blockText(id,fallback,choice=''){const rows=eventLines(id,choice);return rows?rows.map(n=>n.text).join('\n'):fallback;}
 function blockLabel(id,key,fallback){return choiceFor(gameEvent(id),key)?.text??fallback;}
-function appendBlock(channel,id,{choice='',last={},skipSystem=false}={}){
- const nodes=eventNodes(id,choice);if(!nodes)return false;
+function appendBlock(channel,id,{choice='',last={},skipSystem=false,steps=null}={}){
+ const nodes=steps??eventNodes(id,choice);if(!nodes)return false;
  const messages=[];
  for(const n of nodes){
   if(n.type==='say'&&!(skipSystem&&isRole(n.speaker,'system')))messages.push({id:n.id||id+':'+messages.length,who:isRole(n.speaker,'player')?'me':'her',...(isRole(n.speaker,'system')?{type:'sys'}:{}),speaker:n.speaker,text:n.text});
@@ -525,7 +525,7 @@ function clearTimeTransition(){
   document.getElementById("time-transition")?.remove();
   $app.inert = false;
 }
-function timeTransition(previousDay){
+function timeTransition(previousDay,afterTime=null){
   clearTimeTransition();
   const newDay = S.day !== previousDay;
   const overlay = document.createElement("div");
@@ -537,7 +537,7 @@ function timeTransition(previousDay){
   overlay.innerHTML = `<div class="time-transition-label">第 ${S.day} 天 · ${SLOTS[S.slot]}</div>`;
   $app.inert = true;
   document.body.append(overlay);
-  timeTransitionTimer = setTimeout(clearTimeTransition, newDay ? 1500 : 1200);
+  timeTransitionTimer = setTimeout(() => { clearTimeTransition(); afterTime?.(); }, newDay ? 1500 : 1200);
 }
 const clamp = v => Math.max(0, Math.min(100, v));
 const esc = t => String(t).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
@@ -859,11 +859,14 @@ function readPhone(){
       S.app = "xhs"; S.view = "note"; S.arg = announcement.id;
       return queueTime(wagerSlots);
     }
+    if (S.pendingAction?.type === "videoBeforeTime") return finishVideoPreparation();
     if (S.pendingAction && !["videoDecision", "wagerDecision"].includes(S.pendingAction.type)){
-      const slots = S.pendingAction.slots;
+      const {slots,nextScreen} = S.pendingAction;
       S.pendingAction = null;
       if (S.stress >= 100) return ending(6);
       if (S.po <= 0) return ending(7);
+      if (nextScreen === "vote") return vote();
+      if (nextScreen === "live") return livestream();
       if (slots) return consume(slots);
       desk(); scrollChatToEnd(); focusPhone(); return;
     }
@@ -1206,11 +1209,32 @@ function decideVideo(approve){
   if (S.pendingAction?.type !== "videoDecision" || unreadDialogue("artist")) return false;
   if (approve && 3 - S.slot < 2) return false;
   const key=approve?'approve_video':'decline_video';if(!requireAction(key))return false;
-  appendBlock('artist','chat.video',{choice:key,last:approve?{publishVideo:true}:{}});
-  if(!approve)performAction(key);
-  S.pendingAction={type:approve?'videoPublished':'videoDeclined',slots:actionCost(key,approve?2:0),published:false};
+  const steps=eventNodes('chat.video',key)||[],boundary=steps.findIndex(n=>n.type==='action'&&n.key==='approve_video');
+  // 视频确认分支中，Action 后还有台词时，把它作为推进时间的边界；旧写法保持原顺序。
+  const beforeCompletion=approve&&boundary>=0&&steps.slice(boundary+1).some(n=>n.type==='say');
+  if(beforeCompletion){
+    appendBlock('artist','chat.video',{steps:steps.slice(0,boundary)});
+    S.pendingAction={type:'videoBeforeTime',slots:actionCost(key,2),afterSteps:steps.slice(boundary+1)};
+  }else{
+    appendBlock('artist','chat.video',{choice:key,last:approve?{publishVideo:true}:{}});
+    if(!approve)performAction(key);
+    S.pendingAction={type:approve?'videoPublished':'videoDeclined',slots:actionCost(key,approve?2:0),published:false};
+  }
   note(approve?'你同意制作过程视频，画师开始准备。':'你决定暂时不制作过程视频，没有花掉时段。');
+  if(beforeCompletion&&!unreadDialogue('artist')){finishVideoPreparation();return true;}
   desk(); scrollChatToEnd(); focusPhone(); return true;
+}
+function finishVideoPreparation(){
+  const pending=S.pendingAction;if(pending?.type!=='videoBeforeTime'||unreadDialogue('artist'))return;
+  const state=S;S.pendingAction=null;
+  const continueVideo=(nextScreen='')=>{
+    if(S!==state||S.screen!=='main')return;
+    appendBlock('artist','chat.video',{steps:pending.afterSteps,last:{publishVideo:true}});
+    S.pendingAction={type:'videoPublished',slots:0,published:false,nextScreen};
+    S.app='chat';S.view='thread';S.arg='artist';S.sheet=null;S.unreadChat.artist=0;
+    note('画师发来了制作进展，点手机查看。');desk();scrollChatToEnd();focusPhone();
+  };
+  if(pending.slots)consume(pending.slots,continueVideo);else continueVideo();
 }
 function makeWagerAnnouncement(){
   return publishedTemplate("livestream-announcement", {id: "livestream-announcement", title: "第 5 天直播对赌公告与规则", author: "代理人（你）", av: 5, img: "rules", body: LIVESTREAM_RULES.join("\n\n"), tags: "#直播对赌 #规则公告 #可收藏为证据", likes: 0, stars: 0, kind: "rules", mine: true, ev: "livestream-announcement", comments: []});
@@ -1265,15 +1289,22 @@ function postMine(title, imgKey, options = {}){
   S.myNotes.unshift(item);
   return item;
 }
-function consume(n){
+function consume(n,afterTime=null){
   const previousDay = S.day;
   S.slot += n;
   if (S.stress >= 100) return ending(6);
   if (S.po <= 0) return ending(7);
-  if (S.slot < 3){ desk(); return timeTransition(previousDay); }
-  if (S.day === 5) return vote();
+  if (S.slot < 3){ desk(); return timeTransition(previousDay,afterTime); }
+  if (S.day === 5){
+    if(!afterTime)return vote();
+    // 最后一晚也先交付视频完成消息，再进入投票；不增加新的可用时段。
+    S.slot=2;desk();return timeTransition(previousDay,()=>afterTime('vote'));
+  }
   S.day += 1; S.slot = 0; newDay();
-  if (S.day === 5 && S.scheduleLivestream && actionAvailable("stream_start")) livestream();
+  let nextScreen='';
+  if (S.day === 5 && S.scheduleLivestream && actionAvailable("stream_start")){
+    if(afterTime){nextScreen='live';desk();}else livestream();
+  }
   else {
     if (S.day === 5 && S.scheduleLivestream){
       S.scheduleLivestream = false;
@@ -1283,7 +1314,7 @@ function consume(n){
     desk();
     if (S.day === 3 && S.app === "chat" && S.arg === "artist"){ scrollChatToEnd(); focusPhone(); }
   }
-  timeTransition(previousDay);
+  timeTransition(previousDay,afterTime?()=>afterTime(nextScreen):null);
 }
 function legacyNewDay(){
   chatMsg("artist", {id: `day:${S.day}`, who: "her", type: "sys", text: `第 ${S.day} 天`});
