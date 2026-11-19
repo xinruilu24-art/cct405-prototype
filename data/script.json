@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updatedAt": "2026-11-18T22:33:09.153Z",
+  "updatedAt": "2026-11-19T02:28:40.372Z",
   "stats": [
     {
       "id": "stat_opinion",
@@ -842,7 +842,7 @@
       "name": "画师 1",
       "artist": "Iris",
       "description": "保留旧版管理器中的剧本。",
-      "updatedAt": "2026-11-18T22:33:09.153Z",
+      "updatedAt": "2026-11-19T02:28:40.372Z",
       "initialValues": {
         "stat_opinion": null,
         "stat_stress": null,
@@ -2166,6 +2166,31 @@
               }
             },
             {
+              "id": "dlg_block_3ktcmt",
+              "day": 1,
+              "type": "dialogue",
+              "name": "外卖下单 · 选择与画师回复",
+              "status": "final",
+              "notes": "转录自 index.html 的现有文案与流程；在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
+              "order": 43,
+              "updatedAt": "2026-11-18T22:32:08.176Z",
+              "lines": [],
+              "eventId": "chat.food",
+              "eventCaseId": "case_artist_1",
+              "eventSteps": [],
+              "trigger": {
+                "day": 1,
+                "slot": "any",
+                "when": "true",
+                "condition": {
+                  "type": "boolean",
+                  "value": true
+                },
+                "through": 5,
+                "description": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。"
+              }
+            },
+            {
               "id": "dlg_block_zb67el",
               "day": 1,
               "type": "dialogue",
@@ -2173,7 +2198,7 @@
               "status": "final",
               "notes": "",
               "order": 42,
-              "updatedAt": "2026-11-18T22:29:38.831Z",
+              "updatedAt": "2026-11-18T22:29:39.855Z",
               "lines": [
                 {
                   "id": "bl_zb67el_line_0",
@@ -2257,31 +2282,6 @@
               }
             },
             {
-              "id": "dlg_block_3ktcmt",
-              "day": 1,
-              "type": "dialogue",
-              "name": "外卖下单 · 选择与画师回复",
-              "status": "final",
-              "notes": "转录自 index.html 的现有文案与流程；在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
-              "order": 43,
-              "updatedAt": "2026-11-18T22:32:08.176Z",
-              "lines": [],
-              "eventId": "chat.food",
-              "eventCaseId": "case_artist_1",
-              "eventSteps": [],
-              "trigger": {
-                "day": 1,
-                "slot": "any",
-                "when": "true",
-                "condition": {
-                  "type": "boolean",
-                  "value": true
-                },
-                "through": 5,
-                "description": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。"
-              }
-            },
-            {
               "id": "dlg_block_tjnpm8",
               "day": 1,
               "type": "dialogue",
@@ -2289,24 +2289,24 @@
               "status": "final",
               "notes": "",
               "order": 41,
-              "updatedAt": "2026-11-18T22:32:42.220Z",
+              "updatedAt": "2026-11-19T02:28:06.346Z",
               "lines": [
                 {
                   "id": "bl_tjnpm8_line_0",
                   "speaker": "玩家",
-                  "text": "可以制作并发布一段作画过程视频吗？",
+                  "text": "Can you record a time-lapse speed paint video as evidence?",
                   "emotion": ""
                 },
                 {
                   "id": "bl_tjnpm8_line_1",
                   "speaker": "画师",
-                  "text": "可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。",
+                  "text": "Of course! It'll take a while, and I'll need to focus on making the video. Do you think I should work on it now?",
                   "emotion": ""
                 },
                 {
                   "id": "bl_tjnpm8_line_2",
-                  "speaker": "画师",
-                  "text": "时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？",
+                  "speaker": "系统",
+                  "text": "It will take two time slots for Iris to finish recording and posting the video. ",
                   "emotion": ""
                 }
               ],
@@ -2322,7 +2322,7 @@
                 {
                   "type": "say",
                   "speaker": "玩家",
-                  "text": "可以制作并发布一段作画过程视频吗？",
+                  "text": "Can you record a time-lapse speed paint video as evidence?",
                   "emotion": "",
                   "id": "bl_tjnpm8_line_0",
                   "line": 13,
@@ -2331,7 +2331,7 @@
                 {
                   "type": "say",
                   "speaker": "画师",
-                  "text": "可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。",
+                  "text": "Of course! It'll take a while, and I'll need to focus on making the video. Do you think I should work on it now?",
                   "emotion": "",
                   "id": "bl_tjnpm8_line_1",
                   "line": 17,
@@ -2339,12 +2339,11 @@
                 },
                 {
                   "type": "say",
-                  "speaker": "画师",
-                  "text": "时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？",
+                  "speaker": "系统",
+                  "text": "It will take two time slots for Iris to finish recording and posting the video. ",
                   "emotion": "",
-                  "id": "bl_tjnpm8_line_2",
-                  "line": 21,
-                  "idLine": 23
+                  "id": "",
+                  "line": 21
                 }
               ],
               "trigger": {
@@ -2872,147 +2871,6 @@
               ]
             },
             {
-              "id": "bl_zb67el_choice_2",
-              "day": 1,
-              "type": "choice",
-              "dialogueId": "dlg_block_zb67el",
-              "text": "Arrange the livestream",
-              "result": "",
-              "condition": "",
-              "actionId": "action_approve_wager",
-              "status": "final",
-              "notes": "",
-              "order": 42,
-              "updatedAt": "2026-11-18T22:29:38.831Z",
-              "eventId": "chat.wager",
-              "eventCaseId": "case_artist_1",
-              "eventSteps": [
-                {
-                  "type": "say",
-                  "speaker": "玩家",
-                  "text": "Let's arrange the livestream challenge.",
-                  "emotion": "",
-                  "id": "bl_zb67el_line_3",
-                  "line": 29,
-                  "idLine": 31
-                },
-                {
-                  "type": "say",
-                  "speaker": "画师",
-                  "text": "Okay... I need some time to prepare. Let's set the livestream to the last day. ",
-                  "emotion": "",
-                  "id": "bl_zb67el_line_4",
-                  "line": 33,
-                  "idLine": 35
-                },
-                {
-                  "line": 37,
-                  "type": "showPost",
-                  "postId": "post_block_m13h9n"
-                },
-                {
-                  "line": 38,
-                  "type": "action",
-                  "key": "approve_wager",
-                  "actionId": "action_approve_wager"
-                },
-                {
-                  "type": "jump",
-                  "target": "END",
-                  "line": 39
-                }
-              ],
-              "eventCondition": {
-                "type": "boolean",
-                "value": true
-              },
-              "lines": [
-                {
-                  "id": "bl_zb67el_line_3",
-                  "speaker": "玩家",
-                  "text": "Let's arrange the livestream challenge.",
-                  "emotion": ""
-                },
-                {
-                  "id": "bl_zb67el_line_4",
-                  "speaker": "画师",
-                  "text": "Okay... I need some time to prepare. Let's set the livestream to the last day. ",
-                  "emotion": ""
-                }
-              ],
-              "actionIds": [
-                "action_approve_wager"
-              ]
-            },
-            {
-              "id": "bl_zb67el_choice_5",
-              "day": 1,
-              "type": "choice",
-              "dialogueId": "dlg_block_zb67el",
-              "text": "Not now",
-              "result": "",
-              "condition": "",
-              "actionId": "action_decline_wager",
-              "status": "final",
-              "notes": "",
-              "order": 42.01,
-              "updatedAt": "2026-11-18T22:29:38.831Z",
-              "eventId": "chat.wager",
-              "eventCaseId": "case_artist_1",
-              "eventSteps": [
-                {
-                  "type": "say",
-                  "speaker": "玩家",
-                  "text": "We don't have to do the livestream. Let's look through the materials first.",
-                  "emotion": "",
-                  "id": "bl_zb67el_line_6",
-                  "line": 43,
-                  "idLine": 45
-                },
-                {
-                  "type": "say",
-                  "speaker": "画师",
-                  "text": "Perfect! Thank you for asking. ",
-                  "emotion": "",
-                  "id": "bl_zb67el_line_7",
-                  "line": 47,
-                  "idLine": 49
-                },
-                {
-                  "line": 51,
-                  "type": "action",
-                  "key": "decline_wager",
-                  "actionId": "action_decline_wager"
-                },
-                {
-                  "type": "jump",
-                  "target": "END",
-                  "line": 52
-                }
-              ],
-              "eventCondition": {
-                "type": "boolean",
-                "value": true
-              },
-              "lines": [
-                {
-                  "id": "bl_zb67el_line_6",
-                  "speaker": "玩家",
-                  "text": "We don't have to do the livestream. Let's look through the materials first.",
-                  "emotion": ""
-                },
-                {
-                  "id": "bl_zb67el_line_7",
-                  "speaker": "画师",
-                  "text": "Perfect! Thank you for asking. ",
-                  "emotion": ""
-                }
-              ],
-              "actionIds": [
-                "action_decline_wager"
-              ]
-            },
-            {
               "id": "bl_3ktcmt_choice_0",
               "day": 1,
               "type": "choice",
@@ -3172,38 +3030,179 @@
               ]
             },
             {
+              "id": "bl_zb67el_choice_2",
+              "day": 1,
+              "type": "choice",
+              "dialogueId": "dlg_block_zb67el",
+              "text": "Arrange the livestream",
+              "result": "",
+              "condition": "",
+              "actionId": "action_approve_wager",
+              "status": "final",
+              "notes": "",
+              "order": 42,
+              "updatedAt": "2026-11-18T22:29:39.855Z",
+              "eventId": "chat.wager",
+              "eventCaseId": "case_artist_1",
+              "eventSteps": [
+                {
+                  "type": "say",
+                  "speaker": "玩家",
+                  "text": "Let's arrange the livestream challenge.",
+                  "emotion": "",
+                  "id": "bl_zb67el_line_3",
+                  "line": 29,
+                  "idLine": 31
+                },
+                {
+                  "type": "say",
+                  "speaker": "画师",
+                  "text": "Okay... I need some time to prepare. Let's set the livestream to the last day. ",
+                  "emotion": "",
+                  "id": "bl_zb67el_line_4",
+                  "line": 33,
+                  "idLine": 35
+                },
+                {
+                  "line": 37,
+                  "type": "showPost",
+                  "postId": "post_block_m13h9n"
+                },
+                {
+                  "line": 38,
+                  "type": "action",
+                  "key": "approve_wager",
+                  "actionId": "action_approve_wager"
+                },
+                {
+                  "type": "jump",
+                  "target": "END",
+                  "line": 39
+                }
+              ],
+              "eventCondition": {
+                "type": "boolean",
+                "value": true
+              },
+              "lines": [
+                {
+                  "id": "bl_zb67el_line_3",
+                  "speaker": "玩家",
+                  "text": "Let's arrange the livestream challenge.",
+                  "emotion": ""
+                },
+                {
+                  "id": "bl_zb67el_line_4",
+                  "speaker": "画师",
+                  "text": "Okay... I need some time to prepare. Let's set the livestream to the last day. ",
+                  "emotion": ""
+                }
+              ],
+              "actionIds": [
+                "action_approve_wager"
+              ]
+            },
+            {
+              "id": "bl_zb67el_choice_5",
+              "day": 1,
+              "type": "choice",
+              "dialogueId": "dlg_block_zb67el",
+              "text": "Not now",
+              "result": "",
+              "condition": "",
+              "actionId": "action_decline_wager",
+              "status": "final",
+              "notes": "",
+              "order": 42.01,
+              "updatedAt": "2026-11-18T22:29:39.855Z",
+              "eventId": "chat.wager",
+              "eventCaseId": "case_artist_1",
+              "eventSteps": [
+                {
+                  "type": "say",
+                  "speaker": "玩家",
+                  "text": "We don't have to do the livestream. Let's look through the materials first.",
+                  "emotion": "",
+                  "id": "bl_zb67el_line_6",
+                  "line": 43,
+                  "idLine": 45
+                },
+                {
+                  "type": "say",
+                  "speaker": "画师",
+                  "text": "Perfect! Thank you for asking. ",
+                  "emotion": "",
+                  "id": "bl_zb67el_line_7",
+                  "line": 47,
+                  "idLine": 49
+                },
+                {
+                  "line": 51,
+                  "type": "action",
+                  "key": "decline_wager",
+                  "actionId": "action_decline_wager"
+                },
+                {
+                  "type": "jump",
+                  "target": "END",
+                  "line": 52
+                }
+              ],
+              "eventCondition": {
+                "type": "boolean",
+                "value": true
+              },
+              "lines": [
+                {
+                  "id": "bl_zb67el_line_6",
+                  "speaker": "玩家",
+                  "text": "We don't have to do the livestream. Let's look through the materials first.",
+                  "emotion": ""
+                },
+                {
+                  "id": "bl_zb67el_line_7",
+                  "speaker": "画师",
+                  "text": "Perfect! Thank you for asking. ",
+                  "emotion": ""
+                }
+              ],
+              "actionIds": [
+                "action_decline_wager"
+              ]
+            },
+            {
               "id": "bl_tjnpm8_choice_3",
               "day": 1,
               "type": "choice",
               "dialogueId": "dlg_block_tjnpm8",
-              "text": "同意制作并发布",
+              "text": "Make a process video",
               "result": "",
               "condition": "",
               "actionId": "action_approve_video",
               "status": "final",
               "notes": "",
               "order": 41,
-              "updatedAt": "2026-11-18T22:32:42.220Z",
+              "updatedAt": "2026-11-19T02:28:06.346Z",
               "eventId": "chat.video",
               "eventCaseId": "case_artist_1",
               "eventSteps": [
                 {
                   "type": "say",
                   "speaker": "玩家",
-                  "text": "好，麻烦你制作并发布吧。",
+                  "text": "Let's make one. We can keep it short and use the process notes and WIPs you've already shared.",
                   "emotion": "",
                   "id": "bl_tjnpm8_line_4",
-                  "line": 28,
-                  "idLine": 30
+                  "line": 26,
+                  "idLine": 28
                 },
                 {
                   "type": "say",
                   "speaker": "画师",
-                  "text": "好，我会专心把过程录下来，再整理成视频。",
+                  "text": "Okay. I'll put them together, but I'll need to focus on this for a while. I might be slow to reply.",
                   "emotion": "",
                   "id": "bl_tjnpm8_line_5",
-                  "line": 32,
-                  "idLine": 34
+                  "line": 30,
+                  "idLine": 32
                 },
                 {
                   "type": "say",
@@ -3211,16 +3210,16 @@
                   "text": "作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。",
                   "emotion": "",
                   "id": "bl_tjnpm8_line_6",
-                  "line": 36,
-                  "idLine": 38
+                  "line": 34,
+                  "idLine": 36
                 },
                 {
-                  "line": 40,
+                  "line": 38,
                   "type": "showPost",
                   "postId": "post_block_f6w1qy"
                 },
                 {
-                  "line": 41,
+                  "line": 39,
                   "type": "action",
                   "key": "approve_video",
                   "actionId": "action_approve_video"
@@ -3228,7 +3227,7 @@
                 {
                   "type": "jump",
                   "target": "END",
-                  "line": 42
+                  "line": 40
                 }
               ],
               "eventCondition": {
@@ -3239,13 +3238,13 @@
                 {
                   "id": "bl_tjnpm8_line_4",
                   "speaker": "玩家",
-                  "text": "好，麻烦你制作并发布吧。",
+                  "text": "Let's make one. We can keep it short and use the process notes and WIPs you've already shared.",
                   "emotion": ""
                 },
                 {
                   "id": "bl_tjnpm8_line_5",
                   "speaker": "画师",
-                  "text": "好，我会专心把过程录下来，再整理成视频。",
+                  "text": "Okay. I'll put them together, but I'll need to focus on this for a while. I might be slow to reply.",
                   "emotion": ""
                 },
                 {
@@ -3264,37 +3263,37 @@
               "day": 1,
               "type": "choice",
               "dialogueId": "dlg_block_tjnpm8",
-              "text": "暂时不做",
+              "text": "Not now",
               "result": "",
               "condition": "",
               "actionId": "action_decline_video",
               "status": "final",
               "notes": "",
               "order": 41.01,
-              "updatedAt": "2026-11-18T22:32:42.220Z",
+              "updatedAt": "2026-11-19T02:28:06.346Z",
               "eventId": "chat.video",
               "eventCaseId": "case_artist_1",
               "eventSteps": [
                 {
                   "type": "say",
                   "speaker": "玩家",
-                  "text": "先不做了，你缓一缓。",
+                  "text": "Let's hold off for now. Your process notes and WIPs are already available, so I can direct people to those.",
                   "emotion": "",
                   "id": "bl_tjnpm8_line_8",
-                  "line": 46,
-                  "idLine": 48
+                  "line": 44,
+                  "idLine": 46
                 },
                 {
                   "type": "say",
                   "speaker": "画师",
-                  "text": "好，那先不做。之后需要的时候再和我说。",
+                  "text": "Thanks. lmk if you need it next time. ",
                   "emotion": "",
                   "id": "bl_tjnpm8_line_9",
-                  "line": 50,
-                  "idLine": 52
+                  "line": 48,
+                  "idLine": 50
                 },
                 {
-                  "line": 54,
+                  "line": 52,
                   "type": "action",
                   "key": "decline_video",
                   "actionId": "action_decline_video"
@@ -3302,7 +3301,7 @@
                 {
                   "type": "jump",
                   "target": "END",
-                  "line": 55
+                  "line": 53
                 }
               ],
               "eventCondition": {
@@ -3313,13 +3312,13 @@
                 {
                   "id": "bl_tjnpm8_line_8",
                   "speaker": "玩家",
-                  "text": "先不做了，你缓一缓。",
+                  "text": "Let's hold off for now. Your process notes and WIPs are already available, so I can direct people to those.",
                   "emotion": ""
                 },
                 {
                   "id": "bl_tjnpm8_line_9",
                   "speaker": "画师",
-                  "text": "好，那先不做。之后需要的时候再和我说。",
+                  "text": "Thanks. lmk if you need it next time. ",
                   "emotion": ""
                 }
               ],
@@ -10235,7 +10234,7 @@
             ]
           },
           "order": 41,
-          "updatedAt": "2026-11-18T22:33:09.153Z",
+          "updatedAt": "2026-11-19T02:28:40.372Z",
           "id": "chat.video",
           "caseId": "case_artist_1",
           "title": "制作过程视频 · 完整对话",
@@ -10246,9 +10245,9 @@
           "blockType": "chat",
           "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。",
           "catalogId": "chat.video",
-          "source": "=== chat.video\ncase: case_artist_1\ntype: chat\ntitle: \"制作过程视频 · 完整对话\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n\n@action: request_video\n玩家:\n  可以制作并发布一段作画过程视频吗？\n@line_id: \"bl_tjnpm8_line_0\"\n\n画师:\n  可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。\n@line_id: \"bl_tjnpm8_line_1\"\n\n画师:\n  时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？\n@line_id: \"bl_tjnpm8_line_2\"\n\n\n* [同意制作并发布]\n  @choice_id: \"bl_tjnpm8_choice_3\"\n  玩家:\n    好，麻烦你制作并发布吧。\n  @line_id: \"bl_tjnpm8_line_4\"\n\n  画师:\n    好，我会专心把过程录下来，再整理成视频。\n  @line_id: \"bl_tjnpm8_line_5\"\n\n  画师:\n    作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。\n  @line_id: \"bl_tjnpm8_line_6\"\n\n  @show_post: post_block_f6w1qy\n  @action: approve_video\n  -> END\n\n* [暂时不做]\n  @choice_id: \"bl_tjnpm8_choice_7\"\n  玩家:\n    先不做了，你缓一缓。\n  @line_id: \"bl_tjnpm8_line_8\"\n\n  画师:\n    好，那先不做。之后需要的时候再和我说。\n  @line_id: \"bl_tjnpm8_line_9\"\n\n  @action: decline_video\n  -> END",
+          "source": "=== chat.video\ncase: case_artist_1\ntype: chat\ntitle: \"制作过程视频 · 完整对话\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n\n@action: request_video\n玩家:\n  Can you record a time-lapse speed paint video as evidence?\n@line_id: \"bl_tjnpm8_line_0\"\n\n画师:\n  Of course! It'll take a while, and I'll need to focus on making the video. Do you think I should work on it now?\n@line_id: \"bl_tjnpm8_line_1\"\n\n系统: \n  It will take two time slots for Iris to finish recording and posting the video. \n\n* [Make a process video]\n  @choice_id: \"bl_tjnpm8_choice_3\"\n  玩家:\n    Let's make one. We can keep it short and use the process notes and WIPs you've already shared.\n  @line_id: \"bl_tjnpm8_line_4\"\n\n  画师:\n    Okay. I'll put them together, but I'll need to focus on this for a while. I might be slow to reply.\n  @line_id: \"bl_tjnpm8_line_5\"\n\n  画师:\n    作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。\n  @line_id: \"bl_tjnpm8_line_6\"\n\n  @show_post: post_block_f6w1qy\n  @action: approve_video\n  -> END\n\n* [Not now]\n  @choice_id: \"bl_tjnpm8_choice_7\"\n  玩家:\n    Let's hold off for now. Your process notes and WIPs are already available, so I can direct people to those.\n  @line_id: \"bl_tjnpm8_line_8\"\n\n  画师:\n    Thanks. lmk if you need it next time. \n  @line_id: \"bl_tjnpm8_line_9\"\n\n  @action: decline_video\n  -> END",
           "catalogBaseline": "=== chat.video\ncase: case_artist_1\ntype: chat\ntitle: \"制作过程视频 · 完整对话\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n@action: request_video\n玩家:\n  可以制作并发布一段作画过程视频吗？\n@line_id: \"bl_tjnpm8_line_0\"\n\n画师:\n  可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。\n@line_id: \"bl_tjnpm8_line_1\"\n\n画师:\n  时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？\n@line_id: \"bl_tjnpm8_line_2\"\n\n\n* [同意制作并发布]\n  @choice_id: \"bl_tjnpm8_choice_3\"\n  玩家:\n    好，麻烦你制作并发布吧。\n  @line_id: \"bl_tjnpm8_line_4\"\n\n  画师:\n    好，我会专心把过程录下来，再整理成视频。\n  @line_id: \"bl_tjnpm8_line_5\"\n\n  画师:\n    作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。\n  @line_id: \"bl_tjnpm8_line_6\"\n\n  @show_post: post_block_f6w1qy\n  @action: approve_video\n  -> END\n\n* [暂时不做]\n  @choice_id: \"bl_tjnpm8_choice_7\"\n  玩家:\n    先不做了，你缓一缓。\n  @line_id: \"bl_tjnpm8_line_8\"\n\n  画师:\n    好，那先不做。之后需要的时候再和我说。\n  @line_id: \"bl_tjnpm8_line_9\"\n\n  @action: decline_video\n  -> END",
-          "appliedSource": "=== chat.video\ncase: case_artist_1\ntype: chat\ntitle: \"制作过程视频 · 完整对话\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n\n@action: request_video\n玩家:\n  可以制作并发布一段作画过程视频吗？\n@line_id: \"bl_tjnpm8_line_0\"\n\n画师:\n  可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。\n@line_id: \"bl_tjnpm8_line_1\"\n\n画师:\n  时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？\n@line_id: \"bl_tjnpm8_line_2\"\n\n\n* [同意制作并发布]\n  @choice_id: \"bl_tjnpm8_choice_3\"\n  玩家:\n    好，麻烦你制作并发布吧。\n  @line_id: \"bl_tjnpm8_line_4\"\n\n  画师:\n    好，我会专心把过程录下来，再整理成视频。\n  @line_id: \"bl_tjnpm8_line_5\"\n\n  画师:\n    作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。\n  @line_id: \"bl_tjnpm8_line_6\"\n\n  @show_post: post_block_f6w1qy\n  @action: approve_video\n  -> END\n\n* [暂时不做]\n  @choice_id: \"bl_tjnpm8_choice_7\"\n  玩家:\n    先不做了，你缓一缓。\n  @line_id: \"bl_tjnpm8_line_8\"\n\n  画师:\n    好，那先不做。之后需要的时候再和我说。\n  @line_id: \"bl_tjnpm8_line_9\"\n\n  @action: decline_video\n  -> END",
+          "appliedSource": "=== chat.video\ncase: case_artist_1\ntype: chat\ntitle: \"制作过程视频 · 完整对话\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n\n@action: request_video\n玩家:\n  Can you record a time-lapse speed paint video as evidence?\n@line_id: \"bl_tjnpm8_line_0\"\n\n画师:\n  Of course! It'll take a while, and I'll need to focus on making the video. Do you think I should work on it now?\n@line_id: \"bl_tjnpm8_line_1\"\n\n系统: \n  It will take two time slots for Iris to finish recording and posting the video. \n\n* [Make a process video]\n  @choice_id: \"bl_tjnpm8_choice_3\"\n  玩家:\n    Let's make one. We can keep it short and use the process notes and WIPs you've already shared.\n  @line_id: \"bl_tjnpm8_line_4\"\n\n  画师:\n    Okay. I'll put them together, but I'll need to focus on this for a while. I might be slow to reply.\n  @line_id: \"bl_tjnpm8_line_5\"\n\n  画师:\n    作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。\n  @line_id: \"bl_tjnpm8_line_6\"\n\n  @show_post: post_block_f6w1qy\n  @action: approve_video\n  -> END\n\n* [Not now]\n  @choice_id: \"bl_tjnpm8_choice_7\"\n  玩家:\n    Let's hold off for now. Your process notes and WIPs are already available, so I can direct people to those.\n  @line_id: \"bl_tjnpm8_line_8\"\n\n  画师:\n    Thanks. lmk if you need it next time. \n  @line_id: \"bl_tjnpm8_line_9\"\n\n  @action: decline_video\n  -> END",
           "origin": {
             "file": "index.html",
             "scope": "chat.video"
@@ -10276,7 +10275,7 @@
               {
                 "type": "say",
                 "speaker": "玩家",
-                "text": "可以制作并发布一段作画过程视频吗？",
+                "text": "Can you record a time-lapse speed paint video as evidence?",
                 "emotion": "",
                 "id": "bl_tjnpm8_line_0",
                 "line": 13,
@@ -10285,7 +10284,7 @@
               {
                 "type": "say",
                 "speaker": "画师",
-                "text": "可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。",
+                "text": "Of course! It'll take a while, and I'll need to focus on making the video. Do you think I should work on it now?",
                 "emotion": "",
                 "id": "bl_tjnpm8_line_1",
                 "line": 17,
@@ -10293,18 +10292,17 @@
               },
               {
                 "type": "say",
-                "speaker": "画师",
-                "text": "时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？",
+                "speaker": "系统",
+                "text": "It will take two time slots for Iris to finish recording and posting the video. ",
                 "emotion": "",
-                "id": "bl_tjnpm8_line_2",
-                "line": 21,
-                "idLine": 23
+                "id": "",
+                "line": 21
               }
             ],
             "choices": [
               {
                 "id": "bl_tjnpm8_choice_3",
-                "text": "同意制作并发布",
+                "text": "Make a process video",
                 "when": "true",
                 "condition": {
                   "type": "boolean",
@@ -10316,20 +10314,20 @@
                   {
                     "type": "say",
                     "speaker": "玩家",
-                    "text": "好，麻烦你制作并发布吧。",
+                    "text": "Let's make one. We can keep it short and use the process notes and WIPs you've already shared.",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_4",
-                    "line": 28,
-                    "idLine": 30
+                    "line": 26,
+                    "idLine": 28
                   },
                   {
                     "type": "say",
                     "speaker": "画师",
-                    "text": "好，我会专心把过程录下来，再整理成视频。",
+                    "text": "Okay. I'll put them together, but I'll need to focus on this for a while. I might be slow to reply.",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_5",
-                    "line": 32,
-                    "idLine": 34
+                    "line": 30,
+                    "idLine": 32
                   },
                   {
                     "type": "say",
@@ -10337,16 +10335,16 @@
                     "text": "作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_6",
-                    "line": 36,
-                    "idLine": 38
+                    "line": 34,
+                    "idLine": 36
                   },
                   {
-                    "line": 40,
+                    "line": 38,
                     "type": "showPost",
                     "postId": "post_block_f6w1qy"
                   },
                   {
-                    "line": 41,
+                    "line": 39,
                     "type": "action",
                     "key": "approve_video",
                     "actionId": "action_approve_video"
@@ -10354,15 +10352,15 @@
                   {
                     "type": "jump",
                     "target": "END",
-                    "line": 42
+                    "line": 40
                   }
                 ],
-                "line": 26,
-                "idLine": 27
+                "line": 24,
+                "idLine": 25
               },
               {
                 "id": "bl_tjnpm8_choice_7",
-                "text": "暂时不做",
+                "text": "Not now",
                 "when": "true",
                 "condition": {
                   "type": "boolean",
@@ -10374,23 +10372,23 @@
                   {
                     "type": "say",
                     "speaker": "玩家",
-                    "text": "先不做了，你缓一缓。",
+                    "text": "Let's hold off for now. Your process notes and WIPs are already available, so I can direct people to those.",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_8",
-                    "line": 46,
-                    "idLine": 48
+                    "line": 44,
+                    "idLine": 46
                   },
                   {
                     "type": "say",
                     "speaker": "画师",
-                    "text": "好，那先不做。之后需要的时候再和我说。",
+                    "text": "Thanks. lmk if you need it next time. ",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_9",
-                    "line": 50,
-                    "idLine": 52
+                    "line": 48,
+                    "idLine": 50
                   },
                   {
-                    "line": 54,
+                    "line": 52,
                     "type": "action",
                     "key": "decline_video",
                     "actionId": "action_decline_video"
@@ -10398,11 +10396,11 @@
                   {
                     "type": "jump",
                     "target": "END",
-                    "line": 55
+                    "line": 53
                   }
                 ],
-                "line": 44,
-                "idLine": 45
+                "line": 42,
+                "idLine": 43
               }
             ],
             "notes": "",
@@ -10427,7 +10425,7 @@
             ]
           },
           "order": 42,
-          "updatedAt": "2026-11-18T22:29:39.855Z",
+          "updatedAt": "2026-11-18T22:34:56.374Z",
           "id": "chat.wager",
           "caseId": "case_artist_1",
           "title": "直播对赌 · 提议、确认和公告",
@@ -27212,7 +27210,7 @@
   ],
   "game": {
     "version": 1,
-    "updatedAt": "2026-11-18T22:33:09.153Z",
+    "updatedAt": "2026-11-19T02:28:40.372Z",
     "stats": [
       {
         "id": "stat_opinion",
@@ -30925,7 +30923,7 @@
               {
                 "type": "say",
                 "speaker": "玩家",
-                "text": "可以制作并发布一段作画过程视频吗？",
+                "text": "Can you record a time-lapse speed paint video as evidence?",
                 "emotion": "",
                 "id": "bl_tjnpm8_line_0",
                 "line": 13,
@@ -30934,7 +30932,7 @@
               {
                 "type": "say",
                 "speaker": "画师",
-                "text": "可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。",
+                "text": "Of course! It'll take a while, and I'll need to focus on making the video. Do you think I should work on it now?",
                 "emotion": "",
                 "id": "bl_tjnpm8_line_1",
                 "line": 17,
@@ -30942,18 +30940,17 @@
               },
               {
                 "type": "say",
-                "speaker": "画师",
-                "text": "时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？",
+                "speaker": "系统",
+                "text": "It will take two time slots for Iris to finish recording and posting the video. ",
                 "emotion": "",
-                "id": "bl_tjnpm8_line_2",
-                "line": 21,
-                "idLine": 23
+                "id": "",
+                "line": 21
               }
             ],
             "choices": [
               {
                 "id": "bl_tjnpm8_choice_3",
-                "text": "同意制作并发布",
+                "text": "Make a process video",
                 "when": "true",
                 "condition": {
                   "type": "boolean",
@@ -30965,20 +30962,20 @@
                   {
                     "type": "say",
                     "speaker": "玩家",
-                    "text": "好，麻烦你制作并发布吧。",
+                    "text": "Let's make one. We can keep it short and use the process notes and WIPs you've already shared.",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_4",
-                    "line": 28,
-                    "idLine": 30
+                    "line": 26,
+                    "idLine": 28
                   },
                   {
                     "type": "say",
                     "speaker": "画师",
-                    "text": "好，我会专心把过程录下来，再整理成视频。",
+                    "text": "Okay. I'll put them together, but I'll need to focus on this for a while. I might be slow to reply.",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_5",
-                    "line": 32,
-                    "idLine": 34
+                    "line": 30,
+                    "idLine": 32
                   },
                   {
                     "type": "say",
@@ -30986,16 +30983,16 @@
                     "text": "作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_6",
-                    "line": 36,
-                    "idLine": 38
+                    "line": 34,
+                    "idLine": 36
                   },
                   {
-                    "line": 40,
+                    "line": 38,
                     "type": "showPost",
                     "postId": "post_block_f6w1qy"
                   },
                   {
-                    "line": 41,
+                    "line": 39,
                     "type": "action",
                     "key": "approve_video",
                     "actionId": "action_approve_video"
@@ -31003,15 +31000,15 @@
                   {
                     "type": "jump",
                     "target": "END",
-                    "line": 42
+                    "line": 40
                   }
                 ],
-                "line": 26,
-                "idLine": 27
+                "line": 24,
+                "idLine": 25
               },
               {
                 "id": "bl_tjnpm8_choice_7",
-                "text": "暂时不做",
+                "text": "Not now",
                 "when": "true",
                 "condition": {
                   "type": "boolean",
@@ -31023,23 +31020,23 @@
                   {
                     "type": "say",
                     "speaker": "玩家",
-                    "text": "先不做了，你缓一缓。",
+                    "text": "Let's hold off for now. Your process notes and WIPs are already available, so I can direct people to those.",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_8",
-                    "line": 46,
-                    "idLine": 48
+                    "line": 44,
+                    "idLine": 46
                   },
                   {
                     "type": "say",
                     "speaker": "画师",
-                    "text": "好，那先不做。之后需要的时候再和我说。",
+                    "text": "Thanks. lmk if you need it next time. ",
                     "emotion": "",
                     "id": "bl_tjnpm8_line_9",
-                    "line": 50,
-                    "idLine": 52
+                    "line": 48,
+                    "idLine": 50
                   },
                   {
-                    "line": 54,
+                    "line": 52,
                     "type": "action",
                     "key": "decline_video",
                     "actionId": "action_decline_video"
@@ -31047,11 +31044,11 @@
                   {
                     "type": "jump",
                     "target": "END",
-                    "line": 55
+                    "line": 53
                   }
                 ],
-                "line": 44,
-                "idLine": 45
+                "line": 42,
+                "idLine": 43
               }
             ],
             "notes": "",
