@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updatedAt": "2026-11-19T02:40:05.913Z",
+  "updatedAt": "2026-11-19T04:33:45.565Z",
   "stats": [
     {
       "id": "stat_opinion",
@@ -925,7 +925,7 @@
       "name": "画师 1",
       "artist": "Iris",
       "description": "保留旧版管理器中的剧本。",
-      "updatedAt": "2026-11-19T02:40:05.913Z",
+      "updatedAt": "2026-11-19T04:33:45.565Z",
       "initialValues": {
         "stat_opinion": null,
         "stat_stress": null,
@@ -982,33 +982,6 @@
               "through": 5,
               "trigger": "从 Day 1 起在小粉书可见。",
               "eventId": "post:post_block_ix0uk4",
-              "eventCaseId": "case_artist_1"
-            },
-            {
-              "sourceTemplate": "n1",
-              "sourceGameId": "n1",
-              "tags": "#鉴ai #约稿避雷",
-              "stars": 418,
-              "kind": "accuse",
-              "img": "sketchbook",
-              "av": 0,
-              "id": "post_block_jh01y2",
-              "title": "Is this AI-generated?",
-              "body": "I've been looking at the two commissioned pieces, and a few things concern me. The artist's style seems to have improved very quickly over the past few months, and the hands and knees look stiff and unnatural. I've attached a bunch of photos with some evidence to my claims. Some of the hair lines blur and run together, the shape of the knees look awkward, and the ears seem weird. These could all be human mistakes, so none of them proves AI was used.",
-              "day": 1,
-              "type": "post",
-              "author": "ilovePikachu",
-              "image": "",
-              "likes": 2316,
-              "status": "final",
-              "notes": "",
-              "order": 2,
-              "updatedAt": "2026-11-18T21:59:59.177Z",
-              "evidenceId": "",
-              "publishActions": [],
-              "through": 5,
-              "trigger": "从 Day 1 起在小粉书可见。",
-              "eventId": "post:post_block_jh01y2",
               "eventCaseId": "case_artist_1"
             },
             {
@@ -1155,6 +1128,33 @@
               "trigger": "从 Day 1 起在小粉书可见。",
               "eventId": "post:post_block_j70g93",
               "eventCaseId": "case_artist_1"
+            },
+            {
+              "sourceTemplate": "n1",
+              "sourceGameId": "n1",
+              "tags": "#鉴ai #约稿避雷",
+              "stars": 418,
+              "kind": "accuse",
+              "img": "sketchbook",
+              "av": 0,
+              "id": "post_block_jh01y2",
+              "title": "Is this AI-generated?",
+              "body": "I've been looking at the two commissioned pieces, and a few things concern me. The artist's style seems to have improved very quickly over the past few months, and the hands and knees look stiff and unnatural. I've attached a bunch of photos with some evidence to my claims. Some of the hair lines blur and run together, the shape of the knees look awkward, and the ears seem weird. These could all be human mistakes, so none of them proves AI was used.",
+              "day": 1,
+              "type": "post",
+              "author": "ilovePikachu",
+              "image": "",
+              "likes": 2316,
+              "status": "final",
+              "notes": "",
+              "order": 2,
+              "updatedAt": "2026-11-19T03:47:11.178Z",
+              "evidenceId": "",
+              "publishActions": [],
+              "through": 5,
+              "trigger": "从 Day 1 起在小粉书可见。",
+              "eventId": "post:post_block_jh01y2",
+              "eventCaseId": "case_artist_1"
             }
           ],
           "comments": [
@@ -1187,7 +1187,14 @@
               "sourceGameId": "c1",
               "av": 1,
               "order": 0,
-              "updatedAt": "2026-11-18T21:59:59.177Z"
+              "updatedAt": "2026-11-19T03:47:11.178Z",
+              "evidenceRule": {
+                "relevantEvidence": [
+                  "e1",
+                  "e3",
+                  "e4"
+                ]
+              }
             },
             {
               "id": "comment_block_1fxz0lq",
@@ -1204,7 +1211,8 @@
               "sourceGameId": "c2",
               "av": 2,
               "order": 1,
-              "updatedAt": "2026-11-18T21:59:59.177Z"
+              "updatedAt": "2026-11-19T03:47:11.178Z",
+              "evidenceRule": null
             },
             {
               "id": "comment_block_1g7ymap",
@@ -1221,7 +1229,14 @@
               "sourceGameId": "c3",
               "av": 3,
               "order": 2,
-              "updatedAt": "2026-11-18T21:59:59.177Z"
+              "updatedAt": "2026-11-19T03:47:11.178Z",
+              "evidenceRule": {
+                "relevantEvidence": [
+                  "e1",
+                  "e3",
+                  "e4"
+                ]
+              }
             },
             {
               "id": "comment_block_1ghy7zo",
@@ -1238,7 +1253,8 @@
               "sourceGameId": "c4",
               "av": 4,
               "order": 3,
-              "updatedAt": "2026-11-18T21:59:59.177Z"
+              "updatedAt": "2026-11-19T03:47:11.178Z",
+              "evidenceRule": null
             },
             {
               "id": "comment_block_1grxton",
@@ -1255,7 +1271,8 @@
               "sourceGameId": "c5",
               "av": 5,
               "order": 4,
-              "updatedAt": "2026-11-18T21:59:59.177Z"
+              "updatedAt": "2026-11-19T03:47:11.178Z",
+              "evidenceRule": null
             },
             {
               "id": "comment_block_1h1xfdm",
@@ -1272,7 +1289,14 @@
               "sourceGameId": "c6",
               "av": 0,
               "order": 5,
-              "updatedAt": "2026-11-18T21:59:59.177Z"
+              "updatedAt": "2026-11-19T03:47:11.178Z",
+              "evidenceRule": {
+                "relevantEvidence": [
+                  "e1",
+                  "e3",
+                  "e4"
+                ]
+              }
             }
           ],
           "dialogues": [
@@ -6237,6 +6261,7 @@
         }
       ],
       "actionTimingRevision": 1,
+      "evidenceCounterReplyRevision": 1,
       "events": [
         {
           "key": "legacy_dialogue_2",
@@ -6607,16 +6632,16 @@
               ]
             }
           },
-          "updatedAt": "2026-11-18T22:00:02.595Z",
+          "updatedAt": "2026-11-19T04:00:47.549Z",
           "catalogId": "post:post_block_jh01y2",
           "origin": {
             "file": "index.html",
             "postId": "n1",
             "template": "n1"
           },
-          "source": "=== post:post_block_jh01y2\ncase: case_artist_1\ntype: post\ntitle: \"Is this AI-generated?\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"ilovePikachu\"\nlikes: 2316\ntrigger: \"从 Day 1 起在小粉书可见。\"\n\nbody:\n  I've been looking at the two commissioned pieces, and a few things concern me. The artist's style seems to have improved very quickly over the past few months, and the hands and knees look stiff and unnatural. I've attached a bunch of photos with some evidence to my claims. Some of the hair lines blur and run together, the shape of the knees look awkward, and the ears seem weird. These could all be human mistakes, so none of them proves AI was used.\n\n[comment comment_block_1fnzewr]\nauthor: \"kittyOWO\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 312\nstatus: final\ntext:\n  I get AI alarms ringing as soon as I see it. The head (and hair) is too detailed for the rest of the image, like the body.\n\n[comment comment_block_1fxz0lq]\nauthor: \"inkieee2617\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 205\nstatus: final\ntext:\n  I followed this artist for years. I don't see a sudden change in style. \nnotes: \"\"\n\n[comment comment_block_1g7ymap]\nauthor: \"userid_3284782102\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 167\nstatus: final\ntext:\n  Friendly reminder to everyone also that artists can be actual artists and be capable of drawing and then also use AI  for certain thinfs as well. The fact that someone \"can draw\", doesn't mean they aren't using AI for some things.\n\n[comment comment_block_1ghy7zo]\nauthor: \"kiwilovesdrawing\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 98\nstatus: final\ntext:\n  Getting the anatomy wrong doesn't prove the image was made with AI.\nnotes: \"\"\n\n[comment comment_block_1grxton]\nauthor: \"cocomochi\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 76\nstatus: final\ntext:\n  This looks legitimate to me. \n  Artists socials seems legit as well and consistent with the style and many wips are available to see\n\n[comment comment_block_1h1xfdm]\nauthor: \"gummybear2767\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 54\nstatus: final\ntext:\n  It's ai look at the texture and zoom in",
+          "source": "=== post:post_block_jh01y2\ncase: case_artist_1\ntype: post\ntitle: \"Is this AI-generated?\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"ilovePikachu\"\nlikes: 2316\ntrigger: \"从 Day 1 起在小粉书可见。\"\n\nbody:\n  I've been looking at the two commissioned pieces, and a few things concern me. The artist's style seems to have improved very quickly over the past few months, and the hands and knees look stiff and unnatural. I've attached a bunch of photos with some evidence to my claims. Some of the hair lines blur and run together, the shape of the knees look awkward, and the ears seem weird. These could all be human mistakes, so none of them proves AI was used.\n\n[comment comment_block_1fnzewr]\nrelevant_evidence: e1, e3, e4\nauthor: \"kittyOWO\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 312\nstatus: final\ntext:\n  I get AI alarms ringing as soon as I see it. The head (and hair) is too detailed for the rest of the image, like the body.\n\n[comment comment_block_1fxz0lq]\nauthor: \"inkieee2617\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 205\nstatus: final\ntext:\n  I followed this artist for years. I don't see a sudden change in style. \nnotes: \"\"\n\n[comment comment_block_1g7ymap]\nrelevant_evidence: e1, e3, e4\nauthor: \"userid_3284782102\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 167\nstatus: final\ntext:\n  Friendly reminder to everyone also that artists can be actual artists and be capable of drawing and then also use AI  for certain thinfs as well. The fact that someone \"can draw\", doesn't mean they aren't using AI for some things.\n\n[comment comment_block_1ghy7zo]\nauthor: \"kiwilovesdrawing\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 98\nstatus: final\ntext:\n  Getting the anatomy wrong doesn't prove the image was made with AI.\nnotes: \"\"\n\n[comment comment_block_1grxton]\nauthor: \"cocomochi\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 76\nstatus: final\ntext:\n  This looks legitimate to me. \n  Artists socials seems legit as well and consistent with the style and many wips are available to see\n\n[comment comment_block_1h1xfdm]\nrelevant_evidence: e1, e3, e4\nauthor: \"gummybear2767\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 54\nstatus: final\ntext:\n  It's ai look at the texture and zoom in",
           "catalogBaseline": "=== post:post_block_jh01y2\ncase: case_artist_1\ntype: post\ntitle: \"这张约稿是 AI 描改的吗？\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"鉴图小分队\"\nlikes: 2316\ntrigger: \"从 Day 1 起在小粉书可见。\"\n\nbody:\n  看看手和背景，线条糊成一片。单主等了五个月等来这个，大家来鉴一下。\n\nnotes: \"转录自 index.html。\"\n\n[comment comment_block_1fnzewr]\nauthor: \"路人甲\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 312\nstatus: final\ntext:\n  手画得不对劲，肯定是 AI。\nnotes: \"\"\n\n[comment comment_block_1fxz0lq]\nauthor: \"墨水瓶\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 205\nstatus: final\ntext:\n  我关注这位画师好几年了，画风对得上。\nnotes: \"\"\n\n[comment comment_block_1g7ymap]\nauthor: \"匿名用户88\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 167\nstatus: final\ntext:\n  没有过程视频，我不信。\nnotes: \"\"\n\n[comment comment_block_1ghy7zo]\nauthor: \"画画的猕猴桃\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 98\nstatus: final\ntext:\n  人体画错了，也证明不了用了 AI。\nnotes: \"\"\n\n[comment comment_block_1grxton]\nauthor: \"潜水中\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 76\nstatus: final\ntext:\n  她凭什么要向陌生人证明？\nnotes: \"\"\n\n[comment comment_block_1h1xfdm]\nauthor: \"细节控\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 54\nstatus: final\ntext:\n  背景的线条都糊在一起了，AI。\nnotes: \"\"",
-          "appliedSource": "=== post:post_block_jh01y2\ncase: case_artist_1\ntype: post\ntitle: \"Is this AI-generated?\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"ilovePikachu\"\nlikes: 2316\ntrigger: \"从 Day 1 起在小粉书可见。\"\n\nbody:\n  I've been looking at the two commissioned pieces, and a few things concern me. The artist's style seems to have improved very quickly over the past few months, and the hands and knees look stiff and unnatural. I've attached a bunch of photos with some evidence to my claims. Some of the hair lines blur and run together, the shape of the knees look awkward, and the ears seem weird. These could all be human mistakes, so none of them proves AI was used.\n\n[comment comment_block_1fnzewr]\nauthor: \"kittyOWO\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 312\nstatus: final\ntext:\n  I get AI alarms ringing as soon as I see it. The head (and hair) is too detailed for the rest of the image, like the body.\n\n[comment comment_block_1fxz0lq]\nauthor: \"inkieee2617\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 205\nstatus: final\ntext:\n  I followed this artist for years. I don't see a sudden change in style. \nnotes: \"\"\n\n[comment comment_block_1g7ymap]\nauthor: \"userid_3284782102\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 167\nstatus: final\ntext:\n  Friendly reminder to everyone also that artists can be actual artists and be capable of drawing and then also use AI  for certain thinfs as well. The fact that someone \"can draw\", doesn't mean they aren't using AI for some things.\n\n[comment comment_block_1ghy7zo]\nauthor: \"kiwilovesdrawing\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 98\nstatus: final\ntext:\n  Getting the anatomy wrong doesn't prove the image was made with AI.\nnotes: \"\"\n\n[comment comment_block_1grxton]\nauthor: \"cocomochi\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 76\nstatus: final\ntext:\n  This looks legitimate to me. \n  Artists socials seems legit as well and consistent with the style and many wips are available to see\n\n[comment comment_block_1h1xfdm]\nauthor: \"gummybear2767\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 54\nstatus: final\ntext:\n  It's ai look at the texture and zoom in",
+          "appliedSource": "=== post:post_block_jh01y2\ncase: case_artist_1\ntype: post\ntitle: \"Is this AI-generated?\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"ilovePikachu\"\nlikes: 2316\ntrigger: \"从 Day 1 起在小粉书可见。\"\n\nbody:\n  I've been looking at the two commissioned pieces, and a few things concern me. The artist's style seems to have improved very quickly over the past few months, and the hands and knees look stiff and unnatural. I've attached a bunch of photos with some evidence to my claims. Some of the hair lines blur and run together, the shape of the knees look awkward, and the ears seem weird. These could all be human mistakes, so none of them proves AI was used.\n\n[comment comment_block_1fnzewr]\nrelevant_evidence: e1, e3, e4\nauthor: \"kittyOWO\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 312\nstatus: final\ntext:\n  I get AI alarms ringing as soon as I see it. The head (and hair) is too detailed for the rest of the image, like the body.\n\n[comment comment_block_1fxz0lq]\nauthor: \"inkieee2617\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 205\nstatus: final\ntext:\n  I followed this artist for years. I don't see a sudden change in style. \nnotes: \"\"\n\n[comment comment_block_1g7ymap]\nrelevant_evidence: e1, e3, e4\nauthor: \"userid_3284782102\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 167\nstatus: final\ntext:\n  Friendly reminder to everyone also that artists can be actual artists and be capable of drawing and then also use AI  for certain thinfs as well. The fact that someone \"can draw\", doesn't mean they aren't using AI for some things.\n\n[comment comment_block_1ghy7zo]\nauthor: \"kiwilovesdrawing\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 98\nstatus: final\ntext:\n  Getting the anatomy wrong doesn't prove the image was made with AI.\nnotes: \"\"\n\n[comment comment_block_1grxton]\nauthor: \"cocomochi\"\nstance: support\nreply_to: \"\"\nday: 1\nlikes: 76\nstatus: final\ntext:\n  This looks legitimate to me. \n  Artists socials seems legit as well and consistent with the style and many wips are available to see\n\n[comment comment_block_1h1xfdm]\nrelevant_evidence: e1, e3, e4\nauthor: \"gummybear2767\"\nstance: accuse\nreply_to: \"\"\nday: 1\nlikes: 54\nstatus: final\ntext:\n  It's ai look at the texture and zoom in",
           "assets": {
             "image": "",
             "postMetadata": {
@@ -6667,7 +6692,7 @@
               "status": "final",
               "notes": "",
               "order": 2,
-              "updatedAt": "2026-11-18T21:59:59.177Z",
+              "updatedAt": "2026-11-19T03:47:11.178Z",
               "evidenceId": "",
               "publishActions": [],
               "through": 5,
@@ -6690,10 +6715,16 @@
                   "sourceGameId": "c1",
                   "av": 1,
                   "order": 0,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
-                  "evidenceRule": null,
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
+                  "evidenceRule": {
+                    "relevantEvidence": [
+                      "e1",
+                      "e3",
+                      "e4"
+                    ]
+                  },
                   "line": 17,
-                  "replyLine": 20,
+                  "replyLine": 21,
                   "textSeen": true
                 },
                 {
@@ -6711,10 +6742,10 @@
                   "sourceGameId": "c2",
                   "av": 2,
                   "order": 1,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
                   "evidenceRule": null,
-                  "line": 27,
-                  "replyLine": 30,
+                  "line": 28,
+                  "replyLine": 31,
                   "textSeen": true
                 },
                 {
@@ -6732,10 +6763,16 @@
                   "sourceGameId": "c3",
                   "av": 3,
                   "order": 2,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
-                  "evidenceRule": null,
-                  "line": 38,
-                  "replyLine": 41,
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
+                  "evidenceRule": {
+                    "relevantEvidence": [
+                      "e1",
+                      "e3",
+                      "e4"
+                    ]
+                  },
+                  "line": 39,
+                  "replyLine": 43,
                   "textSeen": true
                 },
                 {
@@ -6753,10 +6790,10 @@
                   "sourceGameId": "c4",
                   "av": 4,
                   "order": 3,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
                   "evidenceRule": null,
-                  "line": 48,
-                  "replyLine": 51,
+                  "line": 50,
+                  "replyLine": 53,
                   "textSeen": true
                 },
                 {
@@ -6774,10 +6811,10 @@
                   "sourceGameId": "c5",
                   "av": 5,
                   "order": 4,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
                   "evidenceRule": null,
-                  "line": 59,
-                  "replyLine": 62,
+                  "line": 61,
+                  "replyLine": 64,
                   "textSeen": true
                 },
                 {
@@ -6795,10 +6832,16 @@
                   "sourceGameId": "c6",
                   "av": 0,
                   "order": 5,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
-                  "evidenceRule": null,
-                  "line": 70,
-                  "replyLine": 73,
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
+                  "evidenceRule": {
+                    "relevantEvidence": [
+                      "e1",
+                      "e3",
+                      "e4"
+                    ]
+                  },
+                  "line": 72,
+                  "replyLine": 76,
                   "textSeen": true
                 }
               ]
@@ -6917,123 +6960,6 @@
               "through": 5,
               "trigger": "从 Day 1 起在小粉书可见。",
               "eventId": "post:post_block_j70g93",
-              "eventCaseId": "case_artist_1",
-              "comments": []
-            }
-          },
-          "diagnostics": [],
-          "warnings": []
-        },
-        {
-          "key": "block_ee0nw3",
-          "id": "post:post_block_ix0uk4",
-          "caseId": "case_artist_1",
-          "title": "我约她的时间线",
-          "day": 1,
-          "through": 5,
-          "slot": "any",
-          "status": "final",
-          "blockType": "post",
-          "trigger": "从 Day 1 起在小粉书可见。",
-          "order": 5,
-          "legacy": {
-            "postId": "post_block_ix0uk4",
-            "commentIds": [],
-            "archive": {
-              "post": {
-                "id": "post_block_ix0uk4",
-                "title": "我约她的时间线",
-                "body": "把订单页截图放这里，大家自己看时间。",
-                "day": 1,
-                "type": "post",
-                "author": "老单主小葵",
-                "image": "",
-                "likes": 140,
-                "status": "final",
-                "notes": "转录自 index.html。",
-                "order": 4,
-                "updatedAt": "2026-11-18T03:40:15.023Z",
-                "sourceTemplate": "n3",
-                "sourceGameId": "n3",
-                "evidenceId": "e2",
-                "tags": "#约稿记录",
-                "stars": 33,
-                "kind": "evidence",
-                "img": "timeline",
-                "av": 2,
-                "ev": "e2"
-              },
-              "comments": []
-            }
-          },
-          "updatedAt": "2026-11-18T03:40:15.023Z",
-          "catalogId": "post:post_block_ix0uk4",
-          "origin": {
-            "file": "index.html",
-            "postId": "n3",
-            "template": "n3"
-          },
-          "source": "=== post:post_block_ix0uk4\ncase: case_artist_1\ntype: post\ntitle: \"我约她的时间线\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"老单主小葵\"\nlikes: 140\ntrigger: \"从 Day 1 起在小粉书可见。\"\nevidence: e2\n\nbody:\n  把订单页截图放这里，大家自己看时间。\n\nnotes: \"转录自 index.html。\"",
-          "catalogBaseline": "=== post:post_block_ix0uk4\ncase: case_artist_1\ntype: post\ntitle: \"我约她的时间线\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"老单主小葵\"\nlikes: 140\ntrigger: \"从 Day 1 起在小粉书可见。\"\nevidence: e2\n\nbody:\n  把订单页截图放这里，大家自己看时间。\n\nnotes: \"转录自 index.html。\"",
-          "appliedSource": "=== post:post_block_ix0uk4\ncase: case_artist_1\ntype: post\ntitle: \"我约她的时间线\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\nauthor: \"老单主小葵\"\nlikes: 140\ntrigger: \"从 Day 1 起在小粉书可见。\"\nevidence: e2\n\nbody:\n  把订单页截图放这里，大家自己看时间。\n\nnotes: \"转录自 index.html。\"",
-          "assets": {
-            "image": "",
-            "postMetadata": {
-              "sourceTemplate": "n3",
-              "sourceGameId": "n3",
-              "tags": "#约稿记录",
-              "stars": 33,
-              "kind": "evidence",
-              "img": "timeline",
-              "av": 2,
-              "ev": "e2"
-            }
-          },
-          "compiled": {
-            "id": "post:post_block_ix0uk4",
-            "caseId": "case_artist_1",
-            "title": "我约她的时间线",
-            "day": 1,
-            "slot": "any",
-            "status": "final",
-            "when": "true",
-            "condition": {
-              "type": "boolean",
-              "value": true
-            },
-            "sharedWith": [],
-            "steps": [],
-            "choices": [],
-            "notes": "转录自 index.html。",
-            "blockType": "post",
-            "through": 5,
-            "trigger": "从 Day 1 起在小粉书可见。",
-            "post": {
-              "sourceTemplate": "n3",
-              "sourceGameId": "n3",
-              "tags": "#约稿记录",
-              "stars": 33,
-              "kind": "evidence",
-              "img": "timeline",
-              "av": 2,
-              "ev": "e2",
-              "id": "post_block_ix0uk4",
-              "title": "我约她的时间线",
-              "body": "把订单页截图放这里，大家自己看时间。",
-              "day": 1,
-              "type": "post",
-              "author": "老单主小葵",
-              "image": "",
-              "likes": 140,
-              "status": "final",
-              "notes": "转录自 index.html。",
-              "order": 4,
-              "updatedAt": "2026-11-18T03:40:15.023Z",
-              "evidenceId": "e2",
-              "publishActions": [],
-              "through": 5,
-              "trigger": "从 Day 1 起在小粉书可见。",
-              "eventId": "post:post_block_ix0uk4",
               "eventCaseId": "case_artist_1",
               "comments": []
             }
@@ -13326,7 +13252,7 @@
           "appliedSource": "=== system.irrelevant-evidence-reply\ncase: case_artist_1\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
           "catalogBaseline": "=== system.irrelevant-evidence-reply\ncase: case_artist_1\ntype: system\ntitle: \"无关证据 · 评论者的楼中楼回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"仅在已启用判定且选中的证据无关时，由被回复的评论者说出。系统角色用于保存回复模板；游戏显示原评论者的名字。普通评论与直播共用本 Case 的文案，不额外扣时段或舆论。\"\n系统:\n  这完全是 bs。\n-> END",
           "legacy": {},
-          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "updatedAt": "2026-11-19T04:33:45.565Z",
           "diagnostics": [],
           "warnings": [],
           "compiled": {
@@ -13367,8 +13293,7 @@
           },
           "trigger": ""
         }
-      ],
-      "evidenceCounterReplyRevision": 1
+      ]
     },
     {
       "id": "case_artist_2",
@@ -18768,6 +18693,7 @@
         }
       ],
       "actionTimingRevision": 1,
+      "evidenceCounterReplyRevision": 1,
       "events": [
         {
           "key": "legacy_artist2_video_approved",
@@ -28301,8 +28227,7 @@
           },
           "trigger": ""
         }
-      ],
-      "evidenceCounterReplyRevision": 1
+      ]
     }
   ],
   "game": {
@@ -28310,7 +28235,7 @@
     "timingVersion": 1,
     "responseRulesVersion": 1,
     "counterReplyVersion": 1,
-    "updatedAt": "2026-11-19T02:40:05.913Z",
+    "updatedAt": "2026-11-19T04:33:45.565Z",
     "stats": [
       {
         "id": "stat_opinion",
@@ -29484,7 +29409,14 @@
             "sourceGameId": "c1",
             "av": 1,
             "order": 0,
-            "updatedAt": "2026-11-18T21:59:59.177Z"
+            "updatedAt": "2026-11-19T03:47:11.178Z",
+            "evidenceRule": {
+              "relevantEvidence": [
+                "e1",
+                "e3",
+                "e4"
+              ]
+            }
           },
           "comment_block_1fxz0lq": {
             "id": "comment_block_1fxz0lq",
@@ -29501,7 +29433,8 @@
             "sourceGameId": "c2",
             "av": 2,
             "order": 1,
-            "updatedAt": "2026-11-18T21:59:59.177Z"
+            "updatedAt": "2026-11-19T03:47:11.178Z",
+            "evidenceRule": null
           },
           "comment_block_1g7ymap": {
             "id": "comment_block_1g7ymap",
@@ -29518,7 +29451,14 @@
             "sourceGameId": "c3",
             "av": 3,
             "order": 2,
-            "updatedAt": "2026-11-18T21:59:59.177Z"
+            "updatedAt": "2026-11-19T03:47:11.178Z",
+            "evidenceRule": {
+              "relevantEvidence": [
+                "e1",
+                "e3",
+                "e4"
+              ]
+            }
           },
           "comment_block_1ghy7zo": {
             "id": "comment_block_1ghy7zo",
@@ -29535,7 +29475,8 @@
             "sourceGameId": "c4",
             "av": 4,
             "order": 3,
-            "updatedAt": "2026-11-18T21:59:59.177Z"
+            "updatedAt": "2026-11-19T03:47:11.178Z",
+            "evidenceRule": null
           },
           "comment_block_1grxton": {
             "id": "comment_block_1grxton",
@@ -29552,7 +29493,8 @@
             "sourceGameId": "c5",
             "av": 5,
             "order": 4,
-            "updatedAt": "2026-11-18T21:59:59.177Z"
+            "updatedAt": "2026-11-19T03:47:11.178Z",
+            "evidenceRule": null
           },
           "comment_block_1h1xfdm": {
             "id": "comment_block_1h1xfdm",
@@ -29569,7 +29511,14 @@
             "sourceGameId": "c6",
             "av": 0,
             "order": 5,
-            "updatedAt": "2026-11-18T21:59:59.177Z"
+            "updatedAt": "2026-11-19T03:47:11.178Z",
+            "evidenceRule": {
+              "relevantEvidence": [
+                "e1",
+                "e3",
+                "e4"
+              ]
+            }
           },
           "comment_2": {
             "id": "comment_2",
@@ -29659,7 +29608,7 @@
               "status": "final",
               "notes": "",
               "order": 2,
-              "updatedAt": "2026-11-18T21:59:59.177Z",
+              "updatedAt": "2026-11-19T03:47:11.178Z",
               "evidenceId": "",
               "publishActions": [],
               "through": 5,
@@ -29704,7 +29653,7 @@
               "status": "final",
               "notes": "",
               "order": 2,
-              "updatedAt": "2026-11-18T21:59:59.177Z",
+              "updatedAt": "2026-11-19T03:47:11.178Z",
               "evidenceId": "",
               "publishActions": [],
               "through": 5,
@@ -29727,10 +29676,16 @@
                   "sourceGameId": "c1",
                   "av": 1,
                   "order": 0,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
-                  "evidenceRule": null,
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
+                  "evidenceRule": {
+                    "relevantEvidence": [
+                      "e1",
+                      "e3",
+                      "e4"
+                    ]
+                  },
                   "line": 17,
-                  "replyLine": 20,
+                  "replyLine": 21,
                   "textSeen": true
                 },
                 {
@@ -29748,10 +29703,10 @@
                   "sourceGameId": "c2",
                   "av": 2,
                   "order": 1,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
                   "evidenceRule": null,
-                  "line": 27,
-                  "replyLine": 30,
+                  "line": 28,
+                  "replyLine": 31,
                   "textSeen": true
                 },
                 {
@@ -29769,10 +29724,16 @@
                   "sourceGameId": "c3",
                   "av": 3,
                   "order": 2,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
-                  "evidenceRule": null,
-                  "line": 38,
-                  "replyLine": 41,
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
+                  "evidenceRule": {
+                    "relevantEvidence": [
+                      "e1",
+                      "e3",
+                      "e4"
+                    ]
+                  },
+                  "line": 39,
+                  "replyLine": 43,
                   "textSeen": true
                 },
                 {
@@ -29790,10 +29751,10 @@
                   "sourceGameId": "c4",
                   "av": 4,
                   "order": 3,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
                   "evidenceRule": null,
-                  "line": 48,
-                  "replyLine": 51,
+                  "line": 50,
+                  "replyLine": 53,
                   "textSeen": true
                 },
                 {
@@ -29811,10 +29772,10 @@
                   "sourceGameId": "c5",
                   "av": 5,
                   "order": 4,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
                   "evidenceRule": null,
-                  "line": 59,
-                  "replyLine": 62,
+                  "line": 61,
+                  "replyLine": 64,
                   "textSeen": true
                 },
                 {
@@ -29832,10 +29793,16 @@
                   "sourceGameId": "c6",
                   "av": 0,
                   "order": 5,
-                  "updatedAt": "2026-11-18T21:59:59.177Z",
-                  "evidenceRule": null,
-                  "line": 70,
-                  "replyLine": 73,
+                  "updatedAt": "2026-11-19T03:47:11.178Z",
+                  "evidenceRule": {
+                    "relevantEvidence": [
+                      "e1",
+                      "e3",
+                      "e4"
+                    ]
+                  },
+                  "line": 72,
+                  "replyLine": 76,
                   "textSeen": true
                 }
               ]
@@ -29915,84 +29882,6 @@
               "through": 5,
               "trigger": "从 Day 1 起在小粉书可见。",
               "eventId": "post:post_block_j70g93",
-              "eventCaseId": "case_artist_1",
-              "comments": []
-            }
-          },
-          {
-            "eventId": "post:post_block_ix0uk4",
-            "metadata": {
-              "id": "post_block_ix0uk4",
-              "title": "我约她的时间线",
-              "body": "把订单页截图放这里，大家自己看时间。",
-              "day": 1,
-              "type": "post",
-              "author": "老单主小葵",
-              "image": "",
-              "likes": 140,
-              "status": "final",
-              "notes": "转录自 index.html。",
-              "order": 4,
-              "updatedAt": "2026-11-18T03:40:15.023Z",
-              "sourceTemplate": "n3",
-              "sourceGameId": "n3",
-              "evidenceId": "e2",
-              "tags": "#约稿记录",
-              "stars": 33,
-              "kind": "evidence",
-              "img": "timeline",
-              "av": 2,
-              "ev": "e2",
-              "publishActions": [],
-              "through": 5,
-              "trigger": "从 Day 1 起在小粉书可见。",
-              "eventId": "post:post_block_ix0uk4",
-              "eventCaseId": "case_artist_1"
-            },
-            "id": "post:post_block_ix0uk4",
-            "caseId": "case_artist_1",
-            "title": "我约她的时间线",
-            "day": 1,
-            "slot": "any",
-            "status": "final",
-            "when": "true",
-            "condition": {
-              "type": "boolean",
-              "value": true
-            },
-            "sharedWith": [],
-            "steps": [],
-            "choices": [],
-            "notes": "转录自 index.html。",
-            "blockType": "post",
-            "through": 5,
-            "trigger": "从 Day 1 起在小粉书可见。",
-            "post": {
-              "sourceTemplate": "n3",
-              "sourceGameId": "n3",
-              "tags": "#约稿记录",
-              "stars": 33,
-              "kind": "evidence",
-              "img": "timeline",
-              "av": 2,
-              "ev": "e2",
-              "id": "post_block_ix0uk4",
-              "title": "我约她的时间线",
-              "body": "把订单页截图放这里，大家自己看时间。",
-              "day": 1,
-              "type": "post",
-              "author": "老单主小葵",
-              "image": "",
-              "likes": 140,
-              "status": "final",
-              "notes": "转录自 index.html。",
-              "order": 4,
-              "updatedAt": "2026-11-18T03:40:15.023Z",
-              "evidenceId": "e2",
-              "publishActions": [],
-              "through": 5,
-              "trigger": "从 Day 1 起在小粉书可见。",
-              "eventId": "post:post_block_ix0uk4",
               "eventCaseId": "case_artist_1",
               "comments": []
             }
