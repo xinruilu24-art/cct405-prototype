@@ -660,7 +660,8 @@
         "live"
       ],
       "kind": "action",
-      "requirement": "已进入第五天直播，按弹幕轮次结算。"
+      "requirement": "已进入第五天直播，按弹幕轮次结算。",
+      "responseRulesRevision": 1
     },
     {
       "id": "action_live_rebut_evidence",
@@ -674,7 +675,7 @@
       "effects": [
         {
           "statId": "stat_opinion",
-          "delta": 10
+          "delta": 20
         }
       ],
       "status": "final",
@@ -685,7 +686,8 @@
         "live"
       ],
       "kind": "action",
-      "requirement": "已进入直播，并已收集要出示的证据。"
+      "requirement": "已进入直播，并已收集要出示的证据。",
+      "responseRulesRevision": 1
     },
     {
       "id": "action_live_rebut_no_evidence",
@@ -699,7 +701,7 @@
       "effects": [
         {
           "statId": "stat_opinion",
-          "delta": -5
+          "delta": -10
         }
       ],
       "status": "final",
@@ -710,7 +712,8 @@
         "live"
       ],
       "kind": "action",
-      "requirement": "已进入第五天直播。"
+      "requirement": "已进入第五天直播。",
+      "responseRulesRevision": 1
     },
     {
       "id": "action_event_day3_accusation",
@@ -834,6 +837,86 @@
       ],
       "kind": "action",
       "requirement": ""
+    },
+    {
+      "id": "action_rebut_irrelevant_evidence",
+      "name": "评论：出示无关证据",
+      "key": "rebut_irrelevant_evidence",
+      "description": "",
+      "category": "评论回应",
+      "dayStart": 1,
+      "dayEnd": 5,
+      "timeCost": 1,
+      "timeSlots": [
+        "morning",
+        "afternoon",
+        "evening"
+      ],
+      "kind": "action",
+      "requirement": "已启用当前评论的证据判定，出示的材料不在相关名单中。",
+      "conditions": [],
+      "effects": [
+        {
+          "statId": "stat_opinion",
+          "delta": -5
+        }
+      ],
+      "status": "final",
+      "notes": "按当前游戏 index.html 的规则整理。",
+      "updatedAt": "2026-11-19T03:19:50.780Z",
+      "responseRulesRevision": 1
+    },
+    {
+      "id": "action_live_agree_accuse",
+      "name": "直播弹幕：同意质疑",
+      "key": "live_agree_accuse",
+      "description": "",
+      "category": "直播回应",
+      "dayStart": 5,
+      "dayEnd": 5,
+      "timeCost": 0,
+      "timeSlots": [
+        "live"
+      ],
+      "kind": "action",
+      "requirement": "当前弹幕的立场为质疑画师。",
+      "conditions": [],
+      "effects": [
+        {
+          "statId": "stat_opinion",
+          "delta": -5
+        }
+      ],
+      "status": "final",
+      "notes": "按当前游戏 index.html 的规则整理。",
+      "updatedAt": "2026-11-19T03:19:50.780Z",
+      "responseRulesRevision": 1
+    },
+    {
+      "id": "action_live_rebut_irrelevant_evidence",
+      "name": "直播弹幕：出示无关证据",
+      "key": "live_rebut_irrelevant_evidence",
+      "description": "",
+      "category": "直播回应",
+      "dayStart": 5,
+      "dayEnd": 5,
+      "timeCost": 0,
+      "timeSlots": [
+        "live"
+      ],
+      "kind": "action",
+      "requirement": "已启用当前弹幕的证据判定，材料不在相关名单中。",
+      "conditions": [],
+      "effects": [
+        {
+          "statId": "stat_opinion",
+          "delta": -10
+        }
+      ],
+      "status": "final",
+      "notes": "按当前游戏 index.html 的规则整理。",
+      "updatedAt": "2026-11-19T03:19:50.780Z",
+      "responseRulesRevision": 1
     }
   ],
   "cases": [
@@ -6236,7 +6319,9 @@
             "notes": "示例内容，可自由修改或删除。",
             "blockType": "chat",
             "through": 2,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== dialogue_2\ncase: case_artist_1\ntitle: \"Day 2 · 向客户索取材料\"\nday: 2\nslot: any\nstatus: draft\nwhen: true\n\n// 从旧对话迁移；未指定时段，不推断触发流程。\n@notes: \"示例内容，可自由修改或删除。\"\n客户布丁:\n  我约过她两次，每次都有过程图。\n@line_id: \"line_2_1\"\n@emotion: \"认真\"\n\n玩家:\n  谢谢你，可以把记录发给我吗？\n@line_id: \"line_2_2\"\n\n* [感谢客户的支持]\n  @choice_id: \"choice_2\"\n  @action: reply_support\n  @result: \"继续阅读客户发来的过程记录。\"\n  -> END\n",
           "diagnostics": [],
@@ -6361,6 +6446,7 @@
                   "text": "我关注这位画师好几年了，想先看看具体材料。",
                   "replyTo": "",
                   "likes": 205,
+                  "evidenceRule": null,
                   "line": 20,
                   "replyLine": 22,
                   "textSeen": true
@@ -6605,6 +6691,7 @@
                   "av": 1,
                   "order": 0,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 17,
                   "replyLine": 20,
                   "textSeen": true
@@ -6625,6 +6712,7 @@
                   "av": 2,
                   "order": 1,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 27,
                   "replyLine": 30,
                   "textSeen": true
@@ -6645,6 +6733,7 @@
                   "av": 3,
                   "order": 2,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 38,
                   "replyLine": 41,
                   "textSeen": true
@@ -6665,6 +6754,7 @@
                   "av": 4,
                   "order": 3,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 48,
                   "replyLine": 51,
                   "textSeen": true
@@ -6685,6 +6775,7 @@
                   "av": 5,
                   "order": 4,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 59,
                   "replyLine": 62,
                   "textSeen": true
@@ -6705,6 +6796,7 @@
                   "av": 0,
                   "order": 5,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 70,
                   "replyLine": 73,
                   "textSeen": true
@@ -7541,6 +7633,7 @@
                   "text": "我也留存了以前约稿的过程图，需要的话可以提供。",
                   "replyTo": "",
                   "likes": 42,
+                  "evidenceRule": null,
                   "line": 19,
                   "replyLine": 21,
                   "textSeen": true
@@ -7734,6 +7827,7 @@
                   "av": 1,
                   "order": 0,
                   "updatedAt": "2026-11-18T03:40:15.023Z",
+                  "evidenceRule": null,
                   "line": 23,
                   "replyLine": 26,
                   "textSeen": true
@@ -7754,6 +7848,7 @@
                   "av": 2,
                   "order": 1,
                   "updatedAt": "2026-11-18T03:40:15.023Z",
+                  "evidenceRule": null,
                   "line": 34,
                   "replyLine": 37,
                   "textSeen": true
@@ -7774,6 +7869,7 @@
                   "av": 3,
                   "order": 2,
                   "updatedAt": "2026-11-18T03:40:15.023Z",
+                  "evidenceRule": null,
                   "line": 45,
                   "replyLine": 48,
                   "textSeen": true
@@ -7873,7 +7969,9 @@
             "notes": "转录自 index.html 的现有文案与流程；进入案件后；玩家点手机逐条阅读。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "进入案件后；玩家点手机逐条阅读。"
+            "trigger": "进入案件后；玩家点手机逐条阅读。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -7949,7 +8047,9 @@
             "notes": "转录自 index.html 的现有文案与流程；新手导览结束或跳过后，回到 Chloe 聊天。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。"
+            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8025,7 +8125,9 @@
             "notes": "转录自 index.html 的现有文案与流程；初始委托费及画师消息。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "初始委托费及画师消息。"
+            "trigger": "初始委托费及画师消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8104,7 +8206,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8193,7 +8297,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8272,7 +8378,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8342,7 +8450,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8412,7 +8522,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8499,7 +8611,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 的一次性第三天事件。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 的一次性第三天事件。"
+            "trigger": "newDay() 的一次性第三天事件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8569,7 +8683,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8639,7 +8755,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8718,7 +8836,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8807,7 +8927,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8886,7 +9008,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -8956,7 +9080,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9026,7 +9152,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9105,7 +9233,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9194,7 +9324,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9273,7 +9405,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9343,7 +9477,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9413,7 +9549,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9480,7 +9618,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9594,7 +9734,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9717,7 +9859,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9826,7 +9970,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -9940,7 +10086,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10030,7 +10178,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10127,7 +10277,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10216,7 +10368,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10407,7 +10561,9 @@
             "notes": "",
             "blockType": "chat",
             "through": 5,
-            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。"
+            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10597,7 +10753,9 @@
             "notes": "",
             "blockType": "chat",
             "through": 3,
-            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。"
+            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10759,7 +10917,9 @@
             "notes": "转录自 index.html 的现有文案与流程；在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。"
+            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10832,7 +10992,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10905,7 +11067,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -10978,7 +11142,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -11051,7 +11217,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -11115,7 +11283,9 @@
             "notes": "转录自 index.html 的现有文案与流程；再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。"
+            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -11308,7 +11478,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           "diagnostics": [],
           "warnings": []
@@ -11495,7 +11667,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "support"
           },
           "diagnostics": [],
           "warnings": []
@@ -11682,7 +11856,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           "diagnostics": [],
           "warnings": []
@@ -11749,7 +11925,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。"
+            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -11816,7 +11994,9 @@
             "notes": "转录自 index.html 的现有文案与流程；第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
             "blockType": "system",
             "through": 5,
-            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。"
+            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -11896,7 +12076,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -11976,7 +12158,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12046,7 +12230,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12126,7 +12312,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12206,7 +12394,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12276,7 +12466,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12356,7 +12548,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12480,7 +12674,9 @@
             "notes": "转录自 index.html 的现有文案与流程；小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
             "blockType": "system",
             "through": 5,
-            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。"
+            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12777,7 +12973,9 @@
             "notes": "转录自 index.html 的现有文案与流程；replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
             "blockType": "system",
             "through": 5,
-            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。"
+            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -12831,7 +13029,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -12884,7 +13084,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -12937,7 +13139,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -12990,7 +13194,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -13043,7 +13249,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -13096,7 +13304,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         }
@@ -18567,7 +18777,9 @@
             "notes": "来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。",
             "blockType": "chat",
             "through": 1,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_video_approved\ncase: case_artist_2\ntitle: \"制作过程视频 · 同意后\"\nday: 1\nslot: any\nstatus: final\nwhen: true\n\n// 从旧对话迁移；未指定时段，不推断触发流程。\n@notes: \"来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。\"\n玩家:\n  好，麻烦你制作并发布吧。\n@line_id: \"artist2_video_approved_line_0\"\n\n画师:\n  好，我会专心把过程录下来，再整理成视频。\n@line_id: \"artist2_video_approved_line_1\"\n\n画师:\n  作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。\n@line_id: \"artist2_video_approved_line_2\"\n\n-> END",
           "diagnostics": [],
@@ -18634,7 +18846,9 @@
             "notes": "来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。",
             "blockType": "chat",
             "through": 1,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_video_declined\ncase: case_artist_2\ntitle: \"制作过程视频 · 暂缓\"\nday: 1\nslot: any\nstatus: final\nwhen: true\n\n// 从旧对话迁移；未指定时段，不推断触发流程。\n@notes: \"来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。\"\n玩家:\n  先不做了，你缓一缓。\n@line_id: \"artist2_video_declined_line_0\"\n\n画师:\n  好，那先不做。之后需要的时候再和我说。\n@line_id: \"artist2_video_declined_line_1\"\n\n-> END",
           "diagnostics": [],
@@ -18701,7 +18915,9 @@
             "notes": "来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。",
             "blockType": "chat",
             "through": 1,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_wager_approved\ncase: case_artist_2\ntitle: \"直播对赌 · 确认后\"\nday: 1\nslot: any\nstatus: final\nwhen: true\n\n// 从旧对话迁移；未指定时段，不推断触发流程。\n@notes: \"来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。\"\n玩家:\n  确定，那就安排吧，我们按约定准备。\n@line_id: \"artist2_wager_approved_line_0\"\n\n画师:\n  好，那把对赌直播定在第五天。我们就按商量好的规则来。\n@line_id: \"artist2_wager_approved_line_1\"\n\n-> END",
           "diagnostics": [],
@@ -18768,7 +18984,9 @@
             "notes": "来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。",
             "blockType": "chat",
             "through": 1,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_wager_declined\ncase: case_artist_2\ntitle: \"直播对赌 · 暂缓\"\nday: 1\nslot: any\nstatus: final\nwhen: true\n\n// 从旧对话迁移；未指定时段，不推断触发流程。\n@notes: \"来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。\"\n玩家:\n  先不安排了，我想让你缓一缓。\n@line_id: \"artist2_wager_declined_line_0\"\n\n画师:\n  好，那暂时不安排。谢谢你愿意先和我商量。\n@line_id: \"artist2_wager_declined_line_1\"\n\n-> END",
           "diagnostics": [],
@@ -18958,7 +19176,9 @@
             "notes": "来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。",
             "blockType": "chat",
             "through": 1,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_forward\ncase: case_artist_2\ntitle: \"转发帖子后的回复\"\nday: 1\nslot: any\nstatus: final\nwhen: true\n\n// 从旧对话迁移；未指定时段，不推断触发流程。\n@notes: \"来自当前游戏的文案或流程模板；实际出现仍取决于行动和条件。\"\n画师:\n  有人帮我说话，好开心！\n@line_id: \"artist2_forward_line_0\"\n\n画师:\n  ……我看到了。好难受。\n@line_id: \"artist2_forward_line_1\"\n\n画师:\n  对，这是我的。\n@line_id: \"artist2_forward_line_2\"\n\n画师:\n  公告里的安排我看到了。希望大家按约定来。\n@line_id: \"artist2_forward_line_3\"\n\n* [转发支持帖]\n  @choice_id: \"artist2_forward_choice_0\"\n  @action: forward_support\n  @result: \"显示支持帖对应的回复。\"\n  -> END\n\n* [转发指控帖]\n  @choice_id: \"artist2_forward_choice_1\"\n  @action: forward_accuse\n  @result: \"显示指控帖对应的回复。\"\n  -> END\n\n* [转发证据或公告]\n  @choice_id: \"artist2_forward_choice_2\"\n  @action: forward_other\n  @result: \"显示材料或公告对应的回复。\"\n  -> END\n\n* [重复转发同一帖]\n  @choice_id: \"artist2_forward_choice_3\"\n  @action: forward_repeat\n  @result: \"只消耗行动点，不重复改变压力。\"\n  -> END\n",
           "diagnostics": [],
@@ -19202,6 +19422,7 @@
                   "stance": "accuse",
                   "av": 1,
                   "sourceGameId": "c1",
+                  "evidenceRule": null,
                   "line": 19,
                   "replyLine": 22,
                   "textSeen": true
@@ -19222,6 +19443,7 @@
                   "stance": "support",
                   "av": 2,
                   "sourceGameId": "c2",
+                  "evidenceRule": null,
                   "line": 30,
                   "replyLine": 33,
                   "textSeen": true
@@ -19242,6 +19464,7 @@
                   "stance": "accuse",
                   "av": 3,
                   "sourceGameId": "c3",
+                  "evidenceRule": null,
                   "line": 41,
                   "replyLine": 44,
                   "textSeen": true
@@ -19262,6 +19485,7 @@
                   "stance": "support",
                   "av": 4,
                   "sourceGameId": "c4",
+                  "evidenceRule": null,
                   "line": 52,
                   "replyLine": 55,
                   "textSeen": true
@@ -19282,6 +19506,7 @@
                   "stance": "support",
                   "av": 5,
                   "sourceGameId": "c5",
+                  "evidenceRule": null,
                   "line": 63,
                   "replyLine": 66,
                   "textSeen": true
@@ -19302,6 +19527,7 @@
                   "stance": "accuse",
                   "av": 0,
                   "sourceGameId": "c6",
+                  "evidenceRule": null,
                   "line": 74,
                   "replyLine": 77,
                   "textSeen": true
@@ -20217,6 +20443,7 @@
                   "stance": "accuse",
                   "av": 1,
                   "sourceGameId": "c7",
+                  "evidenceRule": null,
                   "line": 23,
                   "replyLine": 26,
                   "textSeen": true
@@ -20237,6 +20464,7 @@
                   "stance": "support",
                   "av": 2,
                   "sourceGameId": "c8",
+                  "evidenceRule": null,
                   "line": 34,
                   "replyLine": 37,
                   "textSeen": true
@@ -20257,6 +20485,7 @@
                   "stance": "accuse",
                   "av": 3,
                   "sourceGameId": "c9",
+                  "evidenceRule": null,
                   "line": 45,
                   "replyLine": 48,
                   "textSeen": true
@@ -20375,7 +20604,9 @@
             "notes": "转录自 index.html 的现有文案与流程；进入案件后；玩家点手机逐条阅读。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "进入案件后；玩家点手机逐条阅读。"
+            "trigger": "进入案件后；玩家点手机逐条阅读。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_opening\ncase: case_artist_2\ntype: chat\ntitle: \"Chloe · 开场\"\nday: 1\nthrough: 1\nslot: morning\nstatus: final\nwhen: true\ntrigger: \"进入案件后；玩家点手机逐条阅读。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；进入案件后；玩家点手机逐条阅读。\"\nChloe:\n  听说你接了画师的案子？我是 Chloe，先陪你熟悉一下这里。\n@line_id: \"artist2_opening_line_0\"\n\nChloe:\n  画师已经发来消息和委托费了。手机里的 App 各有用处：找线索、回应指控、陪她聊天，都要做取舍。我带你一页页看看。\n@line_id: \"artist2_opening_line_1\"\n\nChloe:\n  先回到手机主界面吧！接下来我会用浮窗介绍每一页，最后再一起看左边要控制的数值。导览不会消耗时段或金钱，也可以随时跳过。\n@line_id: \"artist2_opening_line_2\"\n\nChloe:\n  行动清单：收集证据、陪伴画师、公开回应、时间与直播。\n@line_id: \"bl_189unu0_line_0\"\n\n-> END",
           "diagnostics": [],
@@ -20530,7 +20761,9 @@
             "notes": "转录自 index.html 的现有文案与流程；新手导览结束或跳过后，回到 Chloe 聊天。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。"
+            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -20619,7 +20852,9 @@
             "notes": "转录自 index.html 的现有文案与流程；初始委托费及画师消息。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "初始委托费及画师消息。"
+            "trigger": "初始委托费及画师消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_artist_greeting\ncase: case_artist_2\ntype: chat\ntitle: \"画师 · 初次联系\"\nday: 1\nthrough: 1\nslot: morning\nstatus: final\nwhen: true\ntrigger: \"初始委托费及画师消息。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；初始委托费及画师消息。\"\n系统:\n  [转账：委托费 ¥100，已收款]\n@line_id: \"artist2_artist_greeting_line_0\"\n\n画师:\n  你好……拜托别让我直播，我真的很怕镜头。\n@line_id: \"bl_1sa6ik1_line_0\"\n\n-> END",
           "diagnostics": [],
@@ -20768,7 +21003,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -20857,7 +21094,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -20936,7 +21175,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21006,7 +21247,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21076,7 +21319,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21176,7 +21421,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 的一次性第三天事件。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 的一次性第三天事件。"
+            "trigger": "newDay() 的一次性第三天事件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_day3_notice\ncase: case_artist_2\ntype: chat\ntitle: \"画师 · 第三天新鉴定帖提醒\"\nday: 3\nthrough: 3\nslot: morning\nstatus: final\nwhen: true\ntrigger: \"newDay() 的一次性第三天事件。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；newDay() 的一次性第三天事件。\"\n@action: event_day3_accusation\n系统:\n  第 3 天\n@line_id: \"bl_wj25kc_line_0\"\n\n画师:\n  那个指控我的账号又在小粉书发了新的鉴定帖……现在更多人在怀疑我，我有点撑不住了。你能去看看吗？\n@line_id: \"artist2_day3_notice_line_0\"\n\n@show_post: artist2_n5\n-> END",
           "diagnostics": [],
@@ -21316,7 +21563,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21386,7 +21635,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21465,7 +21716,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21554,7 +21807,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21633,7 +21888,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21703,7 +21960,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21773,7 +22032,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21852,7 +22113,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -21941,7 +22204,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -22020,7 +22285,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -22090,7 +22357,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -22160,7 +22429,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -22234,7 +22505,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_m0\ncase: case_artist_2\ntype: chat\ntitle: \"咪画师 · 咪画师小助手\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。\"\n咪画师小助手:\n  你已成为这位画师的案件代理人。代理期间请保持沟通文明。\n@line_id: \"artist2_m0_line_0\"\n\n-> END",
           "diagnostics": [],
@@ -22449,7 +22722,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_m1\ncase: case_artist_2\ntype: chat\ntitle: \"咪画师 · 单主小葵（被退款的订单）\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。\"\n单主小葵（被退款的订单）:\n  我只是想要一张手画的图……退款收到了，但我还是想知道真相。\n@line_id: \"artist2_m1_line_0\"\n\n\n* [回复，索取订单时间线]\n  @choice_id: \"artist2_m1_choice_0\"\n  玩家:\n    我会核对已有材料。可以把订单时间线发给我吗？\n  @line_id: \"artist2_m1_line_1\"\n\n  单主小葵（被退款的订单）:\n    可以，这是下单、交稿和退款的记录。希望你能把事情弄清楚。\n  @line_id: \"artist2_m1_line_2\"\n\n  @unlock_evidence: e2\n  @action: reply_mhs\n  -> END",
           "diagnostics": [],
@@ -22735,7 +23010,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_m2\ncase: case_artist_2\ntype: chat\ntitle: \"咪画师 · 客户布丁\"\nday: 2\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。\"\n客户布丁:\n  我约过她两次，每次都有过程图，需要的话我可以作证。\n@line_id: \"artist2_m2_line_0\"\n\n\n* [回复，索取约稿过程记录]\n  @choice_id: \"artist2_m2_choice_0\"\n  玩家:\n    谢谢你愿意作证，可以把两次约稿的过程记录发给我吗？\n  @line_id: \"artist2_m2_line_1\"\n\n  客户布丁:\n    可以，我把两次约稿留下的过程记录整理给你。\n  @line_id: \"artist2_m2_line_2\"\n\n  客户布丁:\n    这些是我自己的历史订单，和这次争议的订单要分开看。\n  @line_id: \"artist2_m2_line_3\"\n\n  @unlock_evidence: e5\n  @action: reply_mhs\n  -> END",
           "diagnostics": [],
@@ -23004,7 +23281,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_m3\ncase: case_artist_2\ntype: chat\ntitle: \"咪画师 · 单主小葵（被退款的订单）\"\nday: 3\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。\"\n单主小葵（被退款的订单）:\n  好多人在骂她，也有人来骂我，我有点害怕。\n@line_id: \"artist2_m3_line_0\"\n\n\n* [回复，关心她的情况]\n  @choice_id: \"artist2_m3_choice_0\"\n  玩家:\n    辛苦了。你可以先离开评论区，我们会按材料核对，不需要你独自回应所有人。\n  @line_id: \"artist2_m3_line_1\"\n\n  单主小葵（被退款的订单）:\n    谢谢你，我先缓一缓。需要核对订单的时候再联系我吧。\n  @line_id: \"artist2_m3_line_2\"\n\n  @action: reply_mhs\n  -> END",
           "diagnostics": [],
@@ -23261,7 +23540,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_m4\ncase: case_artist_2\ntype: chat\ntitle: \"咪画师 · 客户青柠\"\nday: 4\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。\"\n客户青柠:\n  我的稿子会不会也有问题？能帮我问问她吗？\n@line_id: \"artist2_m4_line_0\"\n\n\n* [回复，核对订单情况]\n  @choice_id: \"artist2_m4_choice_0\"\n  玩家:\n    请先提供订单和沟通记录，我们按已有材料核对。你发现了什么具体问题吗？\n  @line_id: \"artist2_m4_line_1\"\n\n  客户青柠:\n    暂时没有发现具体问题，只是看到争议以后有点担心。我把沟通记录发给你。\n  @line_id: \"artist2_m4_line_2\"\n\n  @unlock_evidence: e6\n  @action: reply_mhs\n  -> END",
           "diagnostics": [],
@@ -23502,7 +23783,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_care\ncase: case_artist_2\ntype: chat\ntitle: \"陪伴画师 · 分层源文件\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: !evidence(\"e3\")\ntrigger: \"下午或晚上，画师未读消息已读完；按当前证据选择一个版本。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。\"\n玩家:\n  今天怎么样？\n@line_id: \"artist2_care_line_0\"\n\n画师:\n  谢谢你来问。这个发你，应该有用。\n@line_id: \"artist2_care_line_1\"\n\n@unlock_evidence: e3\n@action: care_artist\n-> END",
           "diagnostics": [],
@@ -23707,7 +23990,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -23796,7 +24081,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -24050,7 +24337,9 @@
             "notes": "转录自 index.html 的现有文案与流程；早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。"
+            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_video_request\ncase: case_artist_2\ntype: chat\ntitle: \"制作过程视频 · 完整对话\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。\"\n@action: request_video\n玩家:\n  可以制作并发布一段作画过程视频吗？\n@line_id: \"artist2_video_request_line_0\"\n\n画师:\n  可以，不过我需要一些时间制作，要重新准备、绘画、录制，再整理视频。\n@line_id: \"artist2_video_request_line_1\"\n\n画师:\n  时间会有点长，这期间我得专心做这件事。你觉得现在要做吗？\n@line_id: \"artist2_video_request_line_2\"\n\n\n* [同意制作并发布]\n  @choice_id: \"artist2_video_request_choice_1\"\n  玩家:\n    好，麻烦你制作并发布吧。\n  @line_id: \"bl_zioy2z_line_0\"\n\n  画师:\n    好，我会专心把过程录下来，再整理成视频。\n  @line_id: \"bl_zioy2z_line_1\"\n\n  画师:\n    作画过程视频已经发布了。希望大家看过以后，能更了解我是怎么画的。\n  @line_id: \"bl_zioy2z_line_2\"\n\n  @show_post: post_block_15clr7n\n  @action: approve_video\n  -> END\n\n* [暂时不做]\n  @choice_id: \"artist2_video_request_choice_2\"\n  玩家:\n    先不做了，你缓一缓。\n  @line_id: \"bl_zioy2z_line_3\"\n\n  画师:\n    好，那先不做。之后需要的时候再和我说。\n  @line_id: \"bl_zioy2z_line_4\"\n\n  @action: decline_video\n  -> END",
           "diagnostics": [],
@@ -24437,7 +24726,9 @@
             "notes": "转录自 index.html 的现有文案与流程；第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。"
+            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_wager_request\ncase: case_artist_2\ntype: chat\ntitle: \"直播对赌 · 提议、确认和公告\"\nday: 1\nthrough: 3\nslot: any\nstatus: final\nwhen: true\ntrigger: \"第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。\"\n@action: request_wager\n玩家:\n  我们要不要安排一场直播对赌，公开回应这次争议？\n@line_id: \"artist2_wager_request_line_0\"\n\n画师:\n  我很怕镜头，直播对赌会让我压力特别大。你确定要这么做吗？\n@line_id: \"artist2_wager_request_line_1\"\n\n\n* [确定，安排直播对赌]\n  @choice_id: \"artist2_wager_request_choice_1\"\n  玩家:\n    确定，那就安排吧，我们按约定准备。\n  @line_id: \"bl_acws4i_line_0\"\n\n  画师:\n    好，那把对赌直播定在第五天。我们就按商量好的规则来。\n  @line_id: \"bl_acws4i_line_1\"\n\n  @show_post: artist2_livestream_announcement\n  @action: approve_wager\n  -> END\n\n* [暂时不安排]\n  @choice_id: \"artist2_wager_request_choice_2\"\n  玩家:\n    先不安排了，我想让你缓一缓。\n  @line_id: \"bl_acws4i_line_2\"\n\n  画师:\n    好，那暂时不安排。谢谢你愿意先和我商量。\n  @line_id: \"bl_acws4i_line_3\"\n\n  @action: decline_wager\n  -> END",
           "diagnostics": [],
@@ -24809,7 +25100,9 @@
             "notes": "转录自 index.html 的现有文案与流程；在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。"
+            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_food\ncase: case_artist_2\ntype: chat\ntitle: \"外卖下单 · 选择与画师回复\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。\"\n\n* [下单：草莓奶茶]\n  @choice_id: \"artist2_food_choice_0\"\n  画师:\n    草莓奶茶到了，谢谢你！\n  @line_id: \"artist2_food_line_0\"\n\n  @action: order_milktea\n  -> END\n\n* [下单：热汤面套餐]\n  @choice_id: \"artist2_food_choice_1\"\n  画师:\n    热汤面套餐到了，谢谢你！\n  @line_id: \"artist2_food_line_1\"\n\n  @action: order_noodles\n  -> END\n\n* [下单：草莓蛋糕]\n  @choice_id: \"artist2_food_choice_2\"\n  画师:\n    草莓蛋糕到了，谢谢你！\n  @line_id: \"artist2_food_line_2\"\n\n  @action: order_cake\n  -> END",
           "diagnostics": [],
@@ -25039,7 +25332,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -25112,7 +25407,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -25185,7 +25482,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -25258,7 +25557,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -25322,7 +25623,9 @@
             "notes": "转录自 index.html 的现有文案与流程；再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。"
+            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -25577,7 +25880,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           "appliedSource": "=== artist2_livestream\ncase: case_artist_2\ntype: chat\ntitle: \"第五天直播 · 弹幕 1\"\nday: 5\nthrough: 5\nslot: live\nstatus: final\nwhen: true\ntrigger: \"已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。\"\n@action: stream_start\n观众21:\n  现场能画，也说明不了以前是怎么画的。\n@line_id: \"artist2_livestream_line_0\"\n\n\n* [同意]\n  @choice_id: \"artist2_livestream_choice_0\"\n  @action: live_agree\n  -> chat.live.2\n\n* [附上证据反驳]\n  @choice_id: \"artist2_livestream_choice_1\"\n  @when: evidence(\"e1\") || evidence(\"e2\") || evidence(\"e3\") || evidence(\"e4\") || evidence(\"e5\") || evidence(\"e6\") || evidence(\"livestream-announcement\")\n  @action: live_rebut_evidence\n  -> chat.live.2\n\n* [不附证据，直接反驳]\n  @choice_id: \"artist2_livestream_choice_2\"\n  @action: live_rebut_no_evidence\n  -> chat.live.2",
           "diagnostics": [],
@@ -25921,7 +26226,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "support"
           },
           "diagnostics": [],
           "warnings": []
@@ -26108,7 +26415,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           "diagnostics": [],
           "warnings": []
@@ -26175,7 +26484,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。"
+            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26242,7 +26553,9 @@
             "notes": "转录自 index.html 的现有文案与流程；第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
             "blockType": "system",
             "through": 5,
-            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。"
+            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26322,7 +26635,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26402,7 +26717,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26472,7 +26789,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26552,7 +26871,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26632,7 +26953,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26702,7 +27025,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26782,7 +27107,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "diagnostics": [],
           "warnings": []
@@ -26935,7 +27262,9 @@
             "notes": "转录自 index.html 的现有文案与流程；小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
             "blockType": "system",
             "through": 5,
-            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。"
+            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_public_response\ncase: case_artist_2\ntype: system\ntitle: \"公开回应 · 舆论分支\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。\"\n\n* [公开回应（舆论较好）]\n  @choice_id: \"artist2_public_response_choice_0\"\n  @when: opinion >= 50\n  @show_post: post_block_1iz8zab\n  @action: respond_supported\n  -> END\n\n* [公开回应（舆论不利）]\n  @choice_id: \"artist2_public_response_choice_1\"\n  @when: opinion < 50\n  @show_post: post_block_1iz8zab\n  @action: respond_doubted\n  -> END",
           "diagnostics": [],
@@ -27386,7 +27715,9 @@
             "notes": "转录自 index.html 的现有文案与流程；replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
             "blockType": "system",
             "through": 5,
-            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。"
+            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "appliedSource": "=== artist2_comment_options\ncase: case_artist_2\ntype: system\ntitle: \"评论回复 · 可选文案\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\ntrigger: \"replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。\"\n\n@notes: \"转录自 index.html 的现有文案与流程；replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。\"\n\n* [说得对，谢谢支持！]\n  @choice_id: \"artist2_comment_options_choice_0\"\n  @action: reply_support\n  -> END\n\n* [这是证据：约稿之前就有的草稿]\n  @choice_id: \"artist2_comment_options_choice_1\"\n  @when: evidence(\"e1\")\n  @action: rebut_evidence\n  -> END\n\n* [这是证据：约稿时间线截图]\n  @choice_id: \"bl_1wqmxl7_choice_0\"\n  @when: evidence(\"e2\")\n  @action: rebut_evidence\n  -> END\n\n* [这是证据：分层源文件]\n  @choice_id: \"bl_1wqmxl7_choice_1\"\n  @when: evidence(\"e3\")\n  @action: rebut_evidence\n  -> END\n\n* [这是证据：未剪辑的绘画录屏]\n  @choice_id: \"bl_1wqmxl7_choice_2\"\n  @when: evidence(\"e4\")\n  @action: rebut_evidence\n  -> END\n\n* [这是证据：客户布丁的两次约稿过程记录]\n  @choice_id: \"bl_1wqmxl7_choice_3\"\n  @when: evidence(\"e5\")\n  @action: rebut_evidence\n  -> END\n\n* [这是证据：客户青柠的订单核对记录]\n  @choice_id: \"bl_1wqmxl7_choice_4\"\n  @when: evidence(\"e6\")\n  @action: rebut_evidence\n  -> END\n\n* [这是证据：第 5 天直播对赌公告与规则]\n  @choice_id: \"bl_1wqmxl7_choice_5\"\n  @when: evidence(\"livestream-announcement\")\n  @action: rebut_evidence\n  -> END\n\n* [这是没有根据的猜测。]\n  @choice_id: \"artist2_comment_options_choice_2\"\n  @action: rebut_no_evidence\n  -> END",
           "diagnostics": [],
@@ -27574,7 +27905,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -27627,7 +27960,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -27680,7 +28015,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -27733,7 +28070,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -27786,7 +28125,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         },
@@ -27839,7 +28180,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           "trigger": ""
         }
@@ -27849,6 +28192,7 @@
   "game": {
     "version": 1,
     "timingVersion": 1,
+    "responseRulesVersion": 1,
     "updatedAt": "2026-11-19T02:40:05.913Z",
     "stats": [
       {
@@ -28509,7 +28853,8 @@
           "live"
         ],
         "kind": "action",
-        "requirement": "已进入第五天直播，按弹幕轮次结算。"
+        "requirement": "已进入第五天直播，按弹幕轮次结算。",
+        "responseRulesRevision": 1
       },
       {
         "id": "action_live_rebut_evidence",
@@ -28523,7 +28868,7 @@
         "effects": [
           {
             "statId": "stat_opinion",
-            "delta": 10
+            "delta": 20
           }
         ],
         "status": "final",
@@ -28534,7 +28879,8 @@
           "live"
         ],
         "kind": "action",
-        "requirement": "已进入直播，并已收集要出示的证据。"
+        "requirement": "已进入直播，并已收集要出示的证据。",
+        "responseRulesRevision": 1
       },
       {
         "id": "action_live_rebut_no_evidence",
@@ -28548,7 +28894,7 @@
         "effects": [
           {
             "statId": "stat_opinion",
-            "delta": -5
+            "delta": -10
           }
         ],
         "status": "final",
@@ -28559,7 +28905,8 @@
           "live"
         ],
         "kind": "action",
-        "requirement": "已进入第五天直播。"
+        "requirement": "已进入第五天直播。",
+        "responseRulesRevision": 1
       },
       {
         "id": "action_event_day3_accusation",
@@ -28683,6 +29030,86 @@
         ],
         "kind": "action",
         "requirement": ""
+      },
+      {
+        "id": "action_rebut_irrelevant_evidence",
+        "name": "评论：出示无关证据",
+        "key": "rebut_irrelevant_evidence",
+        "description": "",
+        "category": "评论回应",
+        "dayStart": 1,
+        "dayEnd": 5,
+        "timeCost": 1,
+        "timeSlots": [
+          "morning",
+          "afternoon",
+          "evening"
+        ],
+        "kind": "action",
+        "requirement": "已启用当前评论的证据判定，出示的材料不在相关名单中。",
+        "conditions": [],
+        "effects": [
+          {
+            "statId": "stat_opinion",
+            "delta": -5
+          }
+        ],
+        "status": "final",
+        "notes": "按当前游戏 index.html 的规则整理。",
+        "updatedAt": "2026-11-19T03:19:50.780Z",
+        "responseRulesRevision": 1
+      },
+      {
+        "id": "action_live_agree_accuse",
+        "name": "直播弹幕：同意质疑",
+        "key": "live_agree_accuse",
+        "description": "",
+        "category": "直播回应",
+        "dayStart": 5,
+        "dayEnd": 5,
+        "timeCost": 0,
+        "timeSlots": [
+          "live"
+        ],
+        "kind": "action",
+        "requirement": "当前弹幕的立场为质疑画师。",
+        "conditions": [],
+        "effects": [
+          {
+            "statId": "stat_opinion",
+            "delta": -5
+          }
+        ],
+        "status": "final",
+        "notes": "按当前游戏 index.html 的规则整理。",
+        "updatedAt": "2026-11-19T03:19:50.780Z",
+        "responseRulesRevision": 1
+      },
+      {
+        "id": "action_live_rebut_irrelevant_evidence",
+        "name": "直播弹幕：出示无关证据",
+        "key": "live_rebut_irrelevant_evidence",
+        "description": "",
+        "category": "直播回应",
+        "dayStart": 5,
+        "dayEnd": 5,
+        "timeCost": 0,
+        "timeSlots": [
+          "live"
+        ],
+        "kind": "action",
+        "requirement": "已启用当前弹幕的证据判定，材料不在相关名单中。",
+        "conditions": [],
+        "effects": [
+          {
+            "statId": "stat_opinion",
+            "delta": -10
+          }
+        ],
+        "status": "final",
+        "notes": "按当前游戏 index.html 的规则整理。",
+        "updatedAt": "2026-11-19T03:19:50.780Z",
+        "responseRulesRevision": 1
       }
     ],
     "cases": [
@@ -29184,6 +29611,7 @@
                   "av": 1,
                   "order": 0,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 17,
                   "replyLine": 20,
                   "textSeen": true
@@ -29204,6 +29632,7 @@
                   "av": 2,
                   "order": 1,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 27,
                   "replyLine": 30,
                   "textSeen": true
@@ -29224,6 +29653,7 @@
                   "av": 3,
                   "order": 2,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 38,
                   "replyLine": 41,
                   "textSeen": true
@@ -29244,6 +29674,7 @@
                   "av": 4,
                   "order": 3,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 48,
                   "replyLine": 51,
                   "textSeen": true
@@ -29264,6 +29695,7 @@
                   "av": 5,
                   "order": 4,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 59,
                   "replyLine": 62,
                   "textSeen": true
@@ -29284,6 +29716,7 @@
                   "av": 0,
                   "order": 5,
                   "updatedAt": "2026-11-18T21:59:59.177Z",
+                  "evidenceRule": null,
                   "line": 70,
                   "replyLine": 73,
                   "textSeen": true
@@ -29861,6 +30294,7 @@
                   "av": 1,
                   "order": 0,
                   "updatedAt": "2026-11-18T03:40:15.023Z",
+                  "evidenceRule": null,
                   "line": 23,
                   "replyLine": 26,
                   "textSeen": true
@@ -29881,6 +30315,7 @@
                   "av": 2,
                   "order": 1,
                   "updatedAt": "2026-11-18T03:40:15.023Z",
+                  "evidenceRule": null,
                   "line": 34,
                   "replyLine": 37,
                   "textSeen": true
@@ -29901,6 +30336,7 @@
                   "av": 3,
                   "order": 2,
                   "updatedAt": "2026-11-18T03:40:15.023Z",
+                  "evidenceRule": null,
                   "line": 45,
                   "replyLine": 48,
                   "textSeen": true
@@ -29976,7 +30412,9 @@
             "notes": "示例内容，可自由修改或删除。",
             "blockType": "chat",
             "through": 2,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.opening",
@@ -30040,7 +30478,9 @@
             "notes": "转录自 index.html 的现有文案与流程；进入案件后；玩家点手机逐条阅读。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "进入案件后；玩家点手机逐条阅读。"
+            "trigger": "进入案件后；玩家点手机逐条阅读。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.tutorial-finished",
@@ -30086,7 +30526,9 @@
             "notes": "转录自 index.html 的现有文案与流程；新手导览结束或跳过后，回到 Chloe 聊天。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。"
+            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.artist-greeting",
@@ -30132,7 +30574,9 @@
             "notes": "转录自 index.html 的现有文案与流程；初始委托费及画师消息。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "初始委托费及画师消息。"
+            "trigger": "初始委托费及画师消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.2.0",
@@ -30181,7 +30625,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.2.1",
@@ -30240,7 +30686,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.2.2",
@@ -30289,7 +30737,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.2.doubted",
@@ -30329,7 +30779,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.2.supported",
@@ -30369,7 +30821,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.day3-accusation",
@@ -30426,7 +30880,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 的一次性第三天事件。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 的一次性第三天事件。"
+            "trigger": "newDay() 的一次性第三天事件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.3.doubted",
@@ -30466,7 +30922,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.3.supported",
@@ -30506,7 +30964,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.4.0",
@@ -30555,7 +31015,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.4.1",
@@ -30614,7 +31076,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.4.2",
@@ -30663,7 +31127,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.4.doubted",
@@ -30703,7 +31169,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.4.supported",
@@ -30743,7 +31211,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.5.0",
@@ -30792,7 +31262,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.5.1",
@@ -30851,7 +31323,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.5.2",
@@ -30900,7 +31374,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.5.doubted",
@@ -30940,7 +31416,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.5.supported",
@@ -30980,7 +31458,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m0",
@@ -31017,7 +31497,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m1",
@@ -31099,7 +31581,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m2",
@@ -31190,7 +31674,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m3",
@@ -31267,7 +31753,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m4",
@@ -31349,7 +31837,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.care.source",
@@ -31409,7 +31899,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.care.recording",
@@ -31476,7 +31968,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.care.all-sent",
@@ -31535,7 +32029,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.video",
@@ -31693,7 +32189,9 @@
             "notes": "",
             "blockType": "chat",
             "through": 5,
-            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。"
+            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.wager",
@@ -31850,7 +32348,9 @@
             "notes": "",
             "blockType": "chat",
             "through": 3,
-            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。"
+            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.food",
@@ -31978,7 +32478,9 @@
             "notes": "转录自 index.html 的现有文案与流程；在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。"
+            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.0",
@@ -32021,7 +32523,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.1",
@@ -32064,7 +32568,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.2",
@@ -32107,7 +32613,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.3",
@@ -32150,7 +32658,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward-repeat",
@@ -32184,7 +32694,9 @@
             "notes": "转录自 index.html 的现有文案与流程；再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。"
+            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.live.1",
@@ -32343,7 +32855,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           {
             "catalogId": "chat.live.2",
@@ -32496,7 +33010,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "support"
           },
           {
             "catalogId": "chat.live.3",
@@ -32649,7 +33165,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           {
             "catalogId": "chat.live-no-balance",
@@ -32686,7 +33204,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。"
+            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.vote",
@@ -32723,7 +33243,9 @@
             "notes": "转录自 index.html 的现有文案与流程；第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
             "blockType": "system",
             "through": 5,
-            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。"
+            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.1",
@@ -32773,7 +33295,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.2",
@@ -32823,7 +33347,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.3",
@@ -32863,7 +33389,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.4",
@@ -32913,7 +33441,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.5",
@@ -32963,7 +33493,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.6",
@@ -33003,7 +33535,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.7",
@@ -33053,7 +33587,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.respond",
@@ -33144,7 +33680,9 @@
             "notes": "转录自 index.html 的现有文案与流程；小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
             "blockType": "system",
             "through": 5,
-            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。"
+            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.comment-reply",
@@ -33401,7 +33939,9 @@
             "notes": "转录自 index.html 的现有文案与流程；replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
             "blockType": "system",
             "through": 5,
-            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。"
+            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.rest",
@@ -33435,7 +33975,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.collect_evidence",
@@ -33469,7 +34011,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.like_post",
@@ -33503,7 +34047,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.like_comment",
@@ -33537,7 +34083,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.downvote_comment",
@@ -33571,7 +34119,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.stream_start",
@@ -33605,7 +34155,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           }
         ]
       },
@@ -34135,6 +34687,7 @@
                   "stance": "accuse",
                   "av": 1,
                   "sourceGameId": "c1",
+                  "evidenceRule": null,
                   "line": 19,
                   "replyLine": 22,
                   "textSeen": true
@@ -34155,6 +34708,7 @@
                   "stance": "support",
                   "av": 2,
                   "sourceGameId": "c2",
+                  "evidenceRule": null,
                   "line": 30,
                   "replyLine": 33,
                   "textSeen": true
@@ -34175,6 +34729,7 @@
                   "stance": "accuse",
                   "av": 3,
                   "sourceGameId": "c3",
+                  "evidenceRule": null,
                   "line": 41,
                   "replyLine": 44,
                   "textSeen": true
@@ -34195,6 +34750,7 @@
                   "stance": "support",
                   "av": 4,
                   "sourceGameId": "c4",
+                  "evidenceRule": null,
                   "line": 52,
                   "replyLine": 55,
                   "textSeen": true
@@ -34215,6 +34771,7 @@
                   "stance": "support",
                   "av": 5,
                   "sourceGameId": "c5",
+                  "evidenceRule": null,
                   "line": 63,
                   "replyLine": 66,
                   "textSeen": true
@@ -34235,6 +34792,7 @@
                   "stance": "accuse",
                   "av": 0,
                   "sourceGameId": "c6",
+                  "evidenceRule": null,
                   "line": 74,
                   "replyLine": 77,
                   "textSeen": true
@@ -34820,6 +35378,7 @@
                   "stance": "accuse",
                   "av": 1,
                   "sourceGameId": "c7",
+                  "evidenceRule": null,
                   "line": 23,
                   "replyLine": 26,
                   "textSeen": true
@@ -34840,6 +35399,7 @@
                   "stance": "support",
                   "av": 2,
                   "sourceGameId": "c8",
+                  "evidenceRule": null,
                   "line": 34,
                   "replyLine": 37,
                   "textSeen": true
@@ -34860,6 +35420,7 @@
                   "stance": "accuse",
                   "av": 3,
                   "sourceGameId": "c9",
+                  "evidenceRule": null,
                   "line": 45,
                   "replyLine": 48,
                   "textSeen": true
@@ -34931,7 +35492,9 @@
             "notes": "转录自 index.html 的现有文案与流程；进入案件后；玩家点手机逐条阅读。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "进入案件后；玩家点手机逐条阅读。"
+            "trigger": "进入案件后；玩家点手机逐条阅读。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.tutorial-finished",
@@ -34977,7 +35540,9 @@
             "notes": "转录自 index.html 的现有文案与流程；新手导览结束或跳过后，回到 Chloe 聊天。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。"
+            "trigger": "新手导览结束或跳过后，回到 Chloe 聊天。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.artist-greeting",
@@ -35023,7 +35588,9 @@
             "notes": "转录自 index.html 的现有文案与流程；初始委托费及画师消息。",
             "blockType": "chat",
             "through": 1,
-            "trigger": "初始委托费及画师消息。"
+            "trigger": "初始委托费及画师消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.2.0",
@@ -35072,7 +35639,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.2.1",
@@ -35131,7 +35700,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.2.2",
@@ -35180,7 +35751,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.2.doubted",
@@ -35220,7 +35793,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.2.supported",
@@ -35260,7 +35835,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 2,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.day3-accusation",
@@ -35317,7 +35894,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 的一次性第三天事件。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 的一次性第三天事件。"
+            "trigger": "newDay() 的一次性第三天事件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.3.doubted",
@@ -35357,7 +35936,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.3.supported",
@@ -35397,7 +35978,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.4.0",
@@ -35446,7 +36029,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.4.1",
@@ -35505,7 +36090,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.4.2",
@@ -35554,7 +36141,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.4.doubted",
@@ -35594,7 +36183,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.4.supported",
@@ -35634,7 +36225,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 4,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.5.0",
@@ -35683,7 +36276,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.5.1",
@@ -35742,7 +36337,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.morning.5.2",
@@ -35791,7 +36388,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 按当前压力选其中一条，不会连发三个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。"
+            "trigger": "newDay() 按当前压力选其中一条，不会连发三个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.5.doubted",
@@ -35831,7 +36430,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论低于 40 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论低于 40 时的消息。"
+            "trigger": "newDay() 舆论低于 40 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.chloe.5.supported",
@@ -35871,7 +36472,9 @@
             "notes": "转录自 index.html 的现有文案与流程；newDay() 舆论达到 60 时的消息。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "newDay() 舆论达到 60 时的消息。"
+            "trigger": "newDay() 舆论达到 60 时的消息。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m0",
@@ -35908,7 +36511,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m1",
@@ -35990,7 +36595,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 1 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m2",
@@ -36081,7 +36688,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 2 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m3",
@@ -36158,7 +36767,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 3 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.client.m4",
@@ -36240,7 +36851,9 @@
             "notes": "转录自 index.html 的现有文案与流程；消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。"
+            "trigger": "消息从 Day 4 起可查看；仅尚未回复的线程显示回复入口。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.care.source",
@@ -36300,7 +36913,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.care.recording",
@@ -36367,7 +36982,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.care.all-sent",
@@ -36426,7 +37043,9 @@
             "notes": "转录自 index.html 的现有文案与流程；下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。"
+            "trigger": "下午或晚上，画师未读消息已读完；按当前证据选择一个版本。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.video",
@@ -36585,7 +37204,9 @@
             "notes": "转录自 index.html 的现有文案与流程；早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。"
+            "trigger": "早上或下午，尚未制作视频。读完画师解释后确认；回复展示完再推进两个时段。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.wager",
@@ -36726,7 +37347,9 @@
             "notes": "转录自 index.html 的现有文案与流程；第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。",
             "blockType": "chat",
             "through": 3,
-            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。"
+            "trigger": "第 3 天结束前、尚未安排；request_wager / approve_wager 含当前 Case 余额条件。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.food",
@@ -36854,7 +37477,9 @@
             "notes": "转录自 index.html 的现有文案与流程；在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。"
+            "trigger": "在外卖 App 选择餐点；各餐点只播放对应的一条感谢，扣款和行动点沿用 Action。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.0",
@@ -36897,7 +37522,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.1",
@@ -36940,7 +37567,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.2",
@@ -36983,7 +37612,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward.3",
@@ -37026,7 +37657,9 @@
             "notes": "转录自 index.html 的现有文案与流程；首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。"
+            "trigger": "首次转发对应类型的帖子；玩家发送所选帖子卡片，然后画师回复。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.forward-repeat",
@@ -37060,7 +37693,9 @@
             "notes": "转录自 index.html 的现有文案与流程；再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。"
+            "trigger": "再次发送同一帖子卡片；不重复改变压力，也没有新增画师台词。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "chat.live.1",
@@ -37219,7 +37854,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 1 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           {
             "catalogId": "chat.live.2",
@@ -37372,7 +38009,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 2 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "support"
           },
           {
             "catalogId": "chat.live.3",
@@ -37525,7 +38164,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。"
+            "trigger": "已安排且满足 stream_start 的当前 Case 余额条件；第 3 轮弹幕。",
+            "evidenceRule": null,
+            "stance": "accuse"
           },
           {
             "catalogId": "chat.live-no-balance",
@@ -37562,7 +38203,9 @@
             "notes": "转录自 index.html 的现有文案与流程；已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
             "blockType": "chat",
             "through": 5,
-            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。"
+            "trigger": "已安排直播，但开播前不满足 stream_start 的余额条件；取消安排。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.vote",
@@ -37599,7 +38242,9 @@
             "notes": "转录自 index.html 的现有文案与流程；第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
             "blockType": "system",
             "through": 5,
-            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。"
+            "trigger": "第五天直播结束后，或第五天正常用完时段后。社区评议不是专业鉴定。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.1",
@@ -37649,7 +38294,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.2",
@@ -37699,7 +38346,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.3",
@@ -37739,7 +38388,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.4",
@@ -37789,7 +38440,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.5",
@@ -37839,7 +38492,9 @@
             "notes": "转录自 index.html 的现有文案与流程；社区投票后，按原 vote() 分支进入。",
             "blockType": "system",
             "through": 5,
-            "trigger": "社区投票后，按原 vote() 分支进入。"
+            "trigger": "社区投票后，按原 vote() 分支进入。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.6",
@@ -37879,7 +38534,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.ending.7",
@@ -37929,7 +38586,9 @@
             "notes": "转录自 index.html 的现有文案与流程；consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
             "blockType": "system",
             "through": 5,
-            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。"
+            "trigger": "consume() / livestream() 中提前结束；压力退出优先于信任崩塌。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.respond",
@@ -38020,7 +38679,9 @@
             "notes": "转录自 index.html 的现有文案与流程；小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
             "blockType": "system",
             "through": 5,
-            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。"
+            "trigger": "小粉书发布公开回应；按当前舆论和对应 Action 条件选择分支。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "system.comment-reply",
@@ -38277,7 +38938,9 @@
             "notes": "转录自 index.html 的现有文案与流程；replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
             "blockType": "system",
             "through": 5,
-            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。"
+            "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.rest",
@@ -38311,7 +38974,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.collect_evidence",
@@ -38345,7 +39010,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.like_post",
@@ -38379,7 +39046,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.like_comment",
@@ -38413,7 +39082,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.downvote_comment",
@@ -38447,7 +39118,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           },
           {
             "catalogId": "action.stream_start",
@@ -38481,7 +39154,9 @@
             "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
             "blockType": "system",
             "through": 5,
-            "trigger": ""
+            "trigger": "",
+            "evidenceRule": null,
+            "stance": "neutral"
           }
         ]
       }
