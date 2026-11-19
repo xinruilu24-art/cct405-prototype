@@ -19,7 +19,7 @@ function game(character = 1) {
   return { run, budget, app };
 }
 
-test('opening reveals exactly one new chat message per click, then goes home', () => {
+test('opening reveals exactly one new chat message per click, then starts the tour', () => {
   const { run, budget } = game();
   const before = budget();
   assert.equal(run('S.chat.friend.length'), 1);
@@ -32,7 +32,7 @@ test('opening reveals exactly one new chat message per click, then goes home', (
   assert.equal(run('S.tutorial.phase'), 'intro');
   run('continueIntro()');
   assert.equal(run('S.tutorial.phase'), 'tour');
-  assert.equal(run('S.app'), 'home');
+  assert.equal(run('S.app'), 'xhs');
   assert.equal(budget(), before);
 });
 
@@ -49,10 +49,10 @@ test('both characters can tour every real page and metric without spending resou
       assert.equal(budget(), before);
       run('advanceTour()');
     }
+    assert.equal(count, 10);
     assert.ok(visited.includes('xhs:note'));
-    assert.ok(visited.includes('xhs:compose'));
+    assert.ok(visited.includes('xhs:'));
     assert.ok(visited.includes('mhs:msg'));
-    assert.ok(visited.includes('eat:'));
     assert.ok(!visited.includes('album:'));
     assert.ok(visited.includes('chat:thread'));
     assert.equal(run('S.tutorial.phase'), 'outro');
@@ -75,7 +75,7 @@ test('previous, skip, replay, and restart preserve the intended tutorial lifecyc
   assert.equal(budget(), before);
   run('startTour();advanceTour();advanceTour(-1)');
   assert.equal(run('S.tutorial.step'), 0);
-  assert.equal(run('S.app'), 'home');
+  assert.equal(run('S.app'), 'xhs');
   run('advanceTour(-1)');
   assert.equal(run('S.tutorial.step'), 0);
   run('finishTutorial();startTour();finishTutorial()');
@@ -87,9 +87,10 @@ test('previous, skip, replay, and restart preserve the intended tutorial lifecyc
 
 test('the final tour steps highlight opinion, stress, budgets, and collected evidence', () => {
   const { run } = game(2);
-  const finalTargets = JSON.parse(run('JSON.stringify(tutorialSteps().slice(-4).map(step=>step.target))'));
-  assert.deepEqual(finalTargets, ['[data-tour-target="opinion"]', '[data-tour-target="stress"]', '[data-tour-target="resources"]', '[data-tour-target="evidence"]']);
-  assert.doesNotMatch(run('tutorialSteps().flatMap(step=>step.text).join(" ")'), /\d|[≥≤]|(?:舆论|压力)\s*[+\-]/);
-  assert.match(run('tutorialSteps().find(step=>step.target.includes("opinion")).text.join(" ")'), /trust/);
-  assert.match(run('tutorialSteps().find(step=>step.target.includes("stress")).text.join(" ")'), /walk away/);
+  const steps = JSON.parse(run('JSON.stringify(tutorialSteps())'));
+  assert.equal(steps.length, 10);
+  assert.deepEqual(steps.slice(-3).map(step => step.target), ['.hud .meters', '[data-tour-target="resources"]', '[data-tour-target="evidence"]']);
+  assert.doesNotMatch(steps.map(step => step.text).join(' '), /\d|[≥≤]|(?:舆论|压力)\s*[+\-]/);
+  assert.match(steps.find(step => step.target === '.hud .meters').text, /Public Opinion/);
+  assert.match(steps.find(step => step.target === '.hud .meters').text, /quit/);
 });

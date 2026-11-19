@@ -1046,44 +1046,24 @@ function keepActionGuide(){
 }
 function tutorialSteps(){
   const phone = '[data-tour-target="phone"]';
-  const note = (arg, more) => ({app: "xhs", view: "note", arg, target: phone, ...more});
-  const chat = more => ({app: "chat", view: "thread", arg: "artist", target: phone, ...more});
-  const notes = S ? availableNotes() : [];
-  const accusePost = notes.find(n => n.id === "n1" && n.comments.length) || notes.find(n => n.comments.length);
-  const postId = accusePost?.id || "n1";
-  const support = accusePost?.comments.find(c => c.stance === "support") || accusePost?.comments[0];
-  const accusation = accusePost?.comments.find(c => c.stance === "accuse") || accusePost?.comments[0];
-  const supportId = support?.id || "";
-  const accuseId = accusation?.id || "";
-  const reply = id => id ? `[data-reply="${id}"]` : null;
+  const notes = availableNotes();
+  const post = notes.find(n => n.comments.length && n.id === "n1") || notes.find(n => n.comments.length);
+  const comment = post?.comments.find(c => c.stance === "support") || post?.comments[0];
+  const evidence = notes.find(n => n.kind === "evidence" && EVIDENCE[n.ev]);
+  const postView = post ? {view: "note", arg: post.id} : {};
+  const evidenceView = evidence ? {view: "note", arg: evidence.id} : {};
+  const selector = (attribute, value) => "[data-" + attribute + "=" + JSON.stringify(value) + "]";
   return [
-    {title: "Open Pinknote", app: "home", target: phone, action: '[data-app="xhs"]', text: ["We\'ll try it on the page. Tap the highlighted spot. Practice won\'t run an action or spend resources."]},
-    {title: "Open the post", app: "xhs", target: phone, action: `[data-note="${postId}"]`, text: ["Tap this post and see what people are arguing about."]},
-    note(postId, {title: "Reply to a supporter", action: reply(supportId), viewTarget: reply(supportId), text: ["Tap Reply next to this supportive comment to see how to thank them."]}),
-    note(postId, {title: "Thank them", sheet: "support", replyId: supportId, action: '[data-rp="agree"]', text: ["Tap this reply once. In the real game it wins a little support and uses one action."]}),
-    note(postId, {title: "Answer with evidence", sheet: "accuse", replyId: accuseId, action: '[data-rp="ev"]', text: ["This item is only a demo and won\'t go into your list. Tap here to pick evidence and make the reply more convincing."]}),
-    note(postId, {title: "Reply with no evidence", sheet: "accuse", replyId: accuseId, action: '[data-rp="noev"]', text: ["You can also reply without evidence, but arguing with nothing to show can raise doubts. Tap to see it. Nothing is sent."]}),
-    {title: "Find the post button", app: "xhs", target: phone, action: "[data-compose]", viewTarget: "[data-compose]", text: ["The button in the middle of the bottom bar opens a new post. Tap it to see where it is."]},
-    {title: "Post a public statement", app: "xhs", view: "compose", target: phone, action: '[data-a="respond"]', text: ["Tap Public announcement. Posting uses an action, and it can backfire when opinion is against you."]},
-    note("n2", {title: "Save evidence", action: '[data-star="n2"]', viewTarget: '[data-star="n2"]', text: ["The star at the bottom saves a post into Evidence on the left. It costs no action. Tap once to practise."]}),
-    note("n2", {title: "Share with the artist", action: '[data-share="n2"]', viewTarget: '[data-share="n2"]', text: ["The share button is at the bottom of the post. Tap it, then look at who you can send it to."]}),
-    note("n2", {title: "Send it to the artist", sheet: "share", action: '[data-fwd="n2"]', text: ["Sending for real uses one action. A supportive post may reassure her; an accusation may stress her. Nothing is sent here."]}),
-    {title: "Order takeout", app: "eat", target: phone, action: '[data-food="f1"]', text: ["Tap Order on this drink. A real order costs money and one action, and helps her unwind a little."]},
-    {title: "Check client messages", app: "mhs", view: "msg", target: phone, action: '[data-mthread="m1"]', text: ["Clients talk about their orders here. Reading costs nothing. Tap this message to open it."]},
-    {title: "Reply to check the order", app: "mhs", view: "msg", arg: "m1", target: phone, action: '[data-mhs-reply="m1"]', text: ["Reply at the bottom to ask for the order timeline. Once you read what she sends, it goes into Evidence. No action used. This is just practice."]},
-    {title: "Ask for process records", app: "mhs", view: "msg", arg: "m2", previewMhs: true, target: phone, action: '[data-mhs-reply="m2"]', text: ["Pudding messages you the next day. This is a preview: reply here to ask for records from her two commissions. Nothing is sent."]},
-    chat({title: "Check in on the artist", action: '.artist-actions [data-a="chat"]', text: ["Chat from the bottom bar, or use Chat with her on the left. A real chat uses one action. She relaxes, and sends files when she has them."]}),
-    chat({title: "Ask for a process video", action: '[data-a="video"]', text: ["Tap here to ask. She\'ll say how long it takes. Nothing is posted, and no action is used, until you confirm."]}),
-    chat({title: "Agree to the video", decision: "video", action: "[data-video-approve]", text: ["Agreeing makes and posts the video, then uses two actions after you read her reply. Tap to practise. Nothing is made."]}),
-    chat({title: "Not now", decision: "video", action: "[data-video-decline]", text: ["You can hold off. Saying no posts nothing and costs no action. Tap to see this option."]}),
-    chat({title: "Discuss a livestream wager", action: '[data-a="announce"]', text: ["You raise it in chat. It needs enough balance and has to be set up in advance. Tap here and hear her concerns first."]}),
-    chat({title: "Confirm the wager", decision: "wager", action: "[data-wager-approve]", text: ["A real yes puts more stress on her. She agrees to the fifth day, the announcement goes up, then one action is used. Just practice here."]}),
-    chat({title: "No wager for now", decision: "wager", action: "[data-wager-decline]", text: ["If you\'d rather spare her the stress, hold off. Saying no adds no stress and costs no action."]}),
-    note("livestream-announcement", {title: "Save the wager announcement", previewAnnouncement: true, action: '[data-star="livestream-announcement"]', viewTarget: '[data-star="livestream-announcement"]', text: ["This is a tutorial example. The real post appears only after you confirm a wager. The star saves the rules as evidence."]}),
-    {title: "Public Opinion", app: "home", target: '[data-tour-target="opinion"]', next: "Artist Stress", text: ["This shows how much people trust the artist, and it shapes the final vote. Evidence and how you respond can shift it."]},
-    {title: "Artist Stress", app: "home", target: '[data-tour-target="stress"]', next: "Actions and balance", text: ["Company and care lower it. Accusations and the wager raise it. If it gets too high, she may walk away."]},
-    {title: "Actions, time and balance", app: "home", target: '[data-tour-target="resources"]', action: '[data-a="rest"]', text: ["Each action takes one time slot. Takeout also costs money, and a video needs more time. Tap Next time slot to practise. Time won\'t move."]},
-    {title: "Check your evidence", app: "home", target: '[data-tour-target="evidence"]', previewEvidence: true, action: ".evidence-item > summary", text: ["Tap an item to open it. This is a tutorial example. Your real evidence and resources stay as they are."]}
+    {title: "Open a Pinknote post", text: "Tap the highlighted post to read what people are saying.", app: "xhs", target: phone, action: post ? selector("note", post.id) : null},
+    {title: "Reply to a comment", text: "Tap Reply. You can thank a supporter or answer a question with evidence. Each reply takes one action.", app: "xhs", ...postView, target: phone, action: comment ? selector("reply", comment.id) : null, practiceReply: comment?.id},
+    {title: "Make a public statement", text: "Tap + to write a statement. Posting takes one action and can backfire.", app: "xhs", target: phone, action: "[data-compose]"},
+    {title: "Save evidence", text: "Tap the star to add this post to your evidence for free.", app: "xhs", ...evidenceView, target: phone, action: evidence ? selector("star", evidence.id) : null},
+    {title: "Share a post", text: "Sharing takes one action. Support may reassure the artist, while accusations can raise her stress.", app: "xhs", ...evidenceView, target: phone, action: evidence ? selector("share", evidence.id) : null},
+    {title: "Ask a client for records", text: "Tap the reply in YGen. Files are saved to Evidence as you read them, at no action cost.", app: "mhs", view: "msg", arg: "m1", target: phone, action: '[data-mhs-reply="m1"]', previewMhs: true},
+    {title: "Talk to the artist", text: "In MiChat, check in, suggest a process video, or discuss a livestream wager.", app: "chat", view: "thread", arg: "artist", target: phone, action: '.artist-actions [data-a="chat"]'},
+    {title: "Check opinion and stress", text: "Public Opinion shapes the final vote. If Artist Stress reaches its limit, she may quit.", app: "home", target: ".hud .meters"},
+    {title: "Spend your time", text: "Each day has three time slots. Takeout also costs money, and making a video takes two slots.", app: "home", target: '[data-tour-target="resources"]', action: '[data-a="rest"]'},
+    {title: "Review your evidence", text: "Open a saved item to inspect it. This sample is just for practice.", app: "home", target: '[data-tour-target="evidence"]', action: ".evidence-item > summary", previewEvidence: true}
   ];
 }
 function startTour(){
@@ -1096,9 +1076,8 @@ function showTourStep(){
   if (S?.tutorial?.phase !== "tour") return;
   const step = tutorialSteps()[S.tutorial.step];
   S.app = step.app; S.view = step.view || ""; S.arg = step.arg || "";
-  const sample = [{id: "tutorial-example", ...EVIDENCE.e1, title: "Process materials (tutorial example)"}];
-  S.sheet = step.sheet === "support" ? replySheet(step.replyId, [], true) : step.sheet === "accuse" ? replySheet(step.replyId, sample, true) : step.sheet === "share" ? shareSheet(step.arg) : null;
-  note("Chloe is showing you around. Follow the pop-ups; the tour doesn\'t use time, money or evidence.");
+  S.sheet = null;
+  note("Practice is free. Tap a highlighted control or choose Next.");
   desk();
 }
 function advanceTour(delta = 1){
@@ -1139,22 +1118,31 @@ function renderTutorial(){
   const t = S?.tutorial;
   if (!t || t.phase === "done" || t.phase === "outro") return;
   const steps = tutorialSteps(), step = steps[t.step];
-  const enabled = t.phase === "intro" ? "[data-tour-skip]" : step.action;
-  const copy = Array.isArray(step.text) ? step.text : [step.text];
+  const previewingReply = !!(t.phase === "tour" && step.practiceReply && S.sheet);
+  const enabled = t.phase === "intro" ? "[data-tour-skip]" : previewingReply ? "[data-rp]" : step.action;
   $app.querySelectorAll("button, summary").forEach(b => {
     if (!enabled || !b.matches(enabled)){
       b.disabled = true;
       if (b.tagName === "SUMMARY"){ b.tabIndex = -1; b.onclick = event => event.preventDefault(); }
     } else if (t.phase === "tour"){
       b.disabled = false; b.tabIndex = 0; b.setAttribute("data-tour-action", "");
-      b.onclick = event => { event.preventDefault(); event.stopPropagation(); advanceTour(); };
+      b.onclick = event => {
+        event.stopPropagation();
+        if (step.previewEvidence) return;
+        event.preventDefault();
+        if (step.practiceReply && !previewingReply){
+          S.sheet = replySheet(step.practiceReply, [{id: "tutorial-example", ...EVIDENCE.e1}], true);
+          return desk();
+        }
+        advanceTour();
+      };
     }
   });
   if (t.phase === "intro") return;
   document.body.classList.add("is-guided");
   $tutorial.innerHTML = `<aside class="tutorial-coach win" aria-labelledby="tutorial-title"><div class="bar"><span>Chloe · Tutorial</span><span>${t.step + 1} / ${steps.length}</span></div><div class="body">
-    <h2 id="tutorial-title">${esc(step.title)}</h2><div id="tutorial-body" aria-live="polite">${copy.map(text => `<p>${esc(text)}</p>`).join("")}</div>
-    <div class="tutorial-controls"><button class="tutorial-link" data-tour-prev ${t.step ? "" : "disabled"}>Back</button>${step.action ? "" : `<button class="tutorial-link" data-tour-next>${esc(step.next || "Next")}</button>`}<button class="tutorial-link tutorial-skip" data-tour-skip>Skip the tour and explore</button></div></div></aside>`;
+    <h2 id="tutorial-title">${esc(step.title)}</h2><div id="tutorial-body" aria-live="polite"><p>${esc(step.text)}</p></div>
+    <div class="tutorial-controls"><button class="tutorial-link" data-tour-prev ${t.step ? "" : "disabled"}>Back</button><button class="btn primary" data-tour-next>${t.step === steps.length - 1 ? "Finish" : "Next"}</button><button class="tutorial-link tutorial-skip" data-tour-skip>Skip</button></div></div></aside>`;
   const nextButton = $tutorial.querySelector("[data-tour-next]");
   if (nextButton) nextButton.onclick = () => advanceTour();
   $tutorial.querySelector("[data-tour-prev]").onclick = () => advanceTour(-1);
