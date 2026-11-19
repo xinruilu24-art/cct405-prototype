@@ -6153,6 +6153,7 @@
           "notes": ""
         }
       ],
+      "actionTimingRevision": 1,
       "events": [
         {
           "key": "legacy_dialogue_2",
@@ -12780,6 +12781,324 @@
           },
           "diagnostics": [],
           "warnings": []
+        },
+        {
+          "key": "timing_1ffp3x9",
+          "id": "action.rest",
+          "caseId": "case_artist_1",
+          "catalogId": "action.rest",
+          "title": "操作时序 · 进入下一个时段",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 63,
+          "source": "=== action.rest\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 进入下一个时段\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: rest\n-> END",
+          "appliedSource": "=== action.rest\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 进入下一个时段\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: rest\n-> END",
+          "catalogBaseline": "=== action.rest\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 进入下一个时段\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: rest\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.rest",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 进入下一个时段",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "rest",
+                "actionId": "action_rest"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_82h2sd",
+          "id": "action.collect_evidence",
+          "caseId": "case_artist_1",
+          "catalogId": "action.collect_evidence",
+          "title": "操作时序 · 收藏证据或对赌公告",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 64,
+          "source": "=== action.collect_evidence\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 收藏证据或对赌公告\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: collect_evidence\n-> END",
+          "appliedSource": "=== action.collect_evidence\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 收藏证据或对赌公告\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: collect_evidence\n-> END",
+          "catalogBaseline": "=== action.collect_evidence\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 收藏证据或对赌公告\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: collect_evidence\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.collect_evidence",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 收藏证据或对赌公告",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "collect_evidence",
+                "actionId": "action_collect_evidence"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_tymd3b",
+          "id": "action.like_post",
+          "caseId": "case_artist_1",
+          "catalogId": "action.like_post",
+          "title": "操作时序 · 帖子点赞或取消",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 65,
+          "source": "=== action.like_post\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 帖子点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_post\n-> END",
+          "appliedSource": "=== action.like_post\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 帖子点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_post\n-> END",
+          "catalogBaseline": "=== action.like_post\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 帖子点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_post\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.like_post",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 帖子点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_post",
+                "actionId": "action_like_post"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_12ny3tq",
+          "id": "action.like_comment",
+          "caseId": "case_artist_1",
+          "catalogId": "action.like_comment",
+          "title": "操作时序 · 评论点赞或取消",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 66,
+          "source": "=== action.like_comment\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 评论点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_comment\n-> END",
+          "appliedSource": "=== action.like_comment\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 评论点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_comment\n-> END",
+          "catalogBaseline": "=== action.like_comment\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 评论点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_comment\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.like_comment",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 评论点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_comment",
+                "actionId": "action_like_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_w7kalh",
+          "id": "action.downvote_comment",
+          "caseId": "case_artist_1",
+          "catalogId": "action.downvote_comment",
+          "title": "操作时序 · 踩评论或取消",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 67,
+          "source": "=== action.downvote_comment\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 踩评论或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: downvote_comment\n-> END",
+          "appliedSource": "=== action.downvote_comment\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 踩评论或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: downvote_comment\n-> END",
+          "catalogBaseline": "=== action.downvote_comment\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 踩评论或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: downvote_comment\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.downvote_comment",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 踩评论或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "downvote_comment",
+                "actionId": "action_downvote_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_5q8wso",
+          "id": "action.stream_start",
+          "caseId": "case_artist_1",
+          "catalogId": "action.stream_start",
+          "title": "操作时序 · 第五天：开播资格复核",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 68,
+          "source": "=== action.stream_start\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 第五天：开播资格复核\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: stream_start\n-> END",
+          "appliedSource": "=== action.stream_start\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 第五天：开播资格复核\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: stream_start\n-> END",
+          "catalogBaseline": "=== action.stream_start\ncase: case_artist_1\ntype: system\ntitle: \"操作时序 · 第五天：开播资格复核\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: stream_start\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-19T02:40:05.913Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.stream_start",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 第五天：开播资格复核",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "stream_start",
+                "actionId": "action_stream_start"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
         }
       ]
     },
@@ -18180,6 +18499,7 @@
           "notes": ""
         }
       ],
+      "actionTimingRevision": 1,
       "events": [
         {
           "key": "legacy_artist2_video_approved",
@@ -27204,12 +27524,331 @@
             "file": "index.html",
             "scope": "system.comment-reply"
           }
+        },
+        {
+          "key": "timing_1oacdlq",
+          "id": "action.rest",
+          "caseId": "case_artist_2",
+          "catalogId": "action.rest",
+          "title": "操作时序 · 进入下一个时段",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 64,
+          "source": "=== action.rest\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 进入下一个时段\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: rest\n-> END",
+          "appliedSource": "=== action.rest\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 进入下一个时段\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: rest\n-> END",
+          "catalogBaseline": "=== action.rest\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 进入下一个时段\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: rest\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-18T17:27:11.697Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.rest",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 进入下一个时段",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "rest",
+                "actionId": "action_rest"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_gfex2q",
+          "id": "action.collect_evidence",
+          "caseId": "case_artist_2",
+          "catalogId": "action.collect_evidence",
+          "title": "操作时序 · 收藏证据或对赌公告",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 65,
+          "source": "=== action.collect_evidence\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 收藏证据或对赌公告\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: collect_evidence\n-> END",
+          "appliedSource": "=== action.collect_evidence\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 收藏证据或对赌公告\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: collect_evidence\n-> END",
+          "catalogBaseline": "=== action.collect_evidence\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 收藏证据或对赌公告\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: collect_evidence\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-18T17:27:11.697Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.collect_evidence",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 收藏证据或对赌公告",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "collect_evidence",
+                "actionId": "action_collect_evidence"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_3cr7fy",
+          "id": "action.like_post",
+          "caseId": "case_artist_2",
+          "catalogId": "action.like_post",
+          "title": "操作时序 · 帖子点赞或取消",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 66,
+          "source": "=== action.like_post\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 帖子点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_post\n-> END",
+          "appliedSource": "=== action.like_post\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 帖子点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_post\n-> END",
+          "catalogBaseline": "=== action.like_post\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 帖子点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_post\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-18T17:27:11.697Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.like_post",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 帖子点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_post",
+                "actionId": "action_like_post"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_18p25gx",
+          "id": "action.like_comment",
+          "caseId": "case_artist_2",
+          "catalogId": "action.like_comment",
+          "title": "操作时序 · 评论点赞或取消",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 67,
+          "source": "=== action.like_comment\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 评论点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_comment\n-> END",
+          "appliedSource": "=== action.like_comment\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 评论点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_comment\n-> END",
+          "catalogBaseline": "=== action.like_comment\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 评论点赞或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: like_comment\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-18T17:27:11.697Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.like_comment",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 评论点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_comment",
+                "actionId": "action_like_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_16f3qdi",
+          "id": "action.downvote_comment",
+          "caseId": "case_artist_2",
+          "catalogId": "action.downvote_comment",
+          "title": "操作时序 · 踩评论或取消",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 68,
+          "source": "=== action.downvote_comment\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 踩评论或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: downvote_comment\n-> END",
+          "appliedSource": "=== action.downvote_comment\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 踩评论或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: downvote_comment\n-> END",
+          "catalogBaseline": "=== action.downvote_comment\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 踩评论或取消\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: downvote_comment\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-18T17:27:11.697Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.downvote_comment",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 踩评论或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "downvote_comment",
+                "actionId": "action_downvote_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
+        },
+        {
+          "key": "timing_l2h007",
+          "id": "action.stream_start",
+          "caseId": "case_artist_2",
+          "catalogId": "action.stream_start",
+          "title": "操作时序 · 第五天：开播资格复核",
+          "blockType": "system",
+          "day": 1,
+          "through": 5,
+          "slot": "any",
+          "status": "final",
+          "order": 69,
+          "source": "=== action.stream_start\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 第五天：开播资格复核\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: stream_start\n-> END",
+          "appliedSource": "=== action.stream_start\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 第五天：开播资格复核\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: stream_start\n-> END",
+          "catalogBaseline": "=== action.stream_start\ncase: case_artist_2\ntype: system\ntitle: \"操作时序 · 第五天：开播资格复核\"\nday: 1\nthrough: 5\nslot: any\nstatus: final\nwhen: true\n\n@notes: \"这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。\"\n@action: stream_start\n-> END",
+          "legacy": {},
+          "updatedAt": "2026-11-18T17:27:11.697Z",
+          "diagnostics": [],
+          "warnings": [],
+          "compiled": {
+            "id": "action.stream_start",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 第五天：开播资格复核",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "stream_start",
+                "actionId": "action_stream_start"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          "trigger": ""
         }
       ]
     }
   ],
   "game": {
     "version": 1,
+    "timingVersion": 1,
     "updatedAt": "2026-11-19T02:40:05.913Z",
     "stats": [
       {
@@ -32763,6 +33402,210 @@
             "blockType": "system",
             "through": 5,
             "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。"
+          },
+          {
+            "catalogId": "action.rest",
+            "customized": false,
+            "id": "action.rest",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 进入下一个时段",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "rest",
+                "actionId": "action_rest"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.collect_evidence",
+            "customized": false,
+            "id": "action.collect_evidence",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 收藏证据或对赌公告",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "collect_evidence",
+                "actionId": "action_collect_evidence"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.like_post",
+            "customized": false,
+            "id": "action.like_post",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 帖子点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_post",
+                "actionId": "action_like_post"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.like_comment",
+            "customized": false,
+            "id": "action.like_comment",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 评论点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_comment",
+                "actionId": "action_like_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.downvote_comment",
+            "customized": false,
+            "id": "action.downvote_comment",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 踩评论或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "downvote_comment",
+                "actionId": "action_downvote_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.stream_start",
+            "customized": false,
+            "id": "action.stream_start",
+            "caseId": "case_artist_1",
+            "title": "操作时序 · 第五天：开播资格复核",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "stream_start",
+                "actionId": "action_stream_start"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
           }
         ]
       },
@@ -37435,6 +38278,210 @@
             "blockType": "system",
             "through": 5,
             "trigger": "replySheet()：支持评论只有感谢；质疑评论按已收集的证据显示对应选项。"
+          },
+          {
+            "catalogId": "action.rest",
+            "customized": false,
+            "id": "action.rest",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 进入下一个时段",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "rest",
+                "actionId": "action_rest"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.collect_evidence",
+            "customized": false,
+            "id": "action.collect_evidence",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 收藏证据或对赌公告",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "collect_evidence",
+                "actionId": "action_collect_evidence"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.like_post",
+            "customized": false,
+            "id": "action.like_post",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 帖子点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_post",
+                "actionId": "action_like_post"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.like_comment",
+            "customized": false,
+            "id": "action.like_comment",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 评论点赞或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "like_comment",
+                "actionId": "action_like_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.downvote_comment",
+            "customized": false,
+            "id": "action.downvote_comment",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 踩评论或取消",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "downvote_comment",
+                "actionId": "action_downvote_comment"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
+          },
+          {
+            "catalogId": "action.stream_start",
+            "customized": false,
+            "id": "action.stream_start",
+            "caseId": "case_artist_2",
+            "title": "操作时序 · 第五天：开播资格复核",
+            "day": 1,
+            "slot": "any",
+            "status": "final",
+            "when": "true",
+            "condition": {
+              "type": "boolean",
+              "value": true
+            },
+            "sharedWith": [],
+            "steps": [
+              {
+                "line": 12,
+                "type": "action",
+                "key": "stream_start",
+                "actionId": "action_stream_start"
+              },
+              {
+                "type": "jump",
+                "target": "END",
+                "line": 13
+              }
+            ],
+            "choices": [],
+            "notes": "这是现有操作的剧本入口。可在 @action 前后添加台词，控制结算时机；时段和数值仍使用 Action 定义。",
+            "blockType": "system",
+            "through": 5,
+            "trigger": ""
           }
         ]
       }
