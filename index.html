@@ -478,7 +478,10 @@ function runtimePost(entry){
 function publishedTemplate(key,fallback){const e=gamePosts().find(p=>p.metadata.sourceTemplate===key);return e?runtimePost(e):fallback;}
 function availableNotes(){
  const posts=gamePosts();if(!posts.length)return [...(S.day3Accusation?[DAY3_NOTE]:[]),...S.myNotes,...NOTES];
- return [...S.myNotes,...posts.filter(p=>!(p.post.publishActions||[]).length&&p.day<=S.day&&p.through>=S.day&&conditionMet(p.condition)&&p.metadata.sourceTemplate!=='livestream-announcement').map(runtimePost)];
+ const feed=posts.filter(p=>!(p.post.publishActions||[]).length&&p.day<=S.day&&p.through>=S.day&&conditionMet(p.condition)&&p.metadata.sourceTemplate!=='livestream-announcement').map(runtimePost);
+ // 第三天的新鉴定帖发布后置于信息流首位，与内嵌旧版一致。
+ const day3=S.day3Accusation?feed.filter(n=>n.id===DAY3_NOTE.id):[];
+ return [...day3,...S.myNotes,...feed.filter(n=>!day3.includes(n))];
 }
 function mhsThreads(){
  return MHS_THREADS.map(t=>{const e=gameEvent('chat.client.'+t.id);if(!e)return t;const rows=e.steps.filter(n=>n.type==='say'),ch=e.choices[0],messages=ch?.steps.flatMap(n=>n.type==='say'&&!isRole(n.speaker,'player')?[{text:n.text}]:n.type==='unlockEvidence'?[{ev:n.evidenceId}]:[])||[];return {...t,day:e.day,who:displayRole(rows[0]?.speaker||t.who),lines:rows.map(n=>n.text),reply:ch?{label:ch.text,text:ch.steps.filter(n=>n.type==='say'&&isRole(n.speaker,'player')).map(n=>n.text).join('\n'),messages}:null};});
